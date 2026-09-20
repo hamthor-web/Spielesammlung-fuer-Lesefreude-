@@ -1,0 +1,16 @@
+# Android / Bubblewrap signing keys - niemals in GitHub hochladen
+*.keystore
+*.jks
+android.keystore
+
+# Bubblewrap / Android build output
+.gradle/
+build/
+app/build/
+*.apk
+*.aab
+local.properties
+
+# Editor / OS
+.DS_Store
+Thumbs.db
