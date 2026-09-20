@@ -2,13 +2,15 @@
 <html lang="de">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <title>Wochen-Spiel – Freizeit & Abenteuer</title>
+
 <meta name="theme-color" content="#dcebc5">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="application-name" content="Wochentage-Spiel">
+
 <style>
   :root { --panel: rgba(255,255,255,.92); --shadow: 0 10px 28px rgba(0,0,0,.22); }
   * { box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
@@ -26,7 +28,7 @@
   .token .eye.e1 { left:36%; } .token .eye.e2 { right:36%; }
   .token .smile { position:absolute; width:20%; height:10%; border-bottom:2px solid #7a3c30; border-radius:0 0 20px 20px; left:40%; top:38%; z-index:3; }
   #boy .hair { background:#111; } #boy .body { background:#2d73c7; }
-  #girl .hair { background:#aaa; } #girl .body { background:#d55c91; }
+  #girl .hair { background:#aaa; } #girl .body { background:#d84444; }
   .token.activeGlow { animation:glowPulse 1.15s ease-in-out infinite; }
   .token.activeGlow::after { content:""; position:absolute; inset:-22%; border-radius:50%; box-shadow:0 0 0 0 rgba(255,235,59,.9); animation:ring 1.15s ease-out infinite; }
   @keyframes glowPulse { 0%,100%{filter:drop-shadow(0 4px 4px rgba(0,0,0,.38));} 45%{filter:drop-shadow(0 0 14px #ffe600) drop-shadow(0 0 22px #fff58a); transform:translate(-50%,-78%) scale(1.12);} }
@@ -265,9 +267,7 @@
 </style>
 
 
-<style id="production-hide-test-controls">
-#weekdayTestBtn, #weekdayTestOverlay, #jokerTestBtn, #footballTestBtn, #jokerTestOverlay, #footballTestOverlay { display:none !important; }
-</style>
+
 
 <style id="weekday-test-controls">
 #weekdayTestBtn { border:0; border-radius:14px; padding:9px 13px; font-weight:800; font-size:14px; background:rgba(255,229,218,.98); box-shadow:0 5px 18px rgba(0,0,0,.18); }
@@ -585,17 +585,46 @@ body { display:block; background:#e6edcf; }
 @media (max-width:650px){ #moveTestList{grid-template-columns:1fr;} }
 </style>
 
-<style id="force-production-hide">
-#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint,
-#weekdayTestOverlay,#jokerTestOverlay,#footballTestOverlay,#moveTestOverlay { display:none !important; }
-</style>
-</head>
+
+<style>#board .weekdayHit{transform:translate(-50%,-50%)!important;outline:none!important;box-shadow:none!important;animation:none!important;background:transparent!important;border:0!important;z-index:40;touch-action:manipulation}
+#board.cardMode .weekdayHit,#board.dayJokerMode .weekdayHit{display:block!important}
+#board .weekdayHit{display:none}
+#board.qaObjectTest.inputLocked:not(.magicTargetMode) .magicHit{display:none!important}
+#board .magicHit{touch-action:manipulation}
+#board .trackHit,#board #startHit{width:10%;min-width:36px;min-height:36px}
+#board #startHit{z-index:40}
+#board .token{transition:left .24s ease,top .24s ease;}
+#board .token.activeGlow::after{pointer-events:none}
+#picnicFx{left:15.5%;top:49.5%;opacity:1;z-index:12}
+#picnicFx.show{z-index:46}
+#turnLabel{font-weight:800;font-size:18px;color:#30472a;text-align:center}
+#dicePanel{flex-wrap:wrap;justify-content:center}
+#diceBtn[hidden],#drawAdventure[hidden]{display:none!important}
+#drawAdventure,#scenarios button{border:0;border-radius:14px;padding:14px;background:#ffe195;color:#513c19;font-size:17px;font-weight:750;cursor:pointer}
+#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}
+#weekdayTestOverlay,#jokerTestOverlay,#footballTestOverlay,#moveTestOverlay{position:fixed!important;display:none!important}
+.testVersion #weekdayTestBtn,.testVersion #jokerTestBtn,.testVersion #footballTestBtn,.testVersion #moveTestBtn,.testVersion #testHint{display:block!important}
+.testVersion #weekdayTestOverlay.show,.testVersion #jokerTestOverlay.show,.testVersion #footballTestOverlay.show,.testVersion #moveTestOverlay.show{display:flex!important}
+#scenarios{display:grid;gap:8px}
+#testHint{grid-column:1/-1}
+.objectFeedback{position:absolute;transform:translate(-50%,-50%);pointer-events:none;z-index:48;background:#fffbe4;border-radius:50%;padding:8px;color:#60401c;font-weight:850;font-size:clamp(12px,2vw,25px);animation:feedback 1.2s ease both}
+@keyframes feedback{0%{opacity:0;transform:translate(-50%,0) scale(.5)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-85%)}}
+#cardDock{isolation:auto}
+#cardDock > div{transform-origin:50% 50%!important}
+@media(orientation:landscape) and (min-width:700px){#taskDock{overflow:visible;max-height:none}#app{align-content:start;align-items:start}#board{margin-top:8px}}
+@media(max-width:500px){#cardDock .question{font-size:22px!important}#cardDock{padding:6px}}
+
+#board:not(.cardMode):not(.dayJokerMode) .weekdayHit{display:none!important}
+#moveTestBtn{border:0;border-radius:14px;padding:10px;background:#dff4ff;font-weight:800;font-size:14px}
+</style><style>/* Gemeinsamer Picknickabschluss: große Speisen mit goldenem Schimmer. */
+#picnicFx .picnicItems{left:-60%;right:-60%;top:-5%;gap:6px;font-size:clamp(30px,4.5vw,62px);filter:drop-shadow(0 0 3px #ffdc65) drop-shadow(0 0 8px #ffd24a) drop-shadow(0 0 14px #fff0a0);}
+#picnicFx .picnicItems span{display:inline-block;}</style><style>#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}</style></head>
 <body>
 <div id="app">
   <div id="boardWrap">
     <div id="board" aria-label="Wochen-Spielbrett Freizeit und Abenteuer">
-      <div class="token" id="boy" aria-label="Junge"><div class="head"></div><div class="hair"></div><div class="eye e1"></div><div class="eye e2"></div><div class="smile"></div><div class="body"></div></div>
-      <div class="token" id="girl" aria-label="Mädchen"><div class="head"></div><div class="hair"></div><div class="eye e1"></div><div class="eye e2"></div><div class="smile"></div><div class="body"></div></div>
+      <div class="token" id="boy" aria-label="Blaue Spielfigur"><div class="head"></div><div class="hair"></div><div class="eye e1"></div><div class="eye e2"></div><div class="smile"></div><div class="body"></div></div>
+      <div class="token" id="girl" aria-label="Rote Spielfigur"><div class="head"></div><div class="hair"></div><div class="eye e1"></div><div class="eye e2"></div><div class="smile"></div><div class="body"></div></div>
       <div id="goalBurst" aria-hidden="true"></div>
       <div id="picnicFx" aria-hidden="true">
         <div class="basketLid"></div><div class="basketBase"></div>
@@ -726,6 +755,12 @@ document.getElementById('boardWrap').after(taskDock);
 </script>
 <script>
 (() => {
+  const TEST_MODE=false;
+  let epoch=0;
+  const timers=new Set(), intervals=new Set();
+  function later(callback,ms){const e=epoch; const id=window.setTimeout(()=>{timers.delete(id);if(e===epoch)callback();},ms);timers.add(id);return id;}
+  function repeat(callback,ms){const id=window.setInterval(callback,ms);intervals.add(id);return id;}
+
   const board=document.getElementById('board');
   const die=document.getElementById('die');
   const diceBtn=document.getElementById('diceBtn');
@@ -775,17 +810,13 @@ document.getElementById('boardWrap').after(taskDock);
   const tokens=[document.getElementById('boy'), document.getElementById('girl')];
 
   // Feldzentren orientieren sich an den sichtbaren Feldern des illustrierten Rundwegs.
-  const track=[
-    [14.0,26.0,'move'], [25.0,20.0,'Montag'], [34.0,20.0,'card'], [41.0,20.0,'football'], [51.0,22.0,'Dienstag'], [59.0,22.0,'move'], [67.0,22.0,'star'], [76.0,22.0,'Mittwoch'],
-    [83.0,32.0,'card'], [86.0,43.0,'football'], [86.0,54.0,'Donnerstag'], [86.0,65.0,'move'], [82.0,73.0,'star'], [74.0,78.0,'Freitag'], [63.0,83.0,'football'], [55.0,84.0,'card'],
-    [42.0,85.0,'Samstag'], [31.0,82.0,'move'], [26.0,74.0,'star'], [17.0,74.0,'Sonntag'], [8.0,66.0,'card'], [7.0,57.0,'move']
-  ];
+  const track=[[16.1,24.2,"move"],[25.9,17.6,"Montag"],[36.2,19.6,"card"],[43.3,21.2,"football"],[54.3,22.5,"Dienstag"],[63.8,22.6,"move"],[70.0,22.6,"star"],[79.7,23.6,"Mittwoch"],[87.7,32.5,"card"],[91.2,40.0,"football"],[92.5,51.7,"Donnerstag"],[92.6,62.9,"move"],[90.5,69.9,"star"],[80.5,77.4,"Freitag"],[67.7,81.8,"football"],[59.2,83.7,"card"],[47.1,82.3,"Samstag"],[34.4,79.0,"move"],[28.4,73.4,"star"],[17.9,70.5,"Sonntag"],[8.3,64.3,"card"],[7.0,57.0,"move"]];
   const dayIndex={Montag:1,Dienstag:4,Mittwoch:7,Donnerstag:10,Freitag:13,Samstag:16,Sonntag:19};
   const START_POS=-1;
   const startCenter=[7.5,29.5];
-  const players=[{pos:START_POS,finished:false,name:'Junge'},{pos:START_POS,finished:false,name:'Mädchen'}];
-  const goalCenter=[11.0,50.0];
-  const goalSlots=[[6.5,51.5],[16.0,51.5]];
+  const players=[{pos:START_POS,finished:false,name:'Blau'},{pos:START_POS,finished:false,name:'Rot'}];
+  const goalCenter=[16.3,49.2];
+  const goalSlots=[[7.9,48.7],[24.7,49.7]];
   let active=0, busy=false, waitingForCardTarget=false;
   let currentQuestion=null;
   let weekdayTestMode=false;
@@ -824,7 +855,7 @@ document.getElementById('boardWrap').after(taskDock);
     'Flattere wie ein Vogel.',
     'Wackle wie ein Pinguin.',
     'Mach drei Riesenschritte.',
-    'Geh drei Schritte rückwärts.',
+    'Steh auf und gehe selbst drei Schritte rückwärts.',
     'Klatsche einmal über dem Kopf.',
     'Dreh deinen Kopf nach links und rechts.'
   ];
@@ -900,12 +931,20 @@ document.getElementById('boardWrap').after(taskDock);
     }
     bags[player]=bag;
   }
-  function drawFromBag(bags, cards, eligible=()=>true){
-    // Im Ziel entfallen wie bisher Joker, die eine Figur versetzen würden.
-    bags[active]=bags[active].filter(index=>eligible(cards[index]));
-    if(bags[active].length===0) refillBag(bags,cards,active,eligible);
-    return cards[bags[active].pop()];
+  function drawFromBag(bags,cards,eligible=()=>true){
+    // Keep temporarily impossible cards for later in this personal deck.
+    if(!bags[active].length) refillBag(bags,cards);
+    let i=bags[active].findIndex(index=>eligible(cards[index]));
+    if(i<0){
+      // Every currently playable card has been used. Start a new playable cycle.
+      const deferred=bags[active].slice();
+      refillBag(bags,cards,active,eligible);
+      bags[active].push(...deferred.filter(index=>!bags[active].includes(index)));
+      i=bags[active].findIndex(index=>eligible(cards[index]));
+    }
+    return i<0 ? null : cards[bags[active].splice(i,1)[0]];
   }
+
   function nextQuestion(){ return drawFromBag(questionBag,weekdayQuestions); }
   function nextMoveCard(){ return drawFromBag(moveBag,movementCards); }
   function nextFootballQuestion(){ return drawFromBag(footballBag,footballQuestions); }
@@ -971,10 +1010,10 @@ document.getElementById('boardWrap').after(taskDock);
 
   function showToast(text,ms=1800){
     toast.textContent=text; toast.classList.add('show');
-    clearTimeout(showToast.timer); if(ms>0) showToast.timer=setTimeout(()=>toast.classList.remove('show'),ms);
+    clearTimeout(showToast.timer); if(ms>0) showToast.timer=later(()=>toast.classList.remove('show'),ms);
   }
   function sourcePosForCurrentField(){
-    const p=players[active].pos===START_POS ? startCenter : track[players[active].pos];
+    const p=players[active].finished ? goalSlots[active] : (players[active].pos===START_POS ? startCenter : track[players[active].pos]);
     return {x:p[0]+'%', y:p[1]+'%'};
   }
 
@@ -989,24 +1028,29 @@ document.getElementById('boardWrap').after(taskDock);
     return cardSoundPromise;
   }
   function flyInCard(card){
-    card.getAnimations().forEach(animation=>animation.cancel());
-    card.animate([
-      {transform:'translateY(180px) rotate(-12deg) scale(.85)',opacity:0},
-      {transform:'translateY(0) rotate(2deg) scale(1.02)',opacity:1,offset:.65},
-      {transform:'translateY(9px) rotate(-1deg) scale(.99)',opacity:1,offset:.82},
+    card.getAnimations().forEach(a=>a.cancel());
+    const rect=card.getBoundingClientRect(), b=board.getBoundingClientRect();
+    const p=players[active].finished?goalSlots[active]:(players[active].pos===START_POS?startCenter:track[players[active].pos]);
+    const x=b.left+b.width*p[0]/100-(rect.left+rect.width/2);
+    const y=b.top+b.height*p[1]/100-(rect.top+rect.height/2);
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    card.animate(reduced?[{opacity:0},{opacity:1}]:[
+      {transform:'translate('+x+'px,'+y+'px) rotate(-12deg) scale(.12)',opacity:0},
+      {transform:'translate('+x+'px,'+y+'px) rotate(-12deg) scale(.16)',opacity:1,offset:.08},
+      {transform:'rotate(2deg) scale(1.02)',opacity:1,offset:.72},
+      {transform:'translateY(7px) rotate(-1deg) scale(.99)',opacity:1,offset:.85},
       {transform:'none',opacity:1}
-    ],{duration:2000,easing:'cubic-bezier(.2,.7,.3,1)'});
-    const soundReady=primeCardSound();
+    ],{duration:reduced?120:850,easing:'ease-out'});
+    const e=epoch, ready=primeCardSound();
     clearTimeout(card._landingSoundTimer);
-    card._landingSoundTimer=setTimeout(()=>{
-      soundReady.then(buffer=>{
-        if(!buffer || !card.classList.contains('show')) return;
-        const c=ac(); if(!c) return;
-        const source=c.createBufferSource(); source.buffer=buffer;
-        source.connect(c.destination); source.start();
-      });
-    },600);
+    card._landingSoundTimer=later(()=>ready.then(buffer=>{
+      if(e!==epoch || !card.classList.contains('show'))return;
+      const c=ac();if(!c)return;
+      if(buffer){const source=c.createBufferSource();source.buffer=buffer;source.connect(c.destination);source.start();}
+      else tone(190,.09,'sine',.05,0,70);
+    }),reduced?80:612);
   }
+
   document.addEventListener('pointerdown',primeCardSound,{passive:true});
   document.addEventListener('touchstart',primeCardSound,{passive:true});
 
@@ -1030,7 +1074,7 @@ document.getElementById('boardWrap').after(taskDock);
   function closeWeekdayQuestion(afterClose){
     board.classList.remove('cardMode');
     questionCard.classList.remove('show');
-    setTimeout(()=>{
+    later(()=>{
       questionCard.style.display='none';
       questionCard.setAttribute('aria-hidden','true');
       questionCard.classList.remove('correct','shake');
@@ -1045,7 +1089,7 @@ document.getElementById('boardWrap').after(taskDock);
     moveText.textContent = forcedMove || nextMoveCard();
     moveCard.dataset.testMode = testMode ? '1' : '0';
     moveCard.setAttribute('aria-hidden','false');
-    board.classList.add('cardMode');
+    board.classList.remove('cardMode');
     waitingForMoveCard = true;
     moveCard.style.display='block';
     moveCard.classList.remove('show');
@@ -1056,7 +1100,7 @@ document.getElementById('boardWrap').after(taskDock);
   function closeMoveCard(afterClose){
     board.classList.remove('cardMode');
     moveCard.classList.remove('show');
-    setTimeout(()=>{
+    later(()=>{
       moveCard.style.display='none';
       moveCard.setAttribute('aria-hidden','true');
       if(afterClose) afterClose();
@@ -1083,7 +1127,7 @@ document.getElementById('boardWrap').after(taskDock);
     footballCard.style.setProperty('--fromY',source.y);
     footballText.textContent=forcedQuestion || nextFootballQuestion();
     footballCard.setAttribute('aria-hidden','false');
-    board.classList.add('cardMode');
+    board.classList.remove('cardMode');
     waitingForFootballCard=true;
     footballTestMode=testMode;
     footballCard.style.display='block';
@@ -1095,7 +1139,7 @@ document.getElementById('boardWrap').after(taskDock);
   function closeFootballCard(afterClose){
     board.classList.remove('cardMode');
     footballCard.classList.remove('show');
-    setTimeout(()=>{
+    later(()=>{
       footballCard.style.display='none';
       footballCard.setAttribute('aria-hidden','true');
       if(afterClose) afterClose();
@@ -1109,9 +1153,9 @@ document.getElementById('boardWrap').after(taskDock);
       if(footballTestMode){
         footballTestMode=false;
         busy=false;
-        setTimeout(showFootballTestPicker,120);
+        later(showFootballTestPicker,120);
       } else {
-        setTimeout(switchTurn,120);
+        later(switchTurn,120);
       }
     });
   }
@@ -1190,9 +1234,9 @@ document.getElementById('boardWrap').after(taskDock);
     playMagicSound(target);
     // Die Katze hat keinen sichtbaren Overlay-Effekt. Die Karte bleibt kurz offen,
     // damit das Miau auf iPad/Safari zuverlässig hörbar startet.
-    if(target==='dog'){ setTimeout(()=>{ if(done) done(); },900); return; }
-    if(target==='bottle'){ setTimeout(()=>{ if(done) done(); },900); return; }
-    if(target==='owl'){ setTimeout(()=>{ if(done) done(); },900); return; }
+    if(target==='dog'){ later(()=>{ if(done) done(); },900); return; }
+    if(target==='bottle'){ later(()=>{ if(done) done(); },900); return; }
+    if(target==='owl'){ later(()=>{ if(done) done(); },900); return; }
     const nodeMap={lamp:lampGlowFx, sun:cloudFx, ice:iceFx, bird:birdFx, girl:laughFx, frog:frogFx};
     const node=nodeMap[target];
     if(!node){ if(done) done(); return; }
@@ -1205,7 +1249,7 @@ document.getElementById('boardWrap').after(taskDock);
       weatherDimFx.classList.add('show');
     }
     const durations={sun:2050, bird:3380, girl:1750, frog:1750, lamp:1100, ice:1060};
-    setTimeout(()=>{
+    later(()=>{
       node.classList.remove('show');
       if(done) done();
     }, durations[target] || 1100);
@@ -1213,7 +1257,7 @@ document.getElementById('boardWrap').after(taskDock);
   function closeJokerCard(afterClose){
     board.classList.remove('jokerTargetMode','dayJokerMode','magicTargetMode');
     jokerCard.classList.remove('show');
-    setTimeout(()=>{
+    later(()=>{
       jokerCard.style.display='none';
       jokerCard.setAttribute('aria-hidden','true');
       jokerCard.classList.remove('shake','correct','targetMode','visualQuestion','frogQuestion');
@@ -1240,7 +1284,7 @@ document.getElementById('boardWrap').after(taskDock);
     });
   }
   function showJokerTestPicker(){
-    if(waitingForCardTarget || waitingForMoveCard || waitingForJoker || busy) return;
+    if(waitingForCardTarget || waitingForMoveCard || waitingForJoker || waitingForFootballCard || busy) return;
     buildJokerTestList();
     jokerTestOverlay.classList.add('show');
     jokerTestOverlay.setAttribute('aria-hidden','false');
@@ -1257,10 +1301,11 @@ document.getElementById('boardWrap').after(taskDock);
       inGoal:[tokens[0].classList.contains('inGoal'),tokens[1].classList.contains('inGoal')]
     };
     hideJokerTestPicker();
+    if(players[active].finished && ['day','relative'].includes(card.type)){players[active].finished=false;players[active].pos=START_POS;tokens[active].classList.remove('inGoal');renderAll();}
     // In der Testansicht muss eine Rückwärtskarte auch vom Start aus testbar sein.
     if(card.type==='relative' && card.delta<0 && players[active].pos + card.delta < START_POS){
       players[active].finished=false;
-      players[active].pos=Math.min(track.length-1, Math.abs(card.delta)+1);
+      players[active].pos=Math.min(track.length-1, START_POS+Math.abs(card.delta));
       tokens[active].classList.remove('inGoal');
       renderAll(); glowNext();
     }
@@ -1281,7 +1326,7 @@ document.getElementById('boardWrap').after(taskDock);
     closeJokerCard(()=>{
       currentJoker=null;
       restoreAfterJokerTest();
-      setTimeout(showJokerTestPicker,120);
+      later(showJokerTestPicker,120);
     });
   }
 
@@ -1365,7 +1410,7 @@ document.getElementById('boardWrap').after(taskDock);
   function soundGoal(){
     noise(.8,.05,0,1200);
     [392,494,587,784].forEach((f,i)=>tone(f,.32,'triangle',.055,i*.10,f*1.18));
-    setTimeout(()=>{ [660,784,990].forEach((f,i)=>tone(f,.28,'sine',.04,i*.06)); },420);
+    later(()=>{ [660,784,990].forEach((f,i)=>tone(f,.28,'sine',.04,i*.06)); },420);
   }
   // Joker-Töne v2: echte Aufnahmen, nur Würfel/Schritte bleiben synthetisch.
   // Quellen: Wikimedia Commons; die Testversion lädt die kurzen Natur-/Stimmaufnahmen online.
@@ -1457,27 +1502,7 @@ document.getElementById('boardWrap').after(taskDock);
     busy=false;
   }
 
-  async function moveByRoll(roll){
-    // Das Tor ist ein virtuelles Feld DIREKT hinter dem letzten Spielfeld.
-    // Jeder einzelne Würfelschritt wird geprüft. Sobald der nächste Schritt
-    // ins Tor führt, endet der Zug sofort dort; übrige Würfelpunkte verfallen.
-    for(let s=0; s<roll; s++){
-      await new Promise(r=>setTimeout(r,170));
-      soundHop();
-
-      const nextPos = players[active].pos + 1;
-      if(nextPos >= track.length){
-        players[active].finished = true;
-        moveToGoal(active);
-        placeToken(1-active,false);
-        return;
-      }
-
-      players[active].pos = nextPos;
-      placeToken(active,true);
-      placeToken(1-active,false);
-    }
-  }
+  async function moveByRoll(roll){await moveActiveToTrackIndex(Math.min(track.length,players[active].pos+roll));}
 
   function finishTurn(){
     if(players[0].finished && players[1].finished){
@@ -1487,15 +1512,15 @@ document.getElementById('boardWrap').after(taskDock);
       tokens.forEach(t=>t.classList.remove('activeGlow'));
       celebrateGoal();
       showToast('Beide sind am Picknicktisch!',1900);
-      setTimeout(()=>{
+      later(()=>{
         busy=false;
         winnerText.textContent='Geschafft! Jetzt wird gemeinsam gepicknickt.';
         winner.classList.add('show');
-      }, 2600);
+      }, 5600);
       return;
     }
     showToast('Geschafft! Du wartest am Picknicktisch.',1900);
-    setTimeout(switchTurn,1650);
+    later(switchTurn,1650);
   }
 
   function fieldMessage(type){
@@ -1508,7 +1533,7 @@ document.getElementById('boardWrap').after(taskDock);
   }
 
   async function roll(){
-    if(busy || waitingForCardTarget || waitingForMoveCard || waitingForJoker || waitingForFootballCard) return;
+    if(players.every(p=>p.finished) || busy || waitingForCardTarget || waitingForMoveCard || waitingForJoker || waitingForFootballCard) return;
     if(players[active].finished){
       busy=false;
       toast.classList.remove('show');
@@ -1520,8 +1545,8 @@ document.getElementById('boardWrap').after(taskDock);
     soundDice();
     die.classList.remove('roll'); void die.offsetWidth; die.classList.add('roll');
     let flashes=0;
-    const spin=setInterval(()=>setDie(1+Math.floor(Math.random()*6)),85);
-    await new Promise(r=>setTimeout(r,700)); clearInterval(spin); setDie(n);
+    const spin=repeat(()=>setDie(1+Math.floor(Math.random()*6)),85);
+    await new Promise(r=>later(r,700)); clearInterval(spin); setDie(n);
     await moveByRoll(n);
     if(players[active].finished){ finishTurn(); return; }
     const type=track[players[active].pos][2];
@@ -1551,23 +1576,10 @@ document.getElementById('boardWrap').after(taskDock);
       return;
     }
     if(msg) showToast(msg,1700);
-    setTimeout(switchTurn, msg?1500:500);
+    later(switchTurn, msg?1500:500);
   }
 
-  async function moveActiveToDay(day){
-    const target=dayIndex[day];
-    let cur=players[active].pos;
-    let forward=(target-cur+track.length)%track.length;
-    let backward=(cur-target+track.length)%track.length;
-    let dir=forward<=backward?1:-1, steps=Math.min(forward,backward);
-    for(let i=0;i<steps;i++){
-      await new Promise(r=>setTimeout(r,150));
-      players[active].pos=(players[active].pos+dir+track.length)%track.length;
-      placeToken(active,true); placeToken(1-active,false);
-    }
-    players[active].pos=target;
-    placeToken(active,true); placeToken(1-active,false);
-  }
+  async function moveActiveToDay(day){await moveActiveToTrackIndex(dayIndex[day]);}
 
   function markWrongAnswer(){
     questionCard.classList.remove('shake');
@@ -1588,18 +1600,18 @@ document.getElementById('boardWrap').after(taskDock);
     showToast('Richtig!',700);
     if(weekdayTestMode){
       waitingForCardTarget=false;
-      setTimeout(()=>closeWeekdayQuestion(()=>{
+      later(()=>closeWeekdayQuestion(()=>{
         currentQuestion=null;
         weekdayTestMode=false;
         busy=false;
-        setTimeout(showWeekdayTestPicker,120);
+        later(showWeekdayTestPicker,120);
       }),500);
       return;
     }
     await moveActiveToDay(day);
     closeWeekdayQuestion(()=>{
       currentQuestion = null;
-      setTimeout(switchTurn,120);
+      later(switchTurn,120);
     });
   }
 
@@ -1617,22 +1629,24 @@ document.getElementById('boardWrap').after(taskDock);
     return null;
   }
   async function moveActiveToTrackIndex(target){
-    const cur=players[active].pos;
-    const dir=target>=cur?1:-1;
-    const steps=Math.abs(target-cur);
-    for(let i=0;i<steps;i++){
-      await new Promise(r=>setTimeout(r,150));
-      soundHop();
-      players[active].pos += dir;
-      placeToken(active,true); placeToken(1-active,false);
+    const e=epoch, player=active;
+    target=Math.max(START_POS,Math.min(track.length,target));
+    const dir=target>=players[player].pos?1:-1;
+    while(players[player].pos!==target){
+      await new Promise(r=>later(r,260));
+      if(e!==epoch)return;
+      players[player].pos+=dir;soundHop();
+      if(players[player].pos===track.length){players[player].finished=true;moveToGoal(player);}
+      else placeToken(player,true);
+      placeToken(1-player,false);
     }
-    players[active].pos=target;
-    placeToken(active,true); placeToken(1-active,false);
   }
+
   function resolveJumpLanding(){
     // Die Aktion gehört noch zum Zug der gesprungenen Figur.
     busy=false;
     toast.classList.remove('show');
+    if(players[active].pos===START_POS){switchTurn();return;}
     const type=track[players[active].pos][2];
     if(type==='card'){ openWeekdayQuestion(); return; }
     if(type==='move'){ openMoveCard(); return; }
@@ -1648,22 +1662,20 @@ document.getElementById('boardWrap').after(taskDock);
     if(!right){ shakeJoker(); return; }
     busy=true; waitingForJoker=false; jokerCard.classList.add('correct');
     if(kind==='start'){
-      players[active].pos=START_POS;
-      placeToken(active,true); placeToken(1-active,false);
-      if(jokerTestMode){ setTimeout(endJokerTest,250); return; }
-      closeJokerCard(()=>{ currentJoker=null; setTimeout(switchTurn,120); });
+      await moveActiveToTrackIndex(START_POS);
+      if(jokerTestMode){ later(endJokerTest,250); return; }
+      closeJokerCard(()=>{ currentJoker=null; later(switchTurn,120); });
       return;
     }
     if(kind==='goal'){
-      players[active].finished=true;
-      moveToGoal(active); placeToken(1-active,false);
-      if(jokerTestMode){ setTimeout(endJokerTest,650); return; }
-      closeJokerCard(()=>{ currentJoker=null; setTimeout(()=>finishTurn(),120); });
+      await moveActiveToTrackIndex(track.length);
+      if(jokerTestMode){ later(endJokerTest,650); return; }
+      closeJokerCard(()=>{ currentJoker=null; later(()=>finishTurn(),120); });
       return;
     }
     await moveActiveToTrackIndex(index);
-    if(jokerTestMode){ setTimeout(endJokerTest,250); return; }
-    closeJokerCard(()=>{ currentJoker=null; setTimeout(resolveJumpLanding,120); });
+    if(jokerTestMode){ later(endJokerTest,250); return; }
+    closeJokerCard(()=>{ currentJoker=null; later(resolveJumpLanding,120); });
   }
 
   function selectMagicTarget(name){
@@ -1675,7 +1687,7 @@ document.getElementById('boardWrap').after(taskDock);
     busy=true; waitingForJoker=false; jokerCard.classList.remove('correct');
     playMagicEffect(name, ()=>{
       if(jokerTestMode){ endJokerTest(); return; }
-      closeJokerCard(()=>{ currentJoker=null; setTimeout(switchTurn,120); });
+      closeJokerCard(()=>{ currentJoker=null; later(switchTurn,120); });
     });
   }
   function finishJokerAction(){
@@ -1684,7 +1696,7 @@ document.getElementById('boardWrap').after(taskDock);
     if(currentJoker.text==='Was könnte der Hund als Nächstes machen?') soundDog();
     busy=true; waitingForJoker=false;
     if(jokerTestMode){ endJokerTest(); return; }
-    closeJokerCard(()=>{ currentJoker=null; setTimeout(switchTurn,120); });
+    closeJokerCard(()=>{ currentJoker=null; later(switchTurn,120); });
   }
 
   function finishMoveCard(){
@@ -1694,8 +1706,8 @@ document.getElementById('boardWrap').after(taskDock);
     waitingForMoveCard = false;
     closeMoveCard(()=>{
       moveCard.dataset.testMode='0';
-      if(isTest){ busy=false; setTimeout(showMoveTestPicker,120); }
-      else setTimeout(switchTurn,120);
+      if(isTest){ busy=false; later(showMoveTestPicker,120); }
+      else later(switchTurn,120);
     });
   }
 
@@ -1710,7 +1722,7 @@ document.getElementById('boardWrap').after(taskDock);
   trackHits.forEach(b=>b.addEventListener('click',()=>selectJokerTarget('track',+b.dataset.index)));
   goalHit.addEventListener('click',()=>selectJokerTarget('goal'));
   magicHits.forEach(b=>b.addEventListener('click',()=>{
-    if(!waitingForJoker){ playMagicEffect(b.dataset.magic); return; }
+    if(!waitingForJoker){ if(TEST_MODE && !busy && !waitingForCardTarget && !waitingForMoveCard && !waitingForFootballCard) playMagicEffect(b.dataset.magic); return; }
     selectMagicTarget(b.dataset.magic);
   }));
   moveCard.addEventListener('click', finishMoveCard);
@@ -1731,30 +1743,88 @@ document.getElementById('boardWrap').after(taskDock);
   diceBtn.addEventListener('pointerdown',primeGoalSound,{passive:true});
   diceBtn.addEventListener('touchstart',primeGoalSound,{passive:true});
   diceBtn.addEventListener('click',()=>{ primeGoalSound(); roll(); });
-  function restart(){
+  function restartBase(){
     resetCardBags();
     players[0].pos=START_POS; players[1].pos=START_POS; players[0].finished=false; players[1].finished=false; active=0; busy=false; waitingForCardTarget=false; waitingForMoveCard=false; waitingForJoker=false; waitingForFootballCard=false; weekdayTestMode=false; jokerTestMode=false; jokerTestSnapshot=null; footballTestMode=false;
     tokens.forEach(t=>t.classList.remove('inGoal'));
-    board.classList.remove('cardMode','jokerTargetMode','magicTargetMode'); board.classList.add('qaObjectTest'); moveTestOverlay.classList.remove('show'); moveTestOverlay.setAttribute('aria-hidden','true'); winner.classList.remove('show'); weekdayTestOverlay.classList.remove('show'); weekdayTestOverlay.setAttribute('aria-hidden','true'); jokerTestOverlay.classList.remove('show'); jokerTestOverlay.setAttribute('aria-hidden','true'); footballTestOverlay.classList.remove('show'); footballTestOverlay.setAttribute('aria-hidden','true'); toast.classList.remove('show'); questionCard.style.display='none'; questionCard.setAttribute('aria-hidden','true'); questionCard.classList.remove('show','correct','shake'); moveCard.style.display='none'; moveCard.setAttribute('aria-hidden','true'); moveCard.classList.remove('show'); footballCard.style.display='none'; footballCard.setAttribute('aria-hidden','true'); footballCard.classList.remove('show'); jokerCard.style.display='none'; jokerCard.setAttribute('aria-hidden','true'); jokerCard.classList.remove('show','correct','shake','targetMode','visualQuestion','frogQuestion'); clearJokerChoices(); clearMagicEffects(); picnicFx.classList.remove('show'); currentQuestion=null; currentJoker=null; setDie(1); renderAll(); glowNext();
+    board.classList.remove('cardMode','jokerTargetMode','dayJokerMode','magicTargetMode'); board.classList.toggle('qaObjectTest',TEST_MODE); moveTestOverlay.classList.remove('show'); moveTestOverlay.setAttribute('aria-hidden','true'); winner.classList.remove('show'); weekdayTestOverlay.classList.remove('show'); weekdayTestOverlay.setAttribute('aria-hidden','true'); jokerTestOverlay.classList.remove('show'); jokerTestOverlay.setAttribute('aria-hidden','true'); footballTestOverlay.classList.remove('show'); footballTestOverlay.setAttribute('aria-hidden','true'); toast.classList.remove('show'); questionCard.style.display='none'; questionCard.setAttribute('aria-hidden','true'); questionCard.classList.remove('show','correct','shake'); moveCard.style.display='none'; moveCard.setAttribute('aria-hidden','true'); moveCard.classList.remove('show'); footballCard.style.display='none'; footballCard.setAttribute('aria-hidden','true'); footballCard.classList.remove('show'); jokerCard.style.display='none'; jokerCard.setAttribute('aria-hidden','true'); jokerCard.classList.remove('show','correct','shake','targetMode','visualQuestion','frogQuestion'); clearJokerChoices(); clearMagicEffects(); picnicFx.classList.remove('show'); currentQuestion=null; currentJoker=null; setDie(1); renderAll(); glowNext();
   }
   function confirmRestart(){
     if(window.confirm('Wirklich neu starten?')) restart();
   }
   reset.addEventListener('click',confirmRestart); again.addEventListener('click',confirmRestart);
+  const drawAdventure=document.createElement('button');
+  drawAdventure.id='drawAdventure';drawAdventure.textContent='Abenteuerkarte ziehen';
+  diceBtn.after(drawAdventure);drawAdventure.addEventListener('click',roll);
+  const turnLabel=document.createElement('div');turnLabel.id='turnLabel';turnLabel.setAttribute('aria-live','polite');
+  document.getElementById('dicePanel').before(turnLabel);
+  function updateControls(){
+    const complete=players.every(p=>p.finished);
+    const waiting=players[active].finished&&!complete;
+    diceBtn.hidden=waiting||complete;drawAdventure.hidden=!waiting;
+    turnLabel.textContent=complete?'Gemeinsam geschafft!':players[active].name+(waiting?' wartet am Picknicktisch.':' ist dran.');
+    const locked=busy||waitingForCardTarget||waitingForMoveCard||waitingForFootballCard||waitingForJoker; if(board.classList.contains('inputLocked')!==locked) board.classList.toggle('inputLocked',locked);
+  }
+  const observer=new MutationObserver(updateControls);
+  observer.observe(board,{attributes:true,attributeFilter:['class'],subtree:true});
+  // Avoid observer loops: update the controls when token / board states change.
+  function restart(){
+    epoch++;timers.forEach(clearTimeout);intervals.forEach(clearInterval);timers.clear();intervals.clear();
+    document.querySelectorAll('#cardDock > div').forEach(c=>c.getAnimations().forEach(a=>a.cancel()));
+    document.querySelectorAll('.objectFeedback').forEach(n=>n.remove());
+    restartBase();updateControls();
+  }
+  // Each target uses image coordinates; all weekday areas stay visually neutral.
+  document.querySelectorAll('.weekdayHit').forEach(b=>{
+    const p=track[dayIndex[b.dataset.day]];
+    b.style.left=p[0]+'%';b.style.top=p[1]+'%';
+    b.style.width=(b.dataset.day==='Donnerstag'?14:19)+'%';b.style.height='15%';
+  });
+  const objectPositions={lamp:[3.7,44,7,18],sun:[37.2,5,10,10],ice:[38,41,16,22],bird:[84,42,9,12],girl:[53,48.5,12,20],owl:[86.4,15,9,13],frog:[53,69,10,11],dog:[20.5,58.5,13,16],bottle:[11.2,47.5,5,10]};
+  magicHits.forEach(b=>{const [x,y,w,h]=objectPositions[b.dataset.magic];Object.assign(b.style,{left:x+'%',top:y+'%',width:w+'%',height:h+'%'});});
+  const effects={lamp:lampGlowFx,sun:cloudFx,ice:iceFx,bird:birdFx,girl:laughFx,frog:frogFx};
+  Object.entries(effects).forEach(([key,node])=>{node.style.left=objectPositions[key][0]+'%';node.style.top=objectPositions[key][1]+'%';});
+  goalHit.style.left=goalCenter[0]+'%';goalHit.style.top=goalCenter[1]+'%';
+  // Nearest-centre input avoids overlapping circular hit areas stealing a tap.
+  board.addEventListener('click',event=>{
+    if(!waitingForJoker||busy||!currentJoker||currentJoker.type!=='relative')return;
+    const r=board.getBoundingClientRect();
+    const points=[{p:startCenter,kind:'start'},...track.map((p,index)=>({p,kind:'track',index})),{p:goalCenter,kind:'goal'}];
+    const nearest=points.map(v=>({...v,d:Math.hypot(event.clientX-r.left-r.width*v.p[0]/100,event.clientY-r.top-r.height*v.p[1]/100)})).sort((a,b)=>a.d-b.d)[0];
+    if(nearest.d>Math.max(25,r.width*.065))return;
+    event.stopImmediatePropagation();event.preventDefault();selectJokerTarget(nearest.kind,nearest.index);
+  },true);
+  const originalMagic=playMagicEffect;
+  playMagicEffect=function(target,done){
+    if(['owl','dog','bottle'].includes(target)){
+      const [x,y]=objectPositions[target],n=document.createElement('div');n.className='objectFeedback';
+      n.textContent={owl:'Huhu!',dog:'Wau wau!',bottle:'○ ◌ ○'}[target];
+      n.style.left=x+'%';n.style.top=(y-6)+'%';board.append(n);later(()=>n.remove(),1200);
+    }
+    originalMagic(target,done);
+  };
+  // Large test controls restore their modal display despite legacy hiding rules.
+  if(TEST_MODE){
+    const scenarios=document.createElement('div');scenarios.id='scenarios';
+    document.getElementById('taskDock').append(scenarios);
+    function scenario(label,run){const b=document.createElement('button');b.textContent=label;b.onclick=()=>{restart();run();renderAll();glowNext();updateControls();};scenarios.append(b);}
+    scenario('Rücksprung zum START',()=>{players[0].pos=1;openJokerCard(jokerCards[6]);});
+    scenario('Überwurf ins Ziel',()=>{players[0].pos=track.length-2;});
+    scenario('Eine Figur wartet',()=>{players[0].pos=track.length;players[0].finished=true;tokens[0].classList.add('inGoal');players[1].pos=track.length-2;});
+    scenario('Gemeinsames Picknick',()=>{players[0].pos=track.length;players[0].finished=true;tokens[0].classList.add('inGoal');players[1].pos=track.length-1;active=1;});
+    // Read/write hooks exist only in the dedicated test build.
+    window.gameTest={players,track,weekdayQuestions,movementCards,footballQuestions,jokerCards,questionBag,moveBag,footballBag,jokerBag,
+      restart,openJokerCard,openMoveCard,openWeekdayQuestion,openFootballCard,selectJokerTarget,answerWeekday,moveByRoll,finishTurn,nextJoker,randomMovementChoices,drawFromBag,
+      get active(){return active;},set active(v){active=v;glowNext();updateControls();},get busy(){return busy;},get currentJoker(){return currentJoker;},
+      state:()=>({active,busy,waitingForCardTarget,waitingForMoveCard,waitingForFootballCard,waitingForJoker,players:players.map(p=>({...p}))})};
+  }
+  updateControls();
+
+
   resetCardBags();
-  board.classList.add('qaObjectTest');
+  board.classList.toggle('qaObjectTest',TEST_MODE);
   renderAll(); glowNext();
 })();
 </script>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    Promise.resolve().catch(err => {
-      console.warn('Offline-Modus konnte nicht aktiviert werden:', err);
-    });
-  });
-}
-</script>
-<a href="index.html" style="position:fixed;left:10px;bottom:10px;z-index:99999;
-background:#fff;color:#26352d;text-decoration:none;font:800 15px Arial,sans-serif;
-padding:10px 14px;border-radius:999px;box-shadow:0 3px 12px #0004">← Hauptauswahl</a></body></html>
+
+</body></html>

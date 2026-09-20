@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v2';
+const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v3';
 
 // Nur die kleine App-Hülle wird bei der Installation zwingend geladen.
 // Die großen Spiele werden beim ersten Öffnen automatisch nachgespeichert.
