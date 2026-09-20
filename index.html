@@ -2,6 +2,9 @@
 <html lang="de"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lesen, entdecken, erzählen</title>
+<meta name="theme-color" content="#79d3ff">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <style>
 *{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Arial,system-ui,sans-serif;background:#111}
 body{display:flex;justify-content:center;align-items:flex-start}
@@ -60,4 +63,13 @@ const pages=[...document.querySelectorAll('.page')];
 function show(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo(0,0)}
 document.querySelectorAll('.hot').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.target)}));
 document.querySelectorAll('.back').forEach(b=>b.addEventListener('click',()=>show(b.dataset.target)));
-</script></body></html>
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.log('Service Worker:', err));
+  });
+}
+</script>
+
+</body></html>

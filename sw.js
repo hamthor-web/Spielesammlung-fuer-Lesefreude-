@@ -1,54 +1,48 @@
-const CACHE='lesespiele-gesamt-final';
-const ASSETS=[
-  './icon-192.png',
-  './icon-512.png',
-  './index.html',
-  './spiele/interaktiv/auswahl.html',
-  './assets/verrueckt-fehler.png',
-  './assets/verrueckt-fussball-appicon.png',
-  './assets/verrueckt-fussball-preview.png',
-  './assets/verrueckt-fussball.png',
-  './assets/verrueckt-fussball-icon.png',
-  './assets/geschichten-herbst.png',
-  './assets/geschichten-fussball.png',
-  './assets/wuerfeln-maerchen.png',
-  './assets/wuerfeln-sport.png',
-  './assets/wuerfeln-freizeit.png',
-  './assets/startmenue.png',
-  './assets/startbild-menue.png',
-  './manifest.webmanifest',
-  './paket.html',
-  './spiele/interaktiv/geschichten.html',
-  './spiele/interaktiv/icon-192.png',
-  './spiele/interaktiv/icon-512.png',
-  './spiele/verruecktes/auswahl.html',
-  './spiele/verruecktes/fehler/background.jpg',
-  './spiele/verruecktes/fehler/bling-bling-no.mp3',
-  './spiele/verruecktes/fehler/bling.mp3',
-  './spiele/verruecktes/fehler/icon-192.png',
-  './spiele/verruecktes/fehler/icon-512.png',
-  './spiele/verruecktes/fehler/index.html',
-  './spiele/verruecktes/fehler/manifest.webmanifest',
-  './spiele/verruecktes/fehler/sw.js',
-  './spiele/verruecktes/fussball/apple-touch-icon.png',
-  './spiele/verruecktes/fussball/background.jpg',
-  './spiele/verruecktes/fussball/bling-bling-no.mp3',
-  './spiele/verruecktes/fussball/bling.mp3',
-  './spiele/verruecktes/fussball/icon-192.png',
-  './spiele/verruecktes/fussball/icon-512.png',
-  './spiele/verruecktes/fussball/index.html',
-  './spiele/verruecktes/fussball/logo.png',
-  './spiele/verruecktes/fussball/manifest.webmanifest',
-  './spiele/verruecktes/fussball/sw.js',
-  './spiele/wuerfeln/auswahl.html',
-  './spiele/wuerfeln/freizeit.html',
-  './spiele/wuerfeln/freizeit.jpg',
-  './spiele/wuerfeln/maerchen.html',
-  './spiele/wuerfeln/maerchen.jpg',
-  './spiele/wuerfeln/sport.jpg',
-  './spiele/wuerfeln/wochentage.html',
-  './spieler.html'
+const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v1';
+
+const OFFLINE_FILES = [
+  "./",
+  "./index.html",
+  "./wuerfeln-freizeit.html",
+  "./wuerfeln-sport.html",
+  "./wuerfeln-maerchen.html",
+  "./geschichten.html",
+  "./verruecktes-fussball.html",
+  "./finde-den-fehler.html",
+  "./manifest.webmanifest",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
-self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});
-self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
-self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;event.respondWith(caches.match(event.request).then(hit=>hit||fetch(event.request).then(resp=>{const copy=resp.clone();caches.open(CACHE).then(c=>c.put(event.request,copy));return resp}).catch(()=>caches.match('./index.html'))))});
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(OFFLINE_FILES))
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys()
+      .then(names => Promise.all(
+        names.filter(name => name !== CACHE_NAME).map(name => caches.delete(name))
+      ))
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
+
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      if (cached) return cached;
+      return fetch(event.request).then(response => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+        return response;
+      });
+    })
+  );
+});
