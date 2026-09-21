@@ -8,41 +8,218 @@
 <title>Lesen, entdecken, erzählen</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Nunito,"Trebuchet MS",Arial,sans-serif;background:#79d3ff;color:#173c2a}
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:Nunito,"Trebuchet MS",Arial,sans-serif;
+  background:#76c947;
+  color:#173c2a
+}
 body{min-height:100dvh}
 .page{min-height:100dvh;display:none}
 .page.active{display:flex}
+
+/* STARTSEITE */
 #home{
-  align-items:flex-start;justify-content:center;
-  background:#7fca4d url("./start-hoch.webp") center top/cover no-repeat;
-  padding:max(110px,env(safe-area-inset-top)) 14px max(18px,env(safe-area-inset-bottom));
+  position:relative;
+  align-items:flex-start;
+  justify-content:center;
+  overflow:hidden;
+  background-color:#76c947;
+  background-image:url("./start-hoch.webp");
+  background-repeat:no-repeat;
+  background-position:center top;
+  background-size:100% auto;
+  padding:
+    calc(env(safe-area-inset-top) + clamp(145px,24vh,250px))
+    12px
+    max(18px,env(safe-area-inset-bottom));
 }
-.home-inner{width:min(94vw,760px);display:flex;flex-direction:column;align-items:center;gap:10px}
-.tiles{width:100%;display:flex;flex-direction:column;align-items:center;gap:9px}
-.tile{display:block;width:min(56vw,240px);max-width:86vw;border-radius:20px;overflow:hidden;box-shadow:0 10px 24px rgba(39,77,30,.24);text-decoration:none;background:transparent}
-.tile img{display:block;width:100%;height:auto}
-.tile:active{transform:scale(.985)}
+#home::after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0;
+  height:42%;
+  pointer-events:none;
+  background:linear-gradient(to bottom,rgba(118,201,71,0),rgba(118,201,71,.18) 20%,#76c947 100%);
+  z-index:0
+}
+.home-inner{
+  position:relative;
+  z-index:1;
+  width:min(94vw,760px);
+  display:flex;
+  flex-direction:column;
+  align-items:center
+}
+.tiles{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:clamp(8px,1.15vh,15px)
+}
+.tile{
+  display:block;
+  width:min(54vw,270px);
+  max-width:86vw;
+  aspect-ratio:1/1;
+  border-radius:clamp(20px,4vw,30px);
+  overflow:hidden;
+  box-shadow:
+    0 10px 25px rgba(36,73,28,.28),
+    0 2px 6px rgba(0,0,0,.15);
+  text-decoration:none;
+  background:rgba(255,255,255,.12);
+  transform:translateZ(0);
+  transition:transform .14s ease,box-shadow .14s ease
+}
+.tile img{
+  display:block;
+  width:106%;
+  height:106%;
+  margin:-3%;
+  object-fit:cover
+}
+.tile:active{
+  transform:scale(.985);
+  box-shadow:0 5px 14px rgba(39,77,30,.22)
+}
+.tile:focus-visible{
+  outline:5px solid rgba(255,255,255,.96);
+  outline-offset:4px
+}
+
+/* Im Hochformat wie in der neuen Vorlage:
+   Verrücktes – Geschichten – Würfeln */
+.tile.crazy{order:1}
+.tile.stories{order:2}
+.tile.dice{order:3}
+
+/* UNTERSEITEN */
 .subpage{
   flex-direction:column;
-  background:linear-gradient(rgba(255,255,255,.78),rgba(255,255,255,.88)),url("./start-hoch.webp") center/cover fixed;
+  background:
+    linear-gradient(rgba(255,255,255,.80),rgba(255,255,255,.90)),
+    url("./start-hoch.webp") center top/cover fixed
 }
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(12px + env(safe-area-inset-top)) 14px 12px;background:rgba(255,255,255,.95);box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:calc(12px + env(safe-area-inset-top)) 14px 12px;
+  background:rgba(255,255,255,.95);
+  box-shadow:0 2px 12px rgba(0,0,0,.08)
+}
 .top h1{margin:0;font-size:clamp(1.4rem,4vw,2rem)}
-.back{border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;background:#e8f3ea;color:#173c2a}
-.grid{width:min(94vw,850px);margin:24px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;padding-bottom:24px}
-.card{display:block;text-decoration:none;color:#173c2a;background:rgba(255,255,255,.96);border-radius:22px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.12);font-weight:800;font-size:1.05rem}
+.back{
+  border:0;
+  border-radius:999px;
+  padding:10px 14px;
+  font:inherit;
+  font-weight:800;
+  background:#e8f3ea;
+  color:#173c2a
+}
+.grid{
+  width:min(94vw,850px);
+  margin:24px auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:16px;
+  padding-bottom:24px
+}
+.card{
+  display:block;
+  text-decoration:none;
+  color:#173c2a;
+  background:rgba(255,255,255,.96);
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+  font-weight:800;
+  font-size:1.05rem
+}
 .card small{display:block;font-weight:600;opacity:.75;margin-top:4px}
-.loading{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(121,211,255,.96);z-index:9999}
+
+/* LADEANZEIGE FÜR DIE GROSSEN SPIELE */
+.loading{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(121,211,255,.96);
+  z-index:9999
+}
 .loading.show{display:flex}
-.loading-box{width:min(78vw,360px);background:white;border-radius:24px;padding:22px;box-shadow:0 12px 36px rgba(0,0,0,.18);text-align:center;font-weight:900}
-.bar{height:12px;background:#e7eef1;border-radius:999px;overflow:hidden;margin-top:14px}
-.bar span{display:block;height:100%;width:35%;background:#57ad42;border-radius:999px;animation:load 1s ease-in-out infinite}
-@keyframes load{0%{transform:translateX(-110%)}100%{transform:translateX(330%)}}
+.loading-box{
+  width:min(78vw,360px);
+  background:white;
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 12px 36px rgba(0,0,0,.18);
+  text-align:center;
+  font-weight:900
+}
+.bar{
+  height:12px;
+  background:#e7eef1;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:14px
+}
+.bar span{
+  display:block;
+  height:100%;
+  width:35%;
+  background:#57ad42;
+  border-radius:999px;
+  animation:load 1s ease-in-out infinite
+}
+@keyframes load{
+  0%{transform:translateX(-110%)}
+  100%{transform:translateX(330%)}
+}
+
+/* QUERFORMAT – breite Vorlage */
 @media (orientation:landscape){
-  #home{align-items:center;padding:22px}
-  .home-inner{width:min(96vw,1100px)}
-  .tiles{flex-direction:row;justify-content:center;gap:16px}
-  .tile{width:min(28vw,300px)}
+  #home{
+    align-items:center;
+    justify-content:center;
+    background-position:center top;
+    background-size:cover;
+    padding:
+      calc(env(safe-area-inset-top) + clamp(105px,19vh,180px))
+      max(24px,env(safe-area-inset-right))
+      max(18px,env(safe-area-inset-bottom))
+      max(24px,env(safe-area-inset-left))
+  }
+  #home::after{display:none}
+  .home-inner{width:min(93vw,1400px)}
+  .tiles{
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    gap:clamp(14px,2.2vw,34px)
+  }
+  .tile{
+    width:min(27vw,360px);
+    max-height:62vh;
+    border-radius:clamp(18px,2vw,28px)
+  }
+  .tile.dice{order:1}
+  .tile.stories{order:2}
+  .tile.crazy{order:3}
+}
+
+/* sehr niedrige Querdisplays */
+@media (orientation:landscape) and (max-height:540px){
+  #home{
+    padding-top:calc(env(safe-area-inset-top) + 82px)
+  }
+  .tile{width:min(25.5vw,245px)}
 }
 </style>
 </head>
@@ -50,9 +227,9 @@ body{min-height:100dvh}
 <section id="home" class="page active">
   <div class="home-inner">
     <div class="tiles">
-      <a class="tile" href="#dice"><img src="./kachel-wuerfeln.webp" alt="Würfeln – Würfeln, lesen und losspielen"></a>
-      <a class="tile" href="#stories"><img src="./kachel-geschichten.webp" alt="Interaktive Geschichten – Entdecken, lesen und erzählen"></a>
-      <a class="tile" href="#crazy"><img src="./kachel-verruecktes.webp" alt="Verrücktes – Suchen, staunen und Quatsch entdecken"></a>
+      <a class="tile dice" href="#dice"><img src="./kachel-wuerfeln.webp" alt="Würfeln – Würfeln, lesen und losspielen"></a>
+      <a class="tile stories" href="#stories"><img src="./kachel-geschichten.webp" alt="Interaktive Geschichten – Entdecken, lesen und erzählen"></a>
+      <a class="tile crazy" href="#crazy"><img src="./kachel-verruecktes.webp" alt="Verrücktes – Suchen, staunen und Quatsch entdecken"></a>
     </div>
   </div>
 </section>
@@ -82,7 +259,12 @@ body{min-height:100dvh}
   </div>
 </section>
 
-<div class="loading" id="loading"><div class="loading-box">Spiel wird geladen …<div class="bar"><span></span></div></div></div>
+<div class="loading" id="loading">
+  <div class="loading-box">
+    Spiel wird geladen …
+    <div class="bar"><span></span></div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -93,7 +275,8 @@ body{min-height:100dvh}
     scrollTo(0,0);
   }
   document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
-    e.preventDefault(); show(a.getAttribute('href').slice(1)||'home');
+    e.preventDefault();
+    show(a.getAttribute('href').slice(1)||'home');
   }));
   document.querySelectorAll('[data-home]').forEach(b=>b.addEventListener('click',()=>show('home')));
   document.querySelectorAll('.launch').forEach(a=>a.addEventListener('click',e=>{
