@@ -23,6 +23,7 @@
       '</div>';
 
     home.appendChild(mobile);
+    home.classList.add('responsive-ready');
 
     mobile.querySelectorAll('.mobile-tile').forEach(function(a){
       a.addEventListener('click',function(e){
