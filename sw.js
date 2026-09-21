@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v7';
+const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v8';
 
 const APP_SHELL = [
   './',
