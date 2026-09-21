@@ -1,13 +1,14 @@
-const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v3';
+const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v4';
 
-// Nur die kleine App-Hülle wird bei der Installation zwingend geladen.
-// Die großen Spiele werden beim ersten Öffnen automatisch nachgespeichert.
+// Kleine App-Hülle plus responsive Startseiten-Erweiterung.
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './responsive-home.css',
+  './responsive-home.js'
 ];
 
 self.addEventListener('install', event => {
@@ -28,8 +29,51 @@ self.addEventListener('activate', event => {
   );
 });
 
+async function addResponsiveHome(response) {
+  if (!response || !response.ok) return response;
+  const type = response.headers.get('content-type') || '';
+  if (!type.includes('text/html')) return response;
+
+  let html = await response.text();
+  if (!html.includes('responsive-home.css')) {
+    html = html.replace(
+      '</head>',
+      '<link rel="stylesheet" href="./responsive-home.css"></head>'
+    );
+  }
+  if (!html.includes('responsive-home.js')) {
+    html = html.replace(
+      '</body>',
+      '<script src="./responsive-home.js"></script></body>'
+    );
+  }
+
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  return new Response(html, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
+
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
+
+  const url = new URL(event.request.url);
+  const homeRequest =
+    event.request.mode === 'navigate' &&
+    (url.pathname.endsWith('/') || url.pathname.endsWith('/index.html'));
+
+  if (homeRequest) {
+    event.respondWith(
+      caches.match('./index.html')
+        .then(cached => cached || fetch(event.request))
+        .then(addResponsiveHome)
+        .catch(() => caches.match('./index.html').then(addResponsiveHome))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then(cached => {
@@ -43,7 +87,7 @@ self.addEventListener('fetch', event => {
         return response;
       }).catch(() => {
         if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
+          return caches.match('./index.html').then(addResponsiveHome);
         }
         return Response.error();
       });
