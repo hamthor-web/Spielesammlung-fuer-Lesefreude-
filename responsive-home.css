@@ -20,7 +20,7 @@
       center top / 100% 100% no-repeat!important;
   }
 
-  #home>.stage{display:none!important}
+  #home.responsive-ready>.stage{display:none!important}
 
   .mobile-home-responsive{
     display:flex!important;
