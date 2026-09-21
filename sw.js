@@ -1,13 +1,16 @@
-const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v8';
+const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v9';
 
 const APP_SHELL = [
-  './',
   './index.html',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
   './responsive-home.css',
-  './responsive-home.js'
+  './responsive-home.js',
+  './start-hoch.webp',
+  './kachel-wuerfeln.webp',
+  './kachel-geschichten.webp',
+  './kachel-verruecktes.webp'
 ];
 
 self.addEventListener('install', event => {
@@ -30,7 +33,6 @@ self.addEventListener('activate', event => {
 
 async function withResponsiveHome(response) {
   if (!response || !response.ok) return response;
-
   const type = response.headers.get('content-type') || '';
   if (!type.includes('text/html')) return response;
 
@@ -38,19 +40,13 @@ async function withResponsiveHome(response) {
     let html = await response.text();
 
     if (!html.includes('responsive-home.css')) {
-      if (/<\/head>/i.test(html)) {
-        html = html.replace(/<\/head>/i, '<link rel="stylesheet" href="./responsive-home.css"></head>');
-      } else {
-        html = '<link rel="stylesheet" href="./responsive-home.css">' + html;
-      }
+      html = html.replace(/<\/head>/i,
+        '<link rel="stylesheet" href="./responsive-home.css"></head>');
     }
 
     if (!html.includes('responsive-home.js')) {
-      if (/<\/body>/i.test(html)) {
-        html = html.replace(/<\/body>/i, '<script src="./responsive-home.js"></script></body>');
-      } else {
-        html += '<script src="./responsive-home.js"></script>';
-      }
+      html = html.replace(/<\/body>/i,
+        '<script src="./responsive-home.js"></script></body>');
     }
 
     const headers = new Headers(response.headers);
@@ -76,29 +72,20 @@ self.addEventListener('fetch', event => {
 
   if (isHomeNavigation) {
     event.respondWith(
-      (async () => {
-        let response;
+      caches.match('./index.html').then(cached => {
+        if (cached) return withResponsiveHome(cached.clone());
 
-        try {
-          response = await fetch(event.request, { cache: 'no-store' });
+        return fetch(event.request).then(async response => {
           if (response && response.ok) {
-            const copy = response.clone();
             const cache = await caches.open(CACHE_NAME);
-            await cache.put('./index.html', copy);
+            await cache.put('./index.html', response.clone());
           }
-        } catch (err) {
-          response = await caches.match('./index.html');
-        }
-
-        if (!response) {
-          return new Response('Startseite konnte nicht geladen werden.', {
-            status: 503,
-            headers: { 'content-type': 'text/plain; charset=utf-8' }
-          });
-        }
-
-        return withResponsiveHome(response);
-      })()
+          return withResponsiveHome(response);
+        }).catch(() => new Response('Startseite konnte nicht geladen werden.', {
+          status:503,
+          headers:{'content-type':'text/plain; charset=utf-8'}
+        }));
+      })
     );
     return;
   }
@@ -119,7 +106,7 @@ self.addEventListener('fetch', event => {
         return response;
       }).catch(() => {
         if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
+          return caches.match('./index.html').then(r => r ? withResponsiveHome(r.clone()) : Response.error());
         }
         return Response.error();
       });

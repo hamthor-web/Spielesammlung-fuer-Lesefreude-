@@ -1,31 +1,24 @@
-// Responsive Startseite v3 – nutzt nur das bereits eingebettete Startbild
+// Responsive Startseite v4 – lokale Einzelbilder, keine Bildausschnitte
 (function(){
   function init(){
     var home=document.getElementById('home');
-    var stage=home && home.querySelector('.stage');
-    var source=stage && stage.querySelector('img');
-    if(!home || !stage || !source || home.querySelector('.mobile-home-responsive')) return;
-
-    var src=source.getAttribute('src');
-    if(!src) return;
+    if(!home || home.querySelector('.mobile-home-responsive')) return;
 
     var mobile=document.createElement('div');
     mobile.className='mobile-home-responsive';
     mobile.setAttribute('aria-label','Spielauswahl');
-
-    function crop(kind,label,target){
-      return '<a class="mobile-tile crop-'+kind+'" href="#" data-target="'+target+'" aria-label="'+label+'">'+
-               '<span class="mobile-crop"><img src="'+src+'" alt=""></span>'+
-             '</a>';
-    }
-
     mobile.innerHTML=
       '<div class="mobile-home-inner">'+
-        '<div class="mobile-header-crop"><img src="'+src+'" alt="Lesen, entdecken, erzählen"></div>'+
         '<div class="mobile-tiles">'+
-          crop('w','Würfelpaket öffnen','dice')+
-          crop('g','Geschichtenpaket öffnen','stories')+
-          crop('v','Verrückte Spiele öffnen','crazy')+
+          '<a class="mobile-tile" href="#" data-target="dice" aria-label="Würfelpaket öffnen">'+
+            '<img src="./kachel-wuerfeln.webp" alt="Würfeln – Würfeln, lesen und losspielen">'+
+          '</a>'+
+          '<a class="mobile-tile" href="#" data-target="stories" aria-label="Geschichtenpaket öffnen">'+
+            '<img src="./kachel-geschichten.webp" alt="Interaktive Geschichten – Entdecken, lesen und erzählen">'+
+          '</a>'+
+          '<a class="mobile-tile" href="#" data-target="crazy" aria-label="Verrückte Spiele öffnen">'+
+            '<img src="./kachel-verruecktes.webp" alt="Verrücktes – Suchen, staunen und Quatsch entdecken">'+
+          '</a>'+
         '</div>'+
       '</div>';
 

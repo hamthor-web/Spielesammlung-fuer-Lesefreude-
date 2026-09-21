@@ -1,13 +1,16 @@
-/* Responsive Startseite v3 – Hochformat aus dem eingebetteten Originalbild */
+/* Responsive Startseite v4 – echte Kacheln auf Hochformat-Hintergrund */
 .mobile-home-responsive{display:none}
 
 @media (orientation:portrait){
-  html,body{min-height:100%;background:#f4f1e7!important}
+  html,body{
+    min-height:100%;
+    margin:0;
+    background:#7fca4d!important;
+  }
 
   body{
     align-items:stretch!important;
-    background:
-      linear-gradient(180deg,#79d3ff 0%,#bfe9ff 16%,#eef8dd 38%,#f4f1e7 100%)!important;
+    background:#7fca4d!important;
   }
 
   .app{
@@ -18,47 +21,31 @@
 
   #home{
     min-height:100dvh!important;
-    background:transparent!important;
+    background:#7fca4d url("./start-hoch.webp") center top / 100% auto no-repeat!important;
   }
 
   #home>.stage{display:none!important}
 
   .mobile-home-responsive{
     display:flex!important;
+    box-sizing:border-box;
     min-height:100dvh;
     width:100%;
     justify-content:center;
     align-items:flex-start;
-    padding:max(10px,env(safe-area-inset-top)) 12px max(18px,env(safe-area-inset-bottom));
+    padding:
+      clamp(118px,27vw,205px)
+      12px
+      max(18px,env(safe-area-inset-bottom));
     overflow-y:auto;
     -webkit-overflow-scrolling:touch;
   }
 
   .mobile-home-inner{
-    width:min(94vw,700px);
+    width:100%;
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:clamp(12px,1.8dvh,22px);
-    margin:auto 0;
-  }
-
-  .mobile-header-crop{
-    position:relative;
-    width:100%;
-    aspect-ratio:1536/225;
-    overflow:hidden;
-    border-radius:18px;
-    box-shadow:0 7px 20px rgba(42,84,44,.16);
-    background:#79d3ff;
-  }
-
-  .mobile-header-crop img{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:auto;
-    display:block;
   }
 
   .mobile-tiles{
@@ -66,69 +53,48 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:clamp(10px,1.5dvh,18px);
+    gap:clamp(9px,1.3dvh,16px);
   }
 
   .mobile-tile{
     display:block;
-    width:min(64vw,340px);
-    aspect-ratio:0.804;
+    width:min(58vw,290px);
+    max-width:86vw;
     border-radius:clamp(18px,3vw,28px);
     overflow:hidden;
-    box-shadow:0 10px 24px rgba(41,77,31,.22);
-    background:#fff;
+    box-shadow:0 10px 24px rgba(39,77,30,.24);
+    background:transparent;
     text-decoration:none;
     transition:transform .14s ease,box-shadow .14s ease;
   }
 
-  .mobile-crop{
-    position:relative;
+  .mobile-tile img{
     display:block;
     width:100%;
-    height:100%;
-    overflow:hidden;
-  }
-
-  .mobile-crop img{
-    position:absolute;
-    display:block;
-    width:331.13%;
-    max-width:none;
     height:auto;
-    top:-37.1%;
   }
-
-  .crop-w .mobile-crop img{left:-13.91%}
-  .crop-g .mobile-crop img{left:-117.88%}
-  .crop-v .mobile-crop img{left:-222.19%}
 
   .mobile-tile:active{
     transform:scale(.985);
-    box-shadow:0 5px 14px rgba(41,77,31,.20)
+    box-shadow:0 5px 14px rgba(39,77,30,.2);
   }
 
   .mobile-tile:focus-visible{
     outline:5px solid rgba(255,255,255,.96);
-    outline-offset:4px
+    outline-offset:4px;
   }
 }
 
 @media (max-width:480px) and (orientation:portrait){
-  .mobile-home-inner{
-    width:min(94vw,430px);
-    gap:10px;
-  }
-
-  .mobile-header-crop{
-    border-radius:14px;
+  .mobile-home-responsive{
+    padding-top:clamp(108px,25vw,150px);
   }
 
   .mobile-tile{
-    width:min(58vw,245px);
-    border-radius:18px;
+    width:min(56vw,230px);
   }
 
-  .mobile-tiles{gap:9px}
+  .mobile-tiles{gap:8px}
 }
 
 @media (orientation:landscape){
