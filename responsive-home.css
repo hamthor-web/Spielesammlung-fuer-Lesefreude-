@@ -1,40 +1,98 @@
-/* Responsive Startseite v1 */
+/* Responsive Startseite v2 – Hochformat für Handy + Tablet */
 .mobile-home-responsive{display:none}
-.home-crop{position:relative;overflow:hidden}
-.home-crop>img{position:absolute;max-width:none;height:auto;pointer-events:none;user-select:none;-webkit-user-drag:none}
-@media(max-width:760px) and (orientation:portrait){
-  body{align-items:stretch!important;background:#eef6df!important}
-  .app{width:100%!important;min-height:100dvh;background:#eef6df!important}
-  #home{min-height:100dvh}
+
+@media (orientation:portrait){
+  body{
+    align-items:stretch!important;
+    background:#8acb50!important;
+  }
+
+  .app{
+    width:100%!important;
+    min-height:100dvh!important;
+    background:transparent!important;
+  }
+
+  #home{
+    min-height:100dvh!important;
+    background:
+      url("https://hamthor-web.github.io/Lesen-entdecken-erzaehlen/start-hoch.webp")
+      center top / 100% 100% no-repeat!important;
+  }
+
   #home>.stage{display:none!important}
+
   .mobile-home-responsive{
-    display:flex;
+    display:flex!important;
     min-height:100dvh;
+    width:100%;
     justify-content:center;
     align-items:flex-start;
-    padding:max(18px,env(safe-area-inset-top)) 14px max(26px,env(safe-area-inset-bottom));
-    background:
-      radial-gradient(circle at 13% 8%,rgba(255,224,62,.95) 0 4.5%,rgba(255,224,62,.18) 4.8% 7%,transparent 7.3%),
-      linear-gradient(180deg,#79d3ff 0 20%,#b9e575 41%,#74bd42 100%);
-    overflow:auto;
+    padding:
+      clamp(205px,20dvh,285px)
+      10px
+      max(14px,env(safe-area-inset-bottom));
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
   }
-  .mobile-home-inner{width:100%;max-width:430px;display:flex;flex-direction:column;align-items:center;gap:14px}
-  .mobile-banner{width:min(94vw,410px);border-radius:18px;filter:drop-shadow(0 6px 8px rgba(0,0,0,.16))}
-  .mobile-tiles{width:100%;display:flex;flex-direction:column;align-items:center;gap:14px}
+
+  .mobile-home-inner{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .mobile-tiles{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:clamp(8px,1.1dvh,14px);
+  }
+
   .mobile-tile{
     display:block;
-    width:min(76vw,300px);
-    border-radius:24px;
-    box-shadow:0 10px 24px rgba(41,77,31,.24);
-    background:#fff;
+    width:clamp(185px,43vw,330px);
+    max-width:82vw;
+    border-radius:clamp(15px,2.7vw,25px);
+    overflow:hidden;
+    box-shadow:0 10px 24px rgba(41,77,31,.22);
+    background:transparent;
     text-decoration:none;
-    transform:translateZ(0);
     transition:transform .14s ease,box-shadow .14s ease;
   }
-  .mobile-tile:active{transform:scale(.985);box-shadow:0 5px 14px rgba(41,77,31,.22)}
-  .mobile-tile:focus-visible{outline:5px solid rgba(255,255,255,.96);outline-offset:4px}
+
+  .mobile-tile img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+
+  .mobile-tile:active{
+    transform:scale(.985);
+    box-shadow:0 5px 14px rgba(41,77,31,.2)
+  }
+
+  .mobile-tile:focus-visible{
+    outline:5px solid rgba(255,255,255,.96);
+    outline-offset:4px
+  }
 }
-@media(max-width:760px) and (orientation:landscape){
+
+@media (max-width:480px) and (orientation:portrait){
+  .mobile-home-responsive{
+    padding-top:clamp(185px,22dvh,235px);
+  }
+  .mobile-tile{
+    width:clamp(170px,50vw,220px);
+  }
+  .mobile-tiles{
+    gap:clamp(7px,1dvh,11px);
+  }
+}
+
+@media (orientation:landscape){
   #home>.stage{display:block!important}
   .mobile-home-responsive{display:none!important}
 }
