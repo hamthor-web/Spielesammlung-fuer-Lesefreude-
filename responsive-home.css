@@ -1,10 +1,13 @@
-/* Responsive Startseite v2 – Hochformat für Handy + Tablet */
+/* Responsive Startseite v3 – Hochformat aus dem eingebetteten Originalbild */
 .mobile-home-responsive{display:none}
 
 @media (orientation:portrait){
+  html,body{min-height:100%;background:#f4f1e7!important}
+
   body{
     align-items:stretch!important;
-    background:#8acb50!important;
+    background:
+      linear-gradient(180deg,#79d3ff 0%,#bfe9ff 16%,#eef8dd 38%,#f4f1e7 100%)!important;
   }
 
   .app{
@@ -15,12 +18,10 @@
 
   #home{
     min-height:100dvh!important;
-    background:
-      url("https://hamthor-web.github.io/Lesen-entdecken-erzaehlen/start-hoch.webp")
-      center top / 100% 100% no-repeat!important;
+    background:transparent!important;
   }
 
-  #home.responsive-ready>.stage{display:none!important}
+  #home>.stage{display:none!important}
 
   .mobile-home-responsive{
     display:flex!important;
@@ -28,19 +29,36 @@
     width:100%;
     justify-content:center;
     align-items:flex-start;
-    padding:
-      clamp(205px,20dvh,285px)
-      10px
-      max(14px,env(safe-area-inset-bottom));
+    padding:max(10px,env(safe-area-inset-top)) 12px max(18px,env(safe-area-inset-bottom));
     overflow-y:auto;
     -webkit-overflow-scrolling:touch;
   }
 
   .mobile-home-inner{
-    width:100%;
+    width:min(94vw,700px);
     display:flex;
     flex-direction:column;
     align-items:center;
+    gap:clamp(12px,1.8dvh,22px);
+    margin:auto 0;
+  }
+
+  .mobile-header-crop{
+    position:relative;
+    width:100%;
+    aspect-ratio:1536/225;
+    overflow:hidden;
+    border-radius:18px;
+    box-shadow:0 7px 20px rgba(42,84,44,.16);
+    background:#79d3ff;
+  }
+
+  .mobile-header-crop img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:auto;
+    display:block;
   }
 
   .mobile-tiles{
@@ -48,30 +66,45 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:clamp(8px,1.1dvh,14px);
+    gap:clamp(10px,1.5dvh,18px);
   }
 
   .mobile-tile{
     display:block;
-    width:clamp(185px,43vw,330px);
-    max-width:82vw;
-    border-radius:clamp(15px,2.7vw,25px);
+    width:min(64vw,340px);
+    aspect-ratio:0.804;
+    border-radius:clamp(18px,3vw,28px);
     overflow:hidden;
     box-shadow:0 10px 24px rgba(41,77,31,.22);
-    background:transparent;
+    background:#fff;
     text-decoration:none;
     transition:transform .14s ease,box-shadow .14s ease;
   }
 
-  .mobile-tile img{
+  .mobile-crop{
+    position:relative;
     display:block;
     width:100%;
-    height:auto;
+    height:100%;
+    overflow:hidden;
   }
+
+  .mobile-crop img{
+    position:absolute;
+    display:block;
+    width:331.13%;
+    max-width:none;
+    height:auto;
+    top:-37.1%;
+  }
+
+  .crop-w .mobile-crop img{left:-13.91%}
+  .crop-g .mobile-crop img{left:-117.88%}
+  .crop-v .mobile-crop img{left:-222.19%}
 
   .mobile-tile:active{
     transform:scale(.985);
-    box-shadow:0 5px 14px rgba(41,77,31,.2)
+    box-shadow:0 5px 14px rgba(41,77,31,.20)
   }
 
   .mobile-tile:focus-visible{
@@ -81,15 +114,21 @@
 }
 
 @media (max-width:480px) and (orientation:portrait){
-  .mobile-home-responsive{
-    padding-top:clamp(185px,22dvh,235px);
+  .mobile-home-inner{
+    width:min(94vw,430px);
+    gap:10px;
   }
+
+  .mobile-header-crop{
+    border-radius:14px;
+  }
+
   .mobile-tile{
-    width:clamp(170px,50vw,220px);
+    width:min(58vw,245px);
+    border-radius:18px;
   }
-  .mobile-tiles{
-    gap:clamp(7px,1dvh,11px);
-  }
+
+  .mobile-tiles{gap:9px}
 }
 
 @media (orientation:landscape){
