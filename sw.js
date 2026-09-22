@@ -1,61 +1,37 @@
-const CACHE_NAME = 'lesen-entdecken-erzaehlen-offline-v11';
+const CACHE_NAME='lesen-entdecken-erzaehlen-v12';
+const APP_SHELL=['./','./index.html','./spieler.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./start-hoch.webp','./kachel-wuerfeln.webp','./kachel-geschichten.webp','./kachel-verruecktes.webp'];
 
-const APP_SHELL = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icon-192.png',
-  './icon-512.png',
-  './start-hoch.webp',
-  './kachel-wuerfeln.webp',
-  './kachel-geschichten.webp',
-  './kachel-verruecktes.webp'
-];
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_SHELL))
-      .then(() => self.skipWaiting())
-  );
+self.addEventListener('install',event=>{
+ event.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(APP_SHELL)).then(()=>self.skipWaiting()));
 });
-
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys()
-      .then(names => Promise.all(
-        names.filter(name => name !== CACHE_NAME).map(name => caches.delete(name))
-      ))
-      .then(() => self.clients.claim())
-  );
+self.addEventListener('activate',event=>{
+ event.waitUntil(caches.keys().then(names=>Promise.all(names.filter(n=>n!==CACHE_NAME).map(n=>caches.delete(n)))).then(()=>self.clients.claim()));
 });
+self.addEventListener('fetch',event=>{
+ if(event.request.method!=='GET') return;
+ const u=new URL(event.request.url);
+ if(u.origin!==self.location.origin) return;
 
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
+ if(event.request.mode==='navigate'){
+   event.respondWith(
+     fetch(event.request).then(r=>{
+       if(r&&r.ok){const copy=r.clone();caches.open(CACHE_NAME).then(c=>c.put(event.request,copy))}
+       return r
+     }).catch(()=>caches.match(event.request).then(r=>r||caches.match('./index.html')))
+   );
+   return;
+ }
 
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      const network = fetch(event.request).then(response => {
-        if (
-          response &&
-          response.ok &&
-          new URL(event.request.url).origin === self.location.origin
-        ) {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-        }
-        return response;
-      });
-
-      if (cached) {
-        network.catch(()=>{});
-        return cached;
-      }
-
-      return network.catch(() => {
-        if (event.request.mode === 'navigate') return caches.match('./index.html');
-        return Response.error();
-      });
-    })
-  );
+ event.respondWith(
+   caches.match(event.request).then(cached=>{
+     if(cached){
+       fetch(event.request).then(r=>{if(r&&r.ok)caches.open(CACHE_NAME).then(c=>c.put(event.request,r.clone()))}).catch(()=>{});
+       return cached;
+     }
+     return fetch(event.request).then(r=>{
+       if(r&&r.ok){const copy=r.clone();caches.open(CACHE_NAME).then(c=>c.put(event.request,copy))}
+       return r
+     });
+   })
+ );
 });
