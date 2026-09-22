@@ -1,8 +1,11 @@
-const CACHE_NAME='lesen-entdecken-erzaehlen-v15';
+const CACHE_NAME='lesen-entdecken-erzaehlen-v16';
 const APP_SHELL=[
   './','./index.html','./spieler.html','./manifest.webmanifest',
   './icon-192.png','./icon-512.png',
-  './start-hoch.avif','./previews.avif',
+  './start-wiese.png',
+  './finde-den-fehler.png','./freizeit-und-abenteuer.png','./sport-und-spiel.png',
+  './maerchen-und-zauber.png','./im-herbstpark.png','./auf-dem-fussballplatz.png',
+  './das-verrueckte-fussballspiel.png',
   './kachel-wuerfeln.webp','./kachel-geschichten.webp','./kachel-verruecktes.webp'
 ];
 
