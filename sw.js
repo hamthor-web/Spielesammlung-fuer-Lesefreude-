@@ -1,5 +1,10 @@
-const CACHE_NAME='lesen-entdecken-erzaehlen-v12';
-const APP_SHELL=['./','./index.html','./spieler.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./start-hoch.webp','./kachel-wuerfeln.webp','./kachel-geschichten.webp','./kachel-verruecktes.webp'];
+const CACHE_NAME='lesen-entdecken-erzaehlen-v13';
+const APP_SHELL=[
+  './','./index.html','./spieler.html','./manifest.webmanifest',
+  './icon-192.png','./icon-512.png',
+  './start-hoch.avif','./previews.avif',
+  './kachel-wuerfeln.webp','./kachel-geschichten.webp','./kachel-verruecktes.webp'
+];
 
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(APP_SHELL)).then(()=>self.skipWaiting()));
