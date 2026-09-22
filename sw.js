@@ -1,8 +1,8 @@
-const CACHE_NAME='lesen-entdecken-erzaehlen-v14';
+const CACHE_NAME='lesen-entdecken-erzaehlen-v15';
 const APP_SHELL=[
   './','./index.html','./spieler.html','./manifest.webmanifest',
   './icon-192.png','./icon-512.png',
-  './start-hoch-sharp.webp','./previews-sharp.webp',
+  './start-hoch.avif','./previews.avif',
   './kachel-wuerfeln.webp','./kachel-geschichten.webp','./kachel-verruecktes.webp'
 ];
 
