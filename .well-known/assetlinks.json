@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "de.heikeamthor.lesenentdeckenerzaehlen",
+      "sha256_cert_fingerprints": [
+        "EA:14:AD:75:C7:EF:FE:A8:42:B6:E8:BF:9F:FF:61:DF:38:63:DC:56:AC:2C:1D:F6:0A:68:89:14:8F:0E:E7:0C"
+      ]
+    }
+  }
+]
