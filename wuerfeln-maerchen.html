@@ -637,7 +637,7 @@ body { display:block; background:#e6edcf; }
 #trophySlot{height:auto;min-height:120px}
 .finalTrophy.chestArtwork{width:min(300px,48vw,38vh);height:min(300px,48vw,38vh);object-fit:contain;filter:drop-shadow(0 0 9px #ffe08a)}
 #winnerCard{max-height:95dvh;overflow:auto}
-</style><style>#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}</style></head>
+</style><style>#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}</style><style>#reset{display:none!important}</style></head>
 <body>
 <div id="app">
   <div id="boardWrap">
@@ -782,6 +782,26 @@ const cardDock=document.createElement('div'); cardDock.id='cardDock';
 taskDock.append(document.getElementById('dicePanel'),cardDock);
 document.getElementById('boardWrap').after(taskDock);
 ['questionCard','moveCard','footballCard','jokerCard'].forEach(id=>cardDock.append(document.getElementById(id)));
+</script>
+<script>/* Lokale Profile und getrennte Spielstände für Geschichten und Würfelspiele. */
+(function () {
+  const KEY='lesespiele-profile-v1', ACTIVE='lesespiele-active-v1';
+  const style=document.createElement('style');style.textContent=`.profile-overlay{position:fixed;inset:0;z-index:100000;background:#173c2add;display:grid;place-items:center;padding:16px}.profile-panel{width:min(430px,100%);max-height:90dvh;overflow:auto;background:#fffdf0;color:#173c2a;padding:24px;border-radius:24px;box-shadow:0 14px 40px #0006;font:inherit}.profile-panel h2{margin:0}.profile-panel .profile-list{display:grid;gap:9px;margin:16px 0}.profile-panel button{font:inherit;font-weight:800;border:2px solid #6f9f6b;border-radius:14px;background:#eaf6e7;padding:12px;cursor:pointer}.profile-panel form{border-top:1px solid #9dbb98;padding-top:16px;display:grid;gap:12px}.profile-panel label{display:grid;gap:6px}.profile-panel input{font:inherit;padding:12px;border:2px solid #7e9f7a;border-radius:12px;width:100%}.profile-error{color:#9d2828}`;document.head.append(style);
+  function read(){try{const x=JSON.parse(localStorage.getItem(KEY));return Array.isArray(x)?x:[]}catch{return []}}
+  function list(){return read()}
+  function active(){const id=localStorage.getItem(ACTIVE);return read().find(p=>p.id===id)||null}
+  function select(id){if(!read().some(p=>p.id===id))return false;localStorage.setItem(ACTIVE,id);dispatchEvent(new Event('lesespiele-profile-change'));return true}
+  function create(name){name=String(name||'').trim().slice(0,32);if(!name)throw Error('Bitte einen Namen eingeben.');let all=read();if(all.some(p=>p.name.toLocaleLowerCase('de')===name.toLocaleLowerCase('de')))throw Error('Diesen Namen gibt es schon.');const p={id:crypto.randomUUID(),name};all.push(p);localStorage.setItem(KEY,JSON.stringify(all));select(p.id);return p}
+  function gameKey(profile,game){return `lesespiele-v1:${profile.id}:${game}`}
+  function remove(id){const all=read();if(!all.some(p=>p.id===id))return;for(let i=localStorage.length-1;i>=0;i--){const key=localStorage.key(i);if(key.startsWith(`lesespiele-v1:${id}:`))localStorage.removeItem(key)}localStorage.setItem(KEY,JSON.stringify(all.filter(p=>p.id!==id)));if(localStorage.getItem(ACTIVE)===id)localStorage.removeItem(ACTIVE);dispatchEvent(new Event('lesespiele-profile-change'))}
+  function choose(){return new Promise(resolve=>{
+    const overlay=document.createElement('div');overlay.className='profile-overlay';overlay.innerHTML='<div class="profile-panel" role="dialog" aria-modal="true" aria-labelledby="profile-heading"><h2 id="profile-heading">Wer spielt heute?</h2><p>Jedes Kind hat hier seinen eigenen Spielstand auf diesem Gerät.</p><div class="profile-list"></div><form class="profile-create"><label>Neues Profil <input name="name" maxlength="32" autocomplete="off" placeholder="Name des Kindes" required></label><button>Profil anlegen</button></form><p class="profile-error" role="alert"></p></div>';
+    document.body.append(overlay);const listEl=overlay.querySelector('.profile-list');
+    function render(){listEl.replaceChildren();for(const p of list()){const b=document.createElement('button');b.type='button';b.textContent=p.name;b.addEventListener('click',()=>{select(p.id);overlay.remove();resolve(p)});listEl.append(b)}}render();
+    overlay.querySelector('form').addEventListener('submit',e=>{e.preventDefault();try{const p=create(new FormData(e.currentTarget).get('name'));overlay.remove();resolve(p)}catch(err){overlay.querySelector('.profile-error').textContent=err.message}});
+  })}
+  window.LeseProfile={list,active,select,create,remove,choose,gameKey};
+})();
 </script>
 <script>
 (() => {
@@ -995,6 +1015,41 @@ document.getElementById('boardWrap').after(taskDock);
     });
   }
 
+  // Lokaler Rundenstand nur für das gerade aktive Profil und dieses Würfelspiel.
+  const diceGameId='dice-maerchen';
+  let restoringRound=false;
+  function roundKey(){const profile=LeseProfile.active();return profile?LeseProfile.gameKey(profile,diceGameId):null}
+  function saveRound(nextActive=active){
+    const key=roundKey();if(!key||restoringRound)return;
+    const pending=waitingForCardTarget?{type:'weekday',index:weekdayQuestions.findIndex(q=>q.q===currentQuestion?.q)}
+      :waitingForMoveCard?{type:'move',index:movementCards.indexOf(moveText.textContent)}
+      :waitingForFootballCard?{type:'question',index:footballQuestions.indexOf(footballText.textContent)}
+      :waitingForJoker?{type:'joker',card:currentJoker}:null;
+    const snapshot={v:1,players:players.map(p=>({pos:p.pos,finished:p.finished})),active:nextActive,
+      bags:[questionBag,moveBag,footballBag,jokerBag].map(b=>b.map(row=>row.slice())),pending};
+    try{localStorage.setItem(key,JSON.stringify(snapshot))}catch(e){console.warn('Der Würfelstand konnte nicht gespeichert werden.',e)}
+  }
+  function restoreRound(){
+    const key=roundKey();if(!key)return;
+    let saved;try{saved=JSON.parse(localStorage.getItem(key))}catch{return}
+    if(!saved||saved.v!==1||!Array.isArray(saved.players)||saved.players.length!==2||![0,1].includes(saved.active))return;
+    if(!saved.players.every(p=>Number.isInteger(p.pos)&&p.pos>=START_POS&&p.pos<=track.length&&typeof p.finished==='boolean'))return;
+    const bags=[questionBag,moveBag,footballBag,jokerBag],cards=[weekdayQuestions,movementCards,footballQuestions,jokerCards];
+    if(!Array.isArray(saved.bags)||saved.bags.length!==4||!saved.bags.every((group,i)=>Array.isArray(group)&&group.length===2&&group.every(row=>Array.isArray(row)&&row.every(n=>Number.isInteger(n)&&n>=0&&n<cards[i].length))))return;
+    restoringRound=true;
+    try{
+      saved.players.forEach((p,i)=>{players[i].pos=p.pos;players[i].finished=p.finished;tokens[i].classList.toggle('inGoal',p.finished)});
+      saved.bags.forEach((group,i)=>group.forEach((row,j)=>{bags[i][j]=row.slice()}));
+      active=saved.active;busy=false;renderAll();glowNext();
+      const pending=saved.pending;
+      if(pending?.type==='weekday'&&weekdayQuestions[pending.index])openWeekdayQuestion(weekdayQuestions[pending.index]);
+      else if(pending?.type==='move'&&movementCards[pending.index])openMoveCard(movementCards[pending.index]);
+      else if(pending?.type==='question'&&footballQuestions[pending.index])openFootballCard(footballQuestions[pending.index]);
+      else if(pending?.type==='joker'&&pending.card&&typeof pending.card.text==='string'&&pending.card.text.length<200&&['day','relative','moveChoice','magic','action'].includes(pending.card.type))openJokerCard(pending.card);
+      if(players.every(p=>p.finished)){tokens.forEach(t=>t.classList.remove('activeGlow'));winner.classList.add('show')}
+      if(typeof updateControls==='function')updateControls();
+    }finally{restoringRound=false}
+  }
   function placeToken(i, hop=false){
     const t=tokens[i];
     let x,y;
@@ -1949,10 +2004,19 @@ document.getElementById('boardWrap').after(taskDock);
   updateControls();
 
 
+  // Save only after a turn or card has reached a stable, playable state.
+  function saveAfter(fn,advance=false){return function(...args){const result=fn.apply(this,args);
+    if(!restoringRound && args[1]!==true){const next=advance&&players[active].finished&&!players.every(p=>p.finished)?1-active:active;saveRound(next)}
+    return result}}
+  switchTurn=saveAfter(switchTurn);finishTurn=saveAfter(finishTurn,true);
+  openWeekdayQuestion=saveAfter(openWeekdayQuestion);openMoveCard=saveAfter(openMoveCard);
+  openFootballCard=saveAfter(openFootballCard);openJokerCard=saveAfter(openJokerCard);
+  restart=saveAfter(restart);
   resetCardBags();
   board.classList.toggle('qaObjectTest',TEST_MODE);
   renderAll(); glowNext();
+  if(LeseProfile.active())restoreRound();else LeseProfile.choose().then(restoreRound);
 })();
 </script>
 
-</body></html>
+<script>document.addEventListener('click',function(e){const a=e.target.closest('a[href]');if(a&&/index\.html/.test(a.getAttribute('href'))){e.preventDefault();parent.postMessage({previewNav:'home'},'*')}},true)</script></body></html>
