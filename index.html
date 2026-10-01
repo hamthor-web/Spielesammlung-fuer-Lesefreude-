@@ -165,8 +165,6 @@ body{min-height:100dvh}
   render();
   const P=window.LeseProfile, panel=document.getElementById('adultPanel');
   function updateProfile(){const p=P.active();document.getElementById('profileSwitch').textContent=p?'Profil: '+p.name:'Profil wählen';document.getElementById('adultProfile').textContent=p?'Aktiv: '+p.name:''}
-  // Eine vorhandene Installation erhält beim ersten Start ein eigenes Testprofil.
-  if(!P.list().length)P.create('Heike / Test');
   updateProfile();
   document.getElementById('profileSwitch').onclick=async()=>{panel.close();await P.choose();updateProfile()};
   document.getElementById('adultOpen').onclick=()=>{updateProfile();panel.showModal()};
@@ -178,7 +176,7 @@ body{min-height:100dvh}
   panel.querySelectorAll('[data-reset]').forEach(b=>b.onclick=async()=>{const game=b.dataset.reset,name=gameNames[game],detail=game.startsWith('dice-')?'Deine Runde geht dabei verloren.':'Dein Fortschritt und dein Ausmalbild gehen dabei verloren.';if(await ask(`Möchtest du dieses Spiel wirklich zurücksetzen? ${detail} (${name} · Profil ${P.active().name})`,'Spiel zurücksetzen'))reset(game)});
   document.getElementById('resetAll').onclick=async()=>{if(await ask(`Möchtest du alle Spiele des Profils ${P.active().name} wirklich zurücksetzen? Fortschritt, Würfelrunden und Ausmalbilder gehen verloren.`,'Alle Spiele zurücksetzen'))Object.keys(gameNames).forEach(reset)};
   document.getElementById('deleteProfile').onclick=async()=>{const p=P.active();if(await ask(`Möchtest du dieses Profil wirklich löschen? Alle Spielstände dieses Kindes werden entfernt. (${p.name})`,'Profil löschen')){P.remove(p.id);panel.close();await P.choose();updateProfile()}};
-  // Beim ersten App-Start kann das Testprofil direkt bestätigt oder ein Kind angelegt werden.
+  // Beim App-Start ein vorhandenes Profil wählen oder ein eigenes anlegen.
   if(!sessionStorage.getItem('lesespiele-profile-selected'))P.choose().then(()=>{sessionStorage.setItem('lesespiele-profile-selected','1');updateProfile()});
 
 })();

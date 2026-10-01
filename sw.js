@@ -1,4 +1,4 @@
-const CACHE_NAME='lesen-entdecken-erzaehlen-v45';
+const CACHE_NAME='lesen-entdecken-erzaehlen-v46';
 const CACHE_PREFIX='lesen-entdecken-erzaehlen-';
 const CORE_FILES=['./index.html','./spieler.html','./manifest.webmanifest'];
 const OFFLINE_FILES=[
