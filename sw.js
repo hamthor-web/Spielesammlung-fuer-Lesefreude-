@@ -1,4 +1,4 @@
-const CACHE_NAME='lesen-entdecken-erzaehlen-v46';
+const CACHE_NAME='lesen-entdecken-erzaehlen-v47';
 const CACHE_PREFIX='lesen-entdecken-erzaehlen-';
 const CORE_FILES=['./index.html','./spieler.html','./manifest.webmanifest'];
 const OFFLINE_FILES=[
@@ -87,7 +87,9 @@ self.addEventListener('install',event=>{
   })());
 });
 self.addEventListener('activate',event=>{
-  event.waitUntil((async()=>{await self.clients.claim();await prepareOffline()})());
+  // Fetch events wait for activation to finish. Never include the offline package here.
+  // The opened app requests preparation through OFFLINE_STATUS afterwards.
+  event.waitUntil(self.clients.claim());
 });
 self.addEventListener('message',event=>{
   if(event.data?.type==='OFFLINE_STATUS'){
