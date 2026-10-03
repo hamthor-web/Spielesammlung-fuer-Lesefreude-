@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "pairs": [
+    {
+      "id": "sieben",
+      "word": "SIEBEN",
+      "cards": [
+        {
+          "key": "a",
+          "image": "assets/sieben-zahl.webp",
+          "label": "sieben",
+          "text": "ist die Zahl nach sechs."
+        },
+        {
+          "key": "b",
+          "image": "assets/sieben-sieb.webp",
+          "label": "sieben",
+          "text": "etwas durch ein Sieb geben."
+        }
+      ],
+      "questions": [
+        {
+          "text": "Sieben Zwerge sitzen an einem Tisch.",
+          "answer": "a"
+        },
+        {
+          "text": "Heute um sieben Uhr höre ich Radio.",
+          "answer": "a"
+        },
+        {
+          "text": "Wir sieben den Sand in den Kasten.",
+          "answer": "b"
+        },
+        {
+          "text": "Mutti will das Mehl sieben.",
+          "answer": "b"
+        }
+      ]
+    },
+    {
+      "id": "pflaster",
+      "word": "PFLASTER",
+      "cards": [
+        {
+          "key": "a",
+          "image": "assets/pflaster-wunde.webp",
+          "label": "das Pflaster",
+          "text": "klebt auf einer kleinen Wunde."
+        },
+        {
+          "key": "b",
+          "image": "assets/pflaster-strasse.webp",
+          "label": "das Pflaster",
+          "text": "Steine bedecken eine Straße oder einen Hof."
+        }
+      ],
+      "questions": [
+        {
+          "text": "Mutti klebt ein Pflaster auf den Kratzer.",
+          "answer": "a"
+        },
+        {
+          "text": "Der Arzt hat lustige Pflaster mit Hunden und Katzen.",
+          "answer": "a"
+        },
+        {
+          "text": "Die Kutsche rattert über das Pflaster.",
+          "answer": "b"
+        },
+        {
+          "text": "Nach dem Regen glänzt das Pflaster in der Sonne.",
+          "answer": "b"
+        }
+      ]
+    },
+    {
+      "id": "krone",
+      "word": "KRONE",
+      "cards": [
+        {
+          "key": "a",
+          "image": "assets/krone-koenig.webp",
+          "label": "die Krone",
+          "text": "trägt ein König oder eine Königin auf dem Kopf."
+        },
+        {
+          "key": "b",
+          "image": "assets/krone-baum.webp",
+          "label": "die Baumkrone",
+          "text": "ist der obere Teil eines Baumes mit vielen Ästen und Blättern."
+        }
+      ],
+      "questions": [
+        {
+          "text": "Im Goldschatz des Drachen liegt eine Krone.",
+          "answer": "a"
+        },
+        {
+          "text": "Im Museum liegt eine prächtige Krone auf einem roten Kissen.",
+          "answer": "a"
+        },
+        {
+          "text": "In der Baumkrone sitzt ein Vogel.",
+          "answer": "b"
+        },
+        {
+          "text": "Die Kronen der Bäume bilden ein grünes Dach.",
+          "answer": "b"
+        }
+      ]
+    },
+    {
+      "id": "linse",
+      "word": "LINSE",
+      "cards": [
+        {
+          "key": "a",
+          "image": "assets/linse-essen.webp",
+          "label": "die Linse",
+          "text": "ist ein kleines Lebensmittel für Suppe und Brot."
+        },
+        {
+          "key": "b",
+          "image": "assets/linse-optik.webp",
+          "label": "die Linse",
+          "text": "ist ein rundes Glas, durch das man besser sehen kann."
+        }
+      ],
+      "questions": [
+        {
+          "text": "Mutti kocht eine Suppe mit Linsen.",
+          "answer": "a"
+        },
+        {
+          "text": "Der Bäcker verkauft heute Brot mit roten Linsen.",
+          "answer": "a"
+        },
+        {
+          "text": "Das Fernglas vergrößert mit seinen Linsen Dinge, die weit entfernt sind.",
+          "answer": "b"
+        },
+        {
+          "text": "Durch eine Linse sieht die Welt manchmal anders aus.",
+          "answer": "b"
+        }
+      ]
+    },
+    {
+      "id": "fluegel",
+      "word": "FLÜGEL",
+      "cards": [
+        {
+          "key": "a",
+          "image": "assets/fluegel-vogel.webp",
+          "label": "der Flügel",
+          "text": "damit kann ein Vogel fliegen."
+        },
+        {
+          "key": "b",
+          "image": "assets/fluegel-klavier.webp",
+          "label": "der Flügel",
+          "text": "ist ein großes Klavier."
+        }
+      ],
+      "questions": [
+        {
+          "text": "Das kleine Vögelchen flattert mit seinen Flügeln.",
+          "answer": "a"
+        },
+        {
+          "text": "Mit seinen Flügeln kann der Vogel weit fliegen.",
+          "answer": "a"
+        },
+        {
+          "text": "Heute übt Mia am Flügel.",
+          "answer": "b"
+        },
+        {
+          "text": "Im Konzertsaal steht ein großer schwarzer Flügel.",
+          "answer": "b"
+        }
+      ]
+    }
+  ]
+}
