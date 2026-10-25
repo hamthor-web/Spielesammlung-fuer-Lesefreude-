@@ -1,0 +1,103 @@
+/* Responsive Startseite v4 – echte Kacheln auf Hochformat-Hintergrund */
+.mobile-home-responsive{display:none}
+
+@media (orientation:portrait){
+  html,body{
+    min-height:100%;
+    margin:0;
+    background:#7fca4d!important;
+  }
+
+  body{
+    align-items:stretch!important;
+    background:#7fca4d!important;
+  }
+
+  .app{
+    width:100%!important;
+    min-height:100dvh!important;
+    background:transparent!important;
+  }
+
+  #home{
+    min-height:100dvh!important;
+    background:#7fca4d url("./start-hoch.webp") center top / 100% auto no-repeat!important;
+  }
+
+  #home>.stage{display:none!important}
+
+  .mobile-home-responsive{
+    display:flex!important;
+    box-sizing:border-box;
+    min-height:100dvh;
+    width:100%;
+    justify-content:center;
+    align-items:flex-start;
+    padding:
+      clamp(118px,27vw,205px)
+      12px
+      max(18px,env(safe-area-inset-bottom));
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .mobile-home-inner{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .mobile-tiles{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:clamp(9px,1.3dvh,16px);
+  }
+
+  .mobile-tile{
+    display:block;
+    width:min(58vw,290px);
+    max-width:86vw;
+    border-radius:clamp(18px,3vw,28px);
+    overflow:hidden;
+    box-shadow:0 10px 24px rgba(39,77,30,.24);
+    background:transparent;
+    text-decoration:none;
+    transition:transform .14s ease,box-shadow .14s ease;
+  }
+
+  .mobile-tile img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+
+  .mobile-tile:active{
+    transform:scale(.985);
+    box-shadow:0 5px 14px rgba(39,77,30,.2);
+  }
+
+  .mobile-tile:focus-visible{
+    outline:5px solid rgba(255,255,255,.96);
+    outline-offset:4px;
+  }
+}
+
+@media (max-width:480px) and (orientation:portrait){
+  .mobile-home-responsive{
+    padding-top:clamp(108px,25vw,150px);
+  }
+
+  .mobile-tile{
+    width:min(56vw,230px);
+  }
+
+  .mobile-tiles{gap:8px}
+}
+
+@media (orientation:landscape){
+  #home>.stage{display:block!important}
+  .mobile-home-responsive{display:none!important}
+}

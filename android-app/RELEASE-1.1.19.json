@@ -1,0 +1,11 @@
+{
+  "versionName": "1.1.19",
+  "versionCode": 21,
+  "packageId": "de.heikeamthor.lesespiele",
+  "aabFile": "Lesespiele-Play-1.1.19.aab",
+  "aabBytes": 54058839,
+  "aabSha256": "7A4311DD633C8A0D084531CEEC25B6792635E868F8597542409D58F42DC26883",
+  "model": "Paid app; all games included; no in-app purchases",
+  "previousGitHubCommit": "eadaa26a9a70c76041dd6a6f147b0b8360ac7a69",
+  "preparedOn": "2026-10-23"
+}

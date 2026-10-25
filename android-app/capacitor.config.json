@@ -1,0 +1,18 @@
+{
+  "appId": "de.heikeamthor.lesespiele",
+  "appName": "Lesen, entdecken, erzählen",
+  "webDir": "www",
+  "server": {
+    "hostname": "localhost",
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "disable"
+    }
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#68bd3e"
+  }
+}

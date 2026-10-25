@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#72c94c">
+
+<title>Lesen, entdecken, erzählen</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Nunito,"Trebuchet MS",Arial,sans-serif;color:#173c2a;background:#68bd3e}
+body{min-height:100dvh}
+.page{min-height:100dvh;display:none}
+.page.active{display:flex}
+
+#home{
+  position:relative;overflow:hidden;align-items:flex-start;justify-content:center;
+  background:#68bd3e url("./start-wiese.png") center top/cover no-repeat;
+  padding:clamp(205px,23.5vh,360px) 10px max(14px,env(safe-area-inset-bottom))
+}
+.home-inner{width:min(96vw,760px);display:flex;justify-content:center}
+.tiles{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.15vh,13px)}
+.tile{
+  display:block;width:clamp(150px,43vw,235px);aspect-ratio:1;border-radius:24px;overflow:hidden;
+  box-shadow:0 8px 20px rgba(20,72,24,.28);background:#fff;text-decoration:none;
+  transform:translateZ(0);transition:transform .12s ease
+}
+.tile:active{transform:scale(.985)}
+.tile:focus-visible{outline:5px solid #fff;outline-offset:3px}
+.tile img{display:block;width:100%;height:100%;object-fit:cover}
+.tile.dice{order:1}.tile.stories{order:2}.tile.crazy{order:3}
+
+.subpage{
+  flex-direction:column;
+  background:linear-gradient(rgba(255,255,255,.83),rgba(255,255,255,.91)),url("./start-wiese.png") center top/cover fixed
+}
+.top{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:calc(10px + env(safe-area-inset-top)) 14px 10px;background:rgba(255,255,255,.96);
+  box-shadow:0 2px 12px rgba(0,0,0,.08)
+}
+.top h1{margin:0;font-size:clamp(1.35rem,4vw,2rem)}
+.back{
+  border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:900;
+  background:#e7f3e8;color:#173c2a;cursor:pointer
+}
+
+.preview-grid{
+  width:min(94vw,900px);
+  margin:22px auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  padding-bottom:26px
+}
+.preview-card{
+  display:block;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#fff;
+  box-shadow:0 9px 24px rgba(0,0,0,.16);
+  text-decoration:none;
+  transform:translateZ(0);
+  transition:transform .12s ease,box-shadow .12s ease
+}
+.preview-card img{display:block;width:100%;height:100%;object-fit:cover}
+.preview-card:active{transform:scale(.985);box-shadow:0 5px 14px rgba(0,0,0,.14)}
+.preview-card:focus-visible{outline:5px solid #fff;outline-offset:4px}
+
+@media (max-width:520px){
+  .preview-grid{grid-template-columns:1fr;width:min(88vw,390px)}
+}
+@media (max-height:760px) and (orientation:portrait){
+  #home{padding-top:clamp(155px,20.5vh,205px)}
+  .tile{width:clamp(130px,37vw,175px)}
+  .tiles{gap:7px}
+}
+@media (orientation:landscape){
+  #home{
+    align-items:center;background-position:center top;background-size:cover;
+    padding:calc(env(safe-area-inset-top) + 19vw + 12px) 20px max(14px,env(safe-area-inset-bottom))
+  }
+  .home-inner{width:min(96vw,1320px)}
+  .tiles{width:100%;flex-direction:row;justify-content:center;gap:clamp(14px,2.2vw,30px)}
+  .tile{width:min(26vw,clamp(100px,calc(100dvh - 19vw - 112px),330px));max-height:none;flex-shrink:0}
+  .tile.dice{order:1}.tile.stories{order:2}.tile.crazy{order:3}
+  .preview-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));width:min(94vw,980px)}
+}
+@media (orientation:landscape) and (max-height:540px){
+  #home{padding-top:calc(env(safe-area-inset-top) + 19vw + 12px)}
+  .tile{width:min(24vw,clamp(100px,calc(100dvh - 19vw - 112px),215px))}
+}
+
+#home{flex-direction:column;justify-content:flex-start;align-items:center}.home-inner{margin:0 auto}.adult-entry{margin:32px auto 0;padding:12px 0 max(10px,env(safe-area-inset-bottom));text-align:center}.adult-entry button{border:0;background:rgba(255,255,255,.74);color:#28523a;text-decoration:underline;text-underline-offset:3px;border-radius:12px;padding:7px 12px;font:600 .83rem Nunito,Arial,sans-serif;cursor:pointer}.adult-panel{border:0;border-radius:20px;width:min(380px,92vw);max-height:85dvh;overflow:auto;background:#fff;padding:20px;color:#173c2a;box-shadow:0 8px 30px #0005}@media(orientation:landscape){.home-inner,.adult-entry{flex-shrink:0}.adult-entry{margin-top:12px;padding-top:6px}}.adult-panel::backdrop{background:#132f20a6}.adult-panel button{display:block;width:100%;margin:7px 0;text-align:left;font:inherit;font-weight:800;border:1px solid #8da982;border-radius:12px;padding:10px;background:white;color:#173c2a}
+</style>
+<style>.preview-shell{position:fixed;inset:0;z-index:80;background:#fff;display:grid;grid-template-rows:auto 1fr}.preview-shell[hidden]{display:none}.preview-shell .bar{display:flex;align-items:center;gap:8px;padding:calc(7px + env(safe-area-inset-top)) 10px 7px;background:#fffe;box-shadow:0 2px 10px #0002}.preview-shell .nav{border:0;border-radius:999px;padding:10px 14px;background:#e7f3e8;color:#173c2a;font:900 15px Nunito,Arial;cursor:pointer}.preview-shell .nav.home{background:#fff2c9}.preview-shell .name{font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.preview-shell iframe{width:100%;height:100%;border:0;background:#fff}@media(max-width:420px){.preview-shell .name{display:none}.preview-shell .nav{flex:1;padding:9px 6px;font-size:13px}}</style><style>.lite-note{background:#fff2c9;color:#173c2a;padding:12px 18px;font:17px Arial;line-height:1.4;position:relative;z-index:0}.lite-note button{font:inherit;padding:8px;margin-left:10px;border-radius:10px}</style><script src="./lite-policy.js"></script><script src="./lite-view.js" defer></script><link rel="stylesheet" href="./native-layout.css"><script src="./native-runtime.js"></script><script src="./image-paths.js"></script><link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#68bd3e"><script src="./web-update.js" defer></script></head>
+<body>
+<dialog id="confirmAdult" style="border:0;border-radius:20px;padding:24px;max-width:min(420px,92vw);font:inherit;color:#173c2a"><p id="confirmAdultText"></p><form method="dialog" style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap"><button value="cancel" style="padding:12px;border-radius:12px">Abbrechen</button><button id="confirmAdultAction" value="yes" style="padding:12px;border-radius:12px;background:#3d754a;color:#fff">Spiel zurücksetzen</button></form></dialog><dialog class="adult-panel" id="adultPanel"><h2>Für Erwachsene</h2><p id="adultProfile"></p><p id="offlineStatus" role="status" aria-live="polite">Offline-Paket wird vorbereitet …</p><button type="button" id="profileSwitch">Profil wechseln</button><button type="button" data-reset="dice-freizeit">Freizeit & Abenteuer zurücksetzen</button><button type="button" data-reset="dice-sport">Sport & Spiel zurücksetzen</button><button type="button" data-reset="dice-maerchen">Märchen & Zauber zurücksetzen</button><button type="button" data-reset="park">Herbstpark zurücksetzen</button><button type="button" data-reset="football">Fußballplatz zurücksetzen</button><button type="button" data-reset="crazy">Verrücktes Fußballspiel zurücksetzen</button><button type="button" data-reset="finde">Finde den Fehler zurücksetzen</button><button type="button" id="resetAll">Alle Spiele dieses Profils zurücksetzen</button><button type="button" id="deleteProfile">Profil löschen</button><button type="button" id="adultClose">Schließen</button></dialog><section id="home" class="page active" aria-label="Hauptauswahl">
+  <div class="home-inner">
+    <nav class="tiles" aria-label="Spielpakete">
+      <a class="tile dice" href="#dice" data-section="dice"><img src="./kachel-wuerfeln.webp" alt="Würfeln – Würfeln, lesen und losspielen" decoding="async"></a>
+      <a class="tile stories" href="#stories" data-section="stories"><img src="./kachel-geschichten.webp" alt="Interaktive Geschichten – Entdecken, lesen und erzählen" decoding="async"></a>
+      <a class="tile crazy" href="#crazy" data-section="crazy"><img src="./kachel-verruecktes.webp" alt="Verrücktes – Suchen, staunen und Quatsch entdecken" decoding="async"></a>
+    </nav>
+  </div>
+  <div class="adult-entry"><button id="adultOpen" type="button">Für Erwachsene</button></div>
+</section>
+
+<section id="dice" class="page subpage">
+  <div class="top"><h1>Würfeln</h1><button class="back" type="button" data-home>← Hauptauswahl</button></div>
+  <div class="preview-grid">
+    <a class="preview-card" href="./spieler.html?spiel=freizeit"><img src="./freizeit-und-abenteuer.png" alt="Freizeit und Abenteuer" loading="lazy" decoding="async"></a>
+    <a class="preview-card" href="./spieler.html?spiel=sport"><img src="./sport-und-spiel.png" alt="Sport und Spiel" loading="lazy" decoding="async"></a>
+    <a class="preview-card" href="./spieler.html?spiel=maerchen"><img src="./maerchen-und-zauber.png" alt="Märchen und Zauber" loading="lazy" decoding="async"></a>
+  </div>
+</section>
+
+<section id="stories" class="page subpage">
+  <div class="top"><h1>Interaktive Geschichten</h1><button class="back" type="button" data-home>← Hauptauswahl</button></div>
+  <div class="preview-grid">
+    <a class="preview-card" href="./spieler.html?spiel=herbstgeschichten"><img src="./im-herbstpark.png" alt="Im Herbstpark" loading="lazy" decoding="async"></a>
+    <a class="preview-card" href="./spieler.html?spiel=fussballgeschichten"><img src="./auf-dem-fussballplatz.png" alt="Auf dem Fußballplatz" loading="lazy" decoding="async"></a>
+  </div>
+</section>
+
+<section id="crazy" class="page subpage">
+  <div class="top"><h1>Verrücktes</h1><button class="back" type="button" data-home>← Hauptauswahl</button></div>
+  <div class="preview-grid">
+    <a class="preview-card" href="./spieler.html?spiel=finde-fehler"><img src="./finde-den-fehler.png" alt="Finde den Fehler" loading="lazy" decoding="async"></a>
+    <a class="preview-card" href="./spieler.html?spiel=verruecktes-fussball"><img src="./das-verrueckte-fussballspiel.png" alt="Das verrückte Fußballspiel" loading="lazy" decoding="async"></a>
+  </div>
+</section>
+
+<script>/* Lokale Profile und getrennte Spielstände für Geschichten und Würfelspiele. */
+(function () {
+  const KEY='lesespiele-profile-v1', ACTIVE='lesespiele-active-v1';
+  const style=document.createElement('style');style.textContent=`.profile-overlay{position:fixed;inset:0;bottom:auto;height:var(--profile-visible-height,100%);top:var(--profile-visible-top,0px);box-sizing:border-box;z-index:100000;background:#173c2add;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden}.profile-panel{box-sizing:border-box;min-height:0;width:min(430px,100%);max-height:100%;overflow-y:auto;overscroll-behavior:contain;scroll-padding-block:12px;background:#fffdf0;color:#173c2a;padding:24px;border-radius:24px;box-shadow:0 14px 40px #0006;font:inherit}.profile-panel h2{margin:0}.profile-panel .profile-list{display:grid;gap:9px;margin:16px 0}.profile-panel button{font:inherit;font-weight:800;border:2px solid #6f9f6b;border-radius:14px;background:#eaf6e7;padding:12px;cursor:pointer}.profile-panel form{border-top:1px solid #9dbb98;padding-top:16px;display:grid;gap:12px}.profile-panel label{display:grid;gap:6px}.profile-panel input{font:inherit;padding:12px;border:2px solid #7e9f7a;border-radius:12px;width:100%}.profile-error{color:#9d2828}@media(min-width:600px) and (max-height:500px){.profile-panel{width:min(680px,100%);padding:12px 16px;border-radius:16px}.profile-panel form{grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:10px}.profile-panel h2{font-size:1.2em}.profile-panel p{margin:8px 0}.profile-panel .profile-list{margin:8px 0}}`;document.head.append(style);
+  function read(){try{const x=JSON.parse(localStorage.getItem(KEY));return Array.isArray(x)?x:[]}catch{return []}}
+  function list(){return read()}
+  function active(){const id=localStorage.getItem(ACTIVE);return read().find(p=>p.id===id)||null}
+  function select(id){if(!read().some(p=>p.id===id))return false;localStorage.setItem(ACTIVE,id);dispatchEvent(new Event('lesespiele-profile-change'));return true}
+  function create(name){name=String(name||'').trim().slice(0,32);if(!name)throw Error('Bitte einen Namen eingeben.');let all=read();if(all.some(p=>p.name.toLocaleLowerCase('de')===name.toLocaleLowerCase('de')))throw Error('Diesen Namen gibt es schon.');const p={id:crypto.randomUUID(),name};all.push(p);localStorage.setItem(KEY,JSON.stringify(all));select(p.id);return p}
+  function gameKey(profile,game){return `lesespiele-v1:${profile.id}:${game}`}
+  function remove(id){const all=read();if(!all.some(p=>p.id===id))return;for(let i=localStorage.length-1;i>=0;i--){const key=localStorage.key(i);if(key.startsWith(`lesespiele-v1:${id}:`))localStorage.removeItem(key)}localStorage.setItem(KEY,JSON.stringify(all.filter(p=>p.id!==id)));if(localStorage.getItem(ACTIVE)===id)localStorage.removeItem(ACTIVE);dispatchEvent(new Event('lesespiele-profile-change'))}
+  function choose(){return new Promise(resolve=>{
+    const overlay=document.createElement('div');overlay.className='profile-overlay';overlay.innerHTML='<div class="profile-panel" role="dialog" aria-modal="true" aria-labelledby="profile-heading"><h2 id="profile-heading">Wer spielt heute?</h2><p>Jedes Kind hat hier seinen eigenen Spielstand auf diesem Gerät.</p><div class="profile-list"></div><form class="profile-create"><label>Neues Profil <input name="name" maxlength="32" autocomplete="off" enterkeyhint="done" placeholder="Name des Kindes" required></label><button>Profil anlegen</button></form><p class="profile-error" role="alert"></p></div>';
+    document.body.append(overlay);const fitViewport=()=>{const viewport=window.visualViewport;overlay.style.setProperty('--profile-visible-height',(viewport?viewport.height:window.innerHeight)+'px');overlay.style.setProperty('--profile-visible-top',(viewport?viewport.offsetTop:0)+'px');if(overlay.contains(document.activeElement))requestAnimationFrame(()=>document.activeElement.scrollIntoView({block:'nearest'}))};fitViewport();window.visualViewport?.addEventListener('resize',fitViewport);window.visualViewport?.addEventListener('scroll',fitViewport);window.addEventListener('resize',fitViewport);overlay.addEventListener('focusin',()=>requestAnimationFrame(fitViewport));const cleanupViewport=()=>{window.visualViewport?.removeEventListener('resize',fitViewport);window.visualViewport?.removeEventListener('scroll',fitViewport);window.removeEventListener('resize',fitViewport)};const observer=new MutationObserver(()=>{if(!overlay.isConnected){cleanupViewport();observer.disconnect()}});observer.observe(document.body,{childList:true});const adultEntry=document.createElement('button');adultEntry.type='button';adultEntry.textContent='Für Erwachsene · Spielstände wiederherstellen';adultEntry.addEventListener('click',()=>document.getElementById('adultOpen').click());if(!location.hash)overlay.querySelector('.profile-panel').append(adultEntry);overlay.addEventListener('profile-cancel',()=>{const p=active();if(p){overlay.remove();resolve(p)}});const listEl=overlay.querySelector('.profile-list');
+    function render(){listEl.replaceChildren();for(const p of list()){const b=document.createElement('button');b.type='button';b.textContent=p.name;b.addEventListener('click',()=>{select(p.id);overlay.remove();resolve(p)});listEl.append(b)}}render();
+    overlay.querySelector('form').addEventListener('submit',e=>{e.preventDefault();try{const p=create(new FormData(e.currentTarget).get('name'));overlay.remove();resolve(p)}catch(err){overlay.querySelector('.profile-error').textContent=err.message}});
+  })}
+  window.LeseProfile={list,active,select,create,remove,choose,gameKey};
+})();
+</script>
+<script>sessionStorage.removeItem('lesespiele-profile-selected');</script>
+<script>
+(()=>{
+  const pages=[...document.querySelectorAll('.page')];
+  const valid=new Set(['home','dice','stories','crazy']);
+  function current(){const h=location.hash.slice(1);return valid.has(h)?h:'home'}
+  function render(){const id=current();pages.forEach(p=>p.classList.toggle('active',p.id===id));scrollTo(0,0)}
+  document.querySelectorAll('[data-section]').forEach(a=>a.addEventListener('click',e=>{
+    e.preventDefault();history.pushState(null,'',a.getAttribute('href'));render()
+  }));
+  document.querySelectorAll('[data-home]').forEach(b=>b.addEventListener('click',()=>{
+    history.pushState(null,'',location.pathname+location.search);render()
+  }));
+  addEventListener('popstate',render);
+  render();
+  const P=window.LeseProfile, panel=document.getElementById('adultPanel');
+  function updateProfile(){const p=P.active();document.getElementById('profileSwitch').textContent=p?'Profil: '+p.name:'Profil wählen';document.getElementById('adultProfile').textContent=p?'Aktiv: '+p.name:''}
+  updateProfile();
+  document.getElementById('profileSwitch').onclick=async()=>{panel.close();await P.choose();updateProfile()};
+  document.getElementById('adultOpen').onclick=()=>{updateProfile();panel.showModal()};
+  document.getElementById('adultClose').onclick=()=>panel.close();
+  const gameNames={'dice-freizeit':'Freizeit & Abenteuer','dice-sport':'Sport & Spiel','dice-maerchen':'Märchen & Zauber',park:'Herbstpark',football:'Fußballplatz',crazy:'Verrücktes Fußballspiel',finde:'Finde den Fehler'};
+  function reset(game){const p=P.active();if(!p)return;const key=P.gameKey(p,game);if(game.startsWith('dice-'))localStorage.removeItem(key);else localStorage.setItem(key,JSON.stringify({decks:{},seen:[],completed:[],colors:{}}))}
+  const confirmDialog=document.getElementById('confirmAdult');
+  function ask(message,action){document.getElementById('confirmAdultText').textContent=message;document.getElementById('confirmAdultAction').textContent=action;return new Promise(resolve=>{confirmDialog.addEventListener('close',()=>resolve(confirmDialog.returnValue==='yes'),{once:true});confirmDialog.showModal()})}
+  panel.querySelectorAll('[data-reset]').forEach(b=>b.onclick=async()=>{const game=b.dataset.reset,name=gameNames[game],detail=game.startsWith('dice-')?'Deine Runde geht dabei verloren.':'Dein Fortschritt und dein Ausmalbild gehen dabei verloren.';if(await ask(`Möchtest du dieses Spiel wirklich zurücksetzen? ${detail} (${name} · Profil ${P.active().name})`,'Spiel zurücksetzen'))reset(game)});
+  document.getElementById('resetAll').onclick=async()=>{if(await ask(`Möchtest du alle Spiele des Profils ${P.active().name} wirklich zurücksetzen? Fortschritt, Würfelrunden und Ausmalbilder gehen verloren.`,'Alle Spiele zurücksetzen'))Object.keys(gameNames).forEach(reset)};
+  document.getElementById('deleteProfile').onclick=async()=>{const p=P.active();if(await ask(`Möchtest du dieses Profil wirklich löschen? Alle Spielstände dieses Kindes werden entfernt. (${p.name})`,'Profil löschen')){P.remove(p.id);panel.close();await P.choose();updateProfile()}};
+  // Beim App-Start ein vorhandenes Profil wählen oder ein eigenes anlegen.
+  if(!sessionStorage.getItem('lesespiele-profile-selected'))P.choose().then(()=>{sessionStorage.setItem('lesespiele-profile-selected','1');updateProfile()});
+
+})();
+</script>
+<section class="preview-shell" id="previewShell" hidden><header class="bar"><button class="nav" id="previewBackCategory" type="button">← Spielauswahl</button><button class="nav home" id="previewBackHome" type="button">⌂ Hauptauswahl</button><span class="name" id="previewGameName"></span></header><iframe id="previewFrame" title="Spiel" allow="autoplay; fullscreen"></iframe></section><script>
+(()=>{
+ const config={"freizeit": {"title": "Freizeit & Abenteuer", "category": "dice", "key": "freizeit", "choice": "football"}, "sport": {"title": "Sport & Spiel", "category": "dice", "key": "sport", "choice": "football"}, "maerchen": {"title": "Märchen & Zauber", "category": "dice", "key": "maerchen", "choice": "football"}, "herbstgeschichten": {"title": "Im Herbstpark", "category": "stories", "key": "geschichten", "choice": "park"}, "fussballgeschichten": {"title": "Auf dem Fußballplatz", "category": "stories", "key": "geschichten", "choice": "football"}, "verruecktes-fussball": {"title": "Das verrückte Fußballspiel", "category": "crazy", "key": "verruecktes-fussball", "choice": "football"}, "finde-fehler": {"title": "Finde den Fehler", "category": "crazy", "key": "finde-fehler", "choice": "football"}};
+ const shell=document.getElementById('previewShell'),frame=document.getElementById('previewFrame'),name=document.getElementById('previewGameName');
+ let current=null,version=0;
+ async function openGame(id,push=true){
+  const request=++version;try{await window.LesespieleNative?.ready}catch{return}if(request!==version)return;
+  if(!config[id])return;
+  current=id;version++;shell.hidden=false;name.textContent=config[id].title;
+  window.PreviewStoryChoice=config[id].choice;
+  frame.src='./'+({'freizeit':'wuerfeln-freizeit.html','sport':'wuerfeln-sport.html',
+    'maerchen':'wuerfeln-maerchen.html','geschichten':'geschichten.html',
+    'verruecktes-fussball':'verruecktes-fussball.html','finde-fehler':'finde-den-fehler.html'}[config[id].key])+
+    (config[id].key==='geschichten'?'?spiel='+config[id].choice:'');
+  if(push)history.pushState({game:id},'', '#spiel-'+id);
+ }
+ function closeTo(target,push=true){version++;current=null;frame.removeAttribute('src');shell.hidden=true;const hash=target==='home'?'':'#'+target;if(push)history.pushState(null,'',location.pathname+location.search+hash);dispatchEvent(new PopStateEvent('popstate'))}
+ document.addEventListener('click',e=>{const a=e.target.closest('a.preview-card[href*="spieler.html"]');if(!a)return;e.preventDefault();const id=new URL(a.href,location.href).searchParams.get('spiel');openGame(id)},true);
+ document.getElementById('previewBackCategory').onclick=()=>closeTo(config[current]?.category||'home');
+ document.getElementById('previewBackHome').onclick=()=>closeTo('home');
+ addEventListener('message',e=>{if(e.source!==frame.contentWindow||!e.data?.previewNav)return;closeTo(e.data.previewNav==='stories'?'stories':'home')});
+ addEventListener('popstate',()=>{const m=location.hash.match(/^#spiel-(.+)$/);if(m&&config[m[1]]){if(current!==m[1])openGame(m[1],false)}else{if(current){version++;current=null;frame.removeAttribute('src');shell.hidden=true}}});
+})();
+</script><script>document.getElementById("offlineStatus").textContent="Alle Spiele sind in dieser App enthalten und offline verfügbar.";</script></body>
+</html>
+

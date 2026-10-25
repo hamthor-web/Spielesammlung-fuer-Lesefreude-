@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Spielauswahl</title></head>
+<body>
+<script>
+(()=>{const map={wuerfeln:'dice',geschichten:'stories',verrueckt:'crazy'};const id=new URLSearchParams(location.search).get('paket');location.replace('./index.html'+(map[id]?'#'+map[id]:''));})();
+</script>
+<noscript><a href="./index.html">Zur Hauptauswahl</a></noscript>
+</body></html>

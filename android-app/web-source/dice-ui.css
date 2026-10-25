@@ -1,0 +1,12 @@
+/* Shared layout: collection, turn label, die, then task cards. */
+#taskDock .rewards-row{display:flex;justify-content:flex-end;width:100%;margin:0 0 8px}
+#taskDock .rewards-row #trophyOpen{margin:0;font-size:clamp(16px,3.6vw,22px);padding:10px 16px}
+#taskDock :is(#turnLabel,#sportTurnLabel){flex:none;width:100%;text-align:center;font-size:clamp(23px,5vw,30px);font-weight:800;margin:4px 0 10px}
+#taskDock #dicePanel{justify-content:flex-end;flex-wrap:wrap;min-height:64px}
+#diceBtn[hidden],#drawAdventure[hidden]{display:none!important}
+#drawAdventure{border:0;border-radius:14px;padding:14px;background:#ffe195;color:#513c19;font-size:17px;font-weight:750;cursor:pointer}
+#diceBtn:disabled{opacity:.55}
+#boardWrap.dice-zoom-viewport{overflow:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;display:block}
+#boardWrap.dice-zoom-viewport #board{max-width:none!important;margin:0!important;flex:none;transform:none!important}
+.dice-zoom-reset{font:inherit;padding:6px 12px;border:1px solid #9caf86;border-radius:12px;background:#fffbea;color:#30472a;margin-right:auto}
+@media(max-width:699px){#app #taskDock{display:flex;flex-direction:column}#taskDock .rewards-row{justify-content:flex-end}}

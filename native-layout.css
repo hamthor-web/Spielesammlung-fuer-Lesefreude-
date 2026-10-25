@@ -1,0 +1,20 @@
+/* Keep the shared game frame inside the device viewport. */
+.preview-shell,.shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);min-width:0;min-height:0;overflow:hidden}
+.preview-shell .bar,.shell .bar{min-width:0;max-width:100%}
+.preview-shell .name,.shell .name{min-width:0;flex:1 1 0}
+.preview-shell iframe,.shell .frame{display:block;min-width:0;min-height:0;width:100%;height:100%}
+@media(max-width:600px){
+ .preview-shell .name,.shell .name{display:none}
+ .preview-shell .nav,.shell .nav{flex:1 1 0;min-width:0;padding:9px 6px;font-size:13px;white-space:nowrap}
+}
+/* Search-game columns must shrink before their gallery starts scrolling. */
+.workspace{min-width:0}
+.workspace>*,.titlewrap{min-width:0}
+@media(max-width:850px){.workspace{grid-template-columns:minmax(0,1fr)}}
+.titleGroup .title{min-width:0;white-space:normal;overflow-wrap:anywhere}
+
+/* Keep a complete 4:3 board visible on short landscape screens. */
+@media(orientation:landscape){
+ .workspace .stage{width:min(100%,calc((100dvh - 150px) * 4 / 3));margin-inline:auto}
+ #app:not(:has(#boardWrap)) > .stage{width:min(100%,calc((100dvh - 150px) * 4 / 3));margin-inline:auto}
+}

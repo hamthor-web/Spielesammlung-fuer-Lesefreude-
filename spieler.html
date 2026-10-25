@@ -27,7 +27,7 @@
  .name{display:none}.bar{justify-content:center}.nav{flex:1;max-width:190px}
 }
 </style>
-</head>
+<script src="./lite-policy.js"></script><script src="./native-runtime.js"></script><link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script><script src="./image-paths.js"></script><link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#68bd3e"><script src="./web-update.js" defer></script></head>
 <body>
 <div class="shell">
   <header class="bar">
@@ -38,7 +38,8 @@
   <iframe id="frame" class="frame" title="Spiel" allow="autoplay; fullscreen"></iframe>
 </div>
 <script>
-(()=>{
+(async()=>{
+ await window.LesespieleNative.ready;
  const cfg={
   freizeit:['Freizeit & Abenteuer','./wuerfeln-freizeit.html','dice'],
   sport:['Sport & Spiel','./wuerfeln-sport.html','dice'],

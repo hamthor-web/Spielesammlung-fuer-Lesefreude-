@@ -1,0 +1,37 @@
+{
+  "description": "Lokale Lite-Änderungen auf Grundlage des unveränderten Herkunftsnachweises.",
+  "files": [
+    {
+      "path": "geschichten.html",
+      "sha256": "ede5ddedef072c5922af2fe7cf9ad05004a240cf51f716b1aa85b4f19b922608"
+    },
+    {
+      "path": "wuerfeln-sport.html",
+      "sha256": "14395d5a3ba54ed7049ce6cf89da95f93cc19889920423dc6577e520bdcc948a"
+    },
+    {
+      "path": "finde-den-fehler.html",
+      "sha256": "4e87c72933929c83e7d0ad3e4e2a38dad08346b70e7d19d2621510dd1f1ac02d"
+    },
+    {
+      "path": "spieler.html",
+      "sha256": "b5caebbae4287fa68689d050c7e86bfb2c3315255d0bb77ad51793e3d83bb6e1"
+    },
+    {
+      "path": "wuerfeln-maerchen.html",
+      "sha256": "d939f1bb704cb9ab74f0b9044e7a9f1c9cc61407b9d62c93994c2ad211d3f0d8"
+    },
+    {
+      "path": "verruecktes-fussball.html",
+      "sha256": "1121d8da63b223c79021dc735dbf223025120c45b03d0bd0194a0f365924f909"
+    },
+    {
+      "path": "index.html",
+      "sha256": "a022b3e8596717e6474ac6abb70df074f11fa8af875f645bfdb96e4eb1182714"
+    },
+    {
+      "path": "wuerfeln-freizeit.html",
+      "sha256": "3f60bacc69592298ee552745313a122f864439679dfdeef7c839204fa0648aee"
+    }
+  ]
+}

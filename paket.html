@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Spielauswahl</title></head>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Spielauswahl</title><link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script><script src="./image-paths.js"></script></head>
 <body>
 <script>
 (()=>{const map={wuerfeln:'dice',geschichten:'stories',verrueckt:'crazy'};const id=new URLSearchParams(location.search).get('paket');location.replace('./index.html'+(map[id]?'#'+map[id]:''));})();

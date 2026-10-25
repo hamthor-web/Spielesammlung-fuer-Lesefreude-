@@ -1,0 +1,2 @@
+# Preserve exact bytes, especially files checked by provenance SHA256.
+* -text

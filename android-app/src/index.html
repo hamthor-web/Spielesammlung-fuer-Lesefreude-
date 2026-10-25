@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Lesen, entdecken, erzählen</title>
+  <style>body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#68bd3e;color:#173c2a;font:18px "Trebuchet MS",Arial,sans-serif}main{background:#fffdf0;border-radius:24px;padding:24px;max-width:420px;margin:20px}button{font:inherit;padding:12px;border-radius:12px}</style>
+  <script src="./native-runtime.js"></script>
+</head>
+<body><main><p id="status">Die Spiele werden geöffnet …</p><button id="retry" hidden onclick="location.reload()">Erneut versuchen</button></main>
+<script>
+  window.LesespieleNative.ready.then(() => location.replace('./home.html' + location.search + location.hash)).catch(() => {
+    document.getElementById('status').textContent = 'Die gespeicherten Spielstände konnten nicht geladen werden. Bitte die App erneut öffnen. Es wurden keine Spielstände gelöscht.';
+    document.getElementById('retry').hidden = false;
+  });
+</script>
+</body></html>

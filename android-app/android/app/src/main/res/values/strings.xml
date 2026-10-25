@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Lesen, entdecken, erzählen</string>
+    <string name="title_activity_main">Lesen, entdecken, erzählen</string>
+    <string name="package_name">de.heikeamthor.lesenentdeckenerzaehlen</string>
+    <string name="custom_url_scheme">de.heikeamthor.lesenentdeckenerzaehlen</string>
+</resources>
