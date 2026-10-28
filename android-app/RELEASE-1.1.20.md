@@ -15,12 +15,12 @@ Die nativen Spiele, Bildquellen, Sicherung, Profil-IDs und Fortschrittsschlüsse
 ## Prüfung dieses Quellstands
 
 - JavaScript-Syntax der geänderten gemeinsamen Dateien geprüft.
-- Neun vorhandene Tests zu Sicherung, Navigation und Android-Zurück erfolgreich.
-- Textzoom, große Leseansicht, Zurücksetzen, Zwei-Finger-Zoom und ausbleibende versehentliche Aufgabenabschlüsse auf den abrufbaren nativen DOM-Vorlagen von Freizeit, Sport, Finde den Fehler und Verrücktes Fußballspiel erfolgreich geprüft.
+- Alle 31 Regressionstests erfolgreich; npm ci, npm run build, npx cap sync android und npm run check erfolgreich.
+- Textzoom, große Leseansicht, Zurücksetzen, Zwei-Finger-Zoom und ausbleibende versehentliche Aufgabenabschlüsse auf den vollständigen nativen DOM-Vorlagen aller sieben Spiele erfolgreich geprüft.
 - Die gemeinsamen Lesefunktionen wurden zuvor in der Webfassung an allen sieben Spielen geprüft.
 - CSS, Kategorieauswahl, sieben Spielverweise und native Offline-Umwandlung geprüft.
 
-Die vollständige npm-Build-/Paketprüfung und ein APK-/AAB-Gerätetest wurden für 1.1.20 nicht ausgeführt. Die Arbeitsumgebung stellt kein passendes Java 21 und keinen Upload-Schlüssel bereit. Es gibt daher noch keine signierte 1.1.20-AAB, keine neue Artefakt-Prüfsumme und keine Veröffentlichung in Google Play.
+Portable Java 21 ist eingerichtet. Die vollständige npm-Build-/Paketprüfung und Android lintVitalRelease sind erfolgreich. Die nativen Release-Java-Quellen sind kompiliert. Die hochgeladene bisherige AAB stimmt anhand SHA-256 mit RELEASE-1.1.19.json überein. Die Signierdatei ist vorhanden; ihre Passwortprüfung und der Zertifikatsabgleich stehen noch aus. Es gibt noch keine signierte 1.1.20-AAB, keine neue AAB-Prüfsumme und keine Veröffentlichung in Google Play. Ein Gerätetest der 1.1.20 wurde noch nicht ausgeführt.
 
 ## Signierten Build erstellen
 

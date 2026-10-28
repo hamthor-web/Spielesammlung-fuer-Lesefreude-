@@ -2,7 +2,7 @@
 
 **Quellstand: 1.1.20 · vorbereiteter Versionscode 22 · 28. Oktober 2026**
 
-Der Quellstand ist aktualisiert. Eine signierte AAB für 1.1.20 wurde in dieser Arbeitsumgebung noch nicht gebaut. Das letzte dokumentierte signierte Paket bleibt 1.1.19 (Versionscode 21).
+Der Quellstand ist aktualisiert. Java 21, vollständiger Web-Build, 31 Regressionstests, Paketcheck und Android lintVitalRelease sind erfolgreich eingerichtet beziehungsweise geprüft. Die lokale Signierung wartet noch auf die Passworteingabe; eine signierte AAB für 1.1.20 wurde noch nicht gebaut. Das letzte dokumentierte signierte Paket bleibt 1.1.19 (Versionscode 21).
 
 Vollständige Kauf-App, einmalig 5,99 EUR über Google Play. Alle sieben Spiele enthalten; keine In-App-Käufe und kein Abo. Dieser Ordner archiviert die aktuelle native Capacitor-App. Die Browser-/GitHub-Pages-Fassung im übergeordneten Repository wird damit nicht ersetzt.
 
