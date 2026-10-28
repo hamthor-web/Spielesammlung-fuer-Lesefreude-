@@ -32,3 +32,16 @@
 @media (orientation: landscape) {
   .web-install { margin-top: 14px; }
 }
+
+/* The profile picker must offer installation before a child is selected. */
+.profile-panel .web-install {
+  width: 100%;
+  margin: 14px 0;
+  padding: 12px;
+}
+.profile-panel .web-install button {
+  margin: 0;
+  text-align: center;
+  background: #285c36;
+  color: #fff;
+}

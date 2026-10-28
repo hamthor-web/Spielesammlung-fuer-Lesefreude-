@@ -56,7 +56,16 @@
     hint.hidden = true;
     hint.setAttribute('role', 'status');
     panel.append(title, button, hint);
-    home.insertBefore(panel, home.querySelector('.adult-entry'));
+    // Keep the same controls available before and after choosing a profile.
+    // The profile dialog is created and removed dynamically by home.html.
+    function placePanel() {
+      const profilePanel = document.querySelector('.profile-overlay .profile-panel');
+      const target = profilePanel || home;
+      const before = target.querySelector(profilePanel ? '.profile-list' : '.adult-entry');
+      if (panel.parentNode !== target) target.insertBefore(panel, before);
+    }
+    placePanel();
+    new MutationObserver(placePanel).observe(document.body, { childList: true, subtree: true });
 
     button.addEventListener('click', async () => {
       if (installing) return;
