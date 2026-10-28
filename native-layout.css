@@ -18,3 +18,70 @@
  .workspace .stage{width:min(100%,calc((100dvh - 150px) * 4 / 3));margin-inline:auto}
  #app:not(:has(#boardWrap)) > .stage{width:min(100%,calc((100dvh - 150px) * 4 / 3));margin-inline:auto}
 }
+
+/* Reading controls reflow text instead of scaling/cropping the entire card. */
+:root { --reading-scale: 1; }
+.reading-card { min-width: 0; overflow-wrap: anywhere; }
+#cardDock > .reading-card { pointer-events: auto !important; }
+#cardDock .reading-card .question,
+#storyArea .reading-card .storyText,
+.side .reading-card :is(.storytext, .sentence) {
+  font-size: calc(clamp(26px, 2.2vw, 32px) * var(--reading-scale)) !important;
+  line-height: 1.45 !important;
+  text-wrap: pretty;
+}
+#cardDock .reading-card .hint,
+.side .reading-card .error-question {
+  font-size: calc(18px * var(--reading-scale)) !important;
+  line-height: 1.45;
+}
+#cardDock .reading-card .jokerChoice {
+  font-size: calc(22px * var(--reading-scale)) !important;
+  white-space: normal;
+}
+.reading-card .reading-controls, .reading-dialog .reading-controls {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 6px; margin: 0 0 14px; padding: 0 0 12px;
+  border-bottom: 1px solid #b7c3ab; pointer-events: auto;
+}
+.reading-card .reading-controls button, .reading-dialog .reading-controls button {
+  flex: 0 0 auto; min-width: 44px; min-height: 44px; padding: 8px 10px;
+  margin: 0; border: 2px solid #8ca184; border-radius: 10px;
+  background: #fff; color: #173c2a; font: 800 17px/1.25 Arial, sans-serif;
+  cursor: pointer; touch-action: manipulation; box-shadow: none;
+}
+.reading-controls button:disabled { opacity: .4; cursor: default; }
+.reading-controls button:focus-visible, .reading-dialog button:focus-visible {
+  outline: 3px solid #226aa8; outline-offset: 2px;
+}
+.reading-card .reading-controls .reading-expand { background: #e8f3df; }
+dialog.reading-dialog {
+  width: min(1000px, 96vw); max-width: 96vw; max-height: 94dvh;
+  margin: auto; padding: 0; border: 3px solid #8ca184; border-radius: 22px;
+  background: #fffdf2; color: #173c2a; overflow-y: auto;
+  font-family: "Trebuchet MS", Arial, sans-serif; box-shadow: 0 18px 60px #0006;
+}
+.reading-dialog::backdrop { background: #142b36ba; }
+.reading-dialog-header {
+  position: sticky; top: 0; z-index: 1; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; gap: 10px;
+  margin: 0; padding: 14px 20px; background: #fffdf2; border-bottom: 1px solid #b7c3ab;
+}
+.reading-dialog-header h2 { margin: 0; font-size: 22px; color: #173c2a; }
+.reading-dialog .reading-close {
+  min-height: 44px; padding: 10px 14px; border: 0; border-radius: 12px;
+  background: #285c36; color: white; font: 800 17px Arial, sans-serif; cursor: pointer;
+}
+.reading-dialog > .reading-controls { margin: 0; padding: 12px 16px; }
+.reading-dialog-body { padding: 12px clamp(16px, 4vw, 48px) 24px; overflow-wrap: anywhere; }
+.reading-dialog-body h3 { margin: 8px 0 18px; font-size: 24px; }
+.reading-dialog-body img { display: block; max-width: 100%; max-height: 32dvh; margin: 0 auto 20px; object-fit: contain; }
+.reading-dialog-body .reading-main-text, .reading-dialog-body ul {
+  margin: 12px 0 20px; font-size: calc(clamp(28px, 3vw, 40px) * var(--reading-scale));
+  line-height: 1.5; font-weight: 700; white-space: pre-line; text-align: left;
+}
+.reading-dialog-body .reading-task-hint { font-size: calc(20px * var(--reading-scale)); line-height: 1.5; }
+.reading-dialog-note { margin: 0; padding: 14px 20px; font-size: 16px; line-height: 1.4; background: #e8f3df; }
+@media (min-width: 1000px) {
+  .workspace:has(.side > .reading-card) { grid-template-columns: minmax(0, 1.5fr) minmax(380px, 1fr); }
+}

@@ -3,14 +3,19 @@ addEventListener('DOMContentLoaded',()=>{
   const viewport=document.getElementById('boardWrap'),board=document.getElementById('board');
   if(!viewport||!board)return;
   let scale=1,base=0,pinch=null,suppressClickUntil=0;
-  const reset=document.createElement('button');reset.type='button';reset.className='dice-zoom-reset';reset.textContent='Normalansicht';reset.setAttribute('aria-label','Spielfeld auf normale Größe zurücksetzen');reset.hidden=true;
-  const row=document.querySelector('.rewards-row');if(row)row.prepend(reset);
+  const reset=document.createElement('button');reset.type='button';reset.className='dice-zoom-reset';reset.textContent='Spielfeld 100 %';reset.setAttribute('aria-label','Spielfeld auf normale Größe zurücksetzen');reset.hidden=false;
+  const row=document.createElement('div');row.className='dice-board-tools';row.setAttribute('aria-label','Spielfeldgröße');
+  const less=document.createElement('button');less.type='button';less.textContent='Spielfeld −';less.setAttribute('aria-label','Spielfeld verkleinern');
+  const more=document.createElement('button');more.type='button';more.textContent='Spielfeld +';more.setAttribute('aria-label','Spielfeld vergrößern');
+  row.append(less,reset,more);document.getElementById('taskDock')?.append(row);
+  less.addEventListener('click',()=>{scale=clamp(scale-.25);render()});
+  more.addEventListener('click',()=>{scale=clamp(scale+.25);render()});
   const clamp=value=>Math.max(.35,Math.min(3,value));
   function render(){
     viewport.classList.add('dice-zoom-viewport');
     viewport.style.height=(base*.75*Math.min(1,scale))+'px';viewport.style.overscrollBehavior=scale>1.01?'contain':'auto';
     board.style.setProperty('width',(base*scale)+'px','important');
-    reset.hidden=Math.abs(scale-1)<=.01;
+    reset.textContent='Spielfeld '+Math.round(scale*100)+' %';less.disabled=scale<=.35;more.disabled=scale>=3;
   }
   function measure(){
     const height=window.visualViewport?.height||window.innerHeight;
