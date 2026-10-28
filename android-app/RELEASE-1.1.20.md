@@ -1,38 +1,19 @@
-# 1.1.20 – vorbereiteter Android-Quellstand
+# Android 1.1.20 – signiertes Play-Store-Bundle
 
-- Paket-ID: de.heikeamthor.lesespiele
-- Versionsname: 1.1.20
-- Vorbereiteter Versionscode: 22
-- Grundlage: Web-Änderungen bis Commit a9f23c6b0cddbe373120646d6e04470dcd0e4805
-- Datum: 28. Oktober 2026
+Paket `de.heikeamthor.lesespiele`, Version **1.1.20**, Versionscode **22**. Erstellt am 29. Oktober 2026 aus dem Android-Quellstand a2d9cf62ff71de389b8182f53407f995f4a65885.
 
 ## Änderungen
 
-Größere Aufgabenschrift mit A−/A+, 100–300 Prozent Textgröße, Zwei-Finger-Bedienung und „Groß lesen“ werden über die gemeinsamen nativen Layout-Dateien in alle sieben Spiele eingebunden. Die große Leseansicht schließt Aufgaben nicht ab. Haupt- und Kategorieauswahl erhalten die aktuellen Abstände, größeren Kacheln und getrennten Überschriftsbereiche. Die Würfelspiele übernehmen die geordnete Aufgabenstation und die Spielfeld-Zoomtasten.
+Alle sieben Spiele erhalten größere Aufgabenschrift, A−/A+ mit 100–300 Prozent Textgröße, Zwei-Finger-Zoom und „Groß lesen“. Das Öffnen und Schließen der Leseansicht erledigt keine Aufgabe. Haupt- und Kategorieauswahl enthalten größere, zentrierte Schaltflächen und getrennte Überschriftsbereiche. Die Würfelspiele erhalten die geordnete Aufgabenstation und Spielfeld-Zoomtasten. Web-Installationsbutton und iPhone-Installierhinweis sind in der nativen App nicht enthalten.
 
-Die nativen Spiele, Bildquellen, Sicherung, Profil-IDs und Fortschrittsschlüssel bleiben erhalten. Web-Installationsskripte werden nicht übernommen. Der Paketcheck prüft zusätzlich auf versehentlich eingebaute Web-Installationsfunktionen und auf alle dokumentierten geänderten Quell-Hashes.
+## Validierung
 
-## Prüfung dieses Quellstands
+Alle 31 Regressionstests, die Leseinteraktionen auf den nativen DOM-Vorlagen aller sieben Spiele, npm build, Paketprüfung und Capacitor-Synchronisierung waren erfolgreich. Android lintVitalRelease und bundleRelease waren erfolgreich. Alle signierten Inhaltsdateien der AAB wurden vollständig gelesen und mit dem Upload-Zertifikat der bisherigen veröffentlichten AAB abgeglichen. Die gebündelten Assets enthalten die Kategorie- und Leseänderungen und keine Web-Installationsskripte. Die gebündelte Manifestdatei bestätigt Paket-ID, Versionsname und Versionscode.
 
-- JavaScript-Syntax der geänderten gemeinsamen Dateien geprüft.
-- Alle 31 Regressionstests erfolgreich; npm ci, npm run build, npx cap sync android und npm run check erfolgreich.
-- Textzoom, große Leseansicht, Zurücksetzen, Zwei-Finger-Zoom und ausbleibende versehentliche Aufgabenabschlüsse auf den vollständigen nativen DOM-Vorlagen aller sieben Spiele erfolgreich geprüft.
-- Die gemeinsamen Lesefunktionen wurden zuvor in der Webfassung an allen sieben Spielen geprüft.
-- CSS, Kategorieauswahl, sieben Spielverweise und native Offline-Umwandlung geprüft.
+Artefakt: `Lesespiele-Play-1.1.20.aab`, 54.063.944 Bytes.
 
-Portable Java 21 ist eingerichtet. Die vollständige npm-Build-/Paketprüfung und Android lintVitalRelease sind erfolgreich. Die nativen Release-Java-Quellen sind kompiliert. Die hochgeladene bisherige AAB stimmt anhand SHA-256 mit RELEASE-1.1.19.json überein. Die Signierdatei ist vorhanden; ihre Passwortprüfung und der Zertifikatsabgleich stehen noch aus. Es gibt noch keine signierte 1.1.20-AAB, keine neue AAB-Prüfsumme und keine Veröffentlichung in Google Play. Ein Gerätetest der 1.1.20 wurde noch nicht ausgeführt.
+SHA-256: `C2893D3841E3EF81432C7588ECD56DC351C6979C49F11C871C69EC39519B5B05`.
 
-## Signierten Build erstellen
+Upload-Zertifikat SHA-256: `EA14AD75C7EFFEA842B6E8BF9FFF61DF3863DC56AC2C1DF60A6889148F0EE70C`.
 
-In der bisherigen Build-Umgebung mit Java 21, Android SDK und dem ursprünglichen Upload-Schlüssel:
-
-```sh
-npm ci
-npm run android:sync
-npm test
-npm run check
-npm run android:aab
-```
-
-Die Signierwerte über die bereits dokumentierten LESESPIELE_*-Umgebungsvariablen lokal bereitstellen. Paket-ID und höchsten verwendeten Versionscode vor dem Play-Upload prüfen. Ausgabe: android/app/build/outputs/bundle/release/app-release.aab.
-
+Ein physischer Gerätetest steht noch aus. Das Bundle wurde nicht zu Google Play hochgeladen oder veröffentlicht. Vor einer Produktionsfreigabe die AAB über einen internen Test auf einem Android-Gerät prüfen. Signierschlüssel und Passwörter sind nicht Teil des Repositorys.
