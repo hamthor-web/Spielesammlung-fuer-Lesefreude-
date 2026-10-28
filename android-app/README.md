@@ -1,10 +1,17 @@
 # Lesen, entdecken, erzählen – Android-App
 
-**Stand: 1.1.19 · Versionscode 21 · 21. Oktober 2026**
+**Quellstand: 1.1.20 · vorbereiteter Versionscode 22 · 28. Oktober 2026**
+
+Der Quellstand ist aktualisiert. Eine signierte AAB für 1.1.20 wurde in dieser Arbeitsumgebung noch nicht gebaut. Das letzte dokumentierte signierte Paket bleibt 1.1.19 (Versionscode 21).
 
 Vollständige Kauf-App, einmalig 5,99 EUR über Google Play. Alle sieben Spiele enthalten; keine In-App-Käufe und kein Abo. Dieser Ordner archiviert die aktuelle native Capacitor-App. Die Browser-/GitHub-Pages-Fassung im übergeordneten Repository wird damit nicht ersetzt.
 
 ## Enthaltene Verbesserungen
+
+- Größere Aufgabenschrift, Textzoom von 100 bis 300 Prozent, Zwei-Finger-Zoom und separate Ansicht „Groß lesen“ in allen sieben Spielen.
+- Aufgeräumte Hauptauswahl und Kategorien: eigene Überschriftsleiste, mittige Spielkacheln, mehr Abstand und größere Kacheln auf großen Bildschirmen.
+- Überarbeitete Würfelspiel-Anordnung und zusätzliche Tasten für die Spielfeldgröße.
+- Keine Web-Installationsfunktion im nativen Paket; der Paketcheck weist eine versehentliche Übernahme zurück.
 
 - Sieben Spiele vollständig verfügbar, ohne Kauf- oder Freischaltmenüs.
 - Belohnungen in drei Würfelwelten nach 1, 3, 7, 12, 18, 25 und 32 Abschlüssen, je Profil gespeichert.
@@ -49,7 +56,7 @@ Die ursprüngliche Upload-Signierdatei wird separat benötigt. Folgende Umgebung
 npm run android:aab
 ```
 
-Ergebnis: android/app/build/outputs/bundle/release/app-release.aab. Vor jedem neuen Upload Versionsname und Versionscode in release-settings.json aktualisieren; Code 21 ist bereits für 1.1.19 verwendet. App-ID: de.heikeamthor.lesespiele. Veröffentlichungen erfolgen ausschließlich nach gesondertem Auftrag.
+Ergebnis: android/app/build/outputs/bundle/release/app-release.aab. Vor jedem neuen Upload Versionsname und Versionscode in release-settings.json aktualisieren; Code 21 ist bereits für 1.1.19 verwendet. Code 22 ist für 1.1.20 vorbereitet und vor einem Upload mit dem Play-Console-Stand abzugleichen. App-ID: de.heikeamthor.lesespiele. Veröffentlichungen erfolgen ausschließlich nach gesondertem Auftrag.
 
 ## Quelldateien und Bilder
 
@@ -66,4 +73,5 @@ Anschließend npm run android:sync und die Prüfungen wiederholen. web-source/ e
 
 ## Dokumentation
 
-Aktueller Stand: LITE-STATUS.md. Release-Identität: RELEASE-1.1.19.json. Prüfumfang und Grenzen: PRUEFUNG.md. Alte In-App-Kaufanleitungen und lokale Diagnose-/Signierhelfer mit gerätespezifischen Pfaden gehören nicht zum aktuellen GitHub-Paket.
+Aktueller Stand: LITE-STATUS.md. Neuer vorbereiteter Stand: RELEASE-1.1.20.md. Letzte gebaute Release-Identität: RELEASE-1.1.19.json. Prüfumfang und Grenzen: PRUEFUNG.md. Alte In-App-Kaufanleitungen und lokale Diagnose-/Signierhelfer mit gerätespezifischen Pfaden gehören nicht zum aktuellen GitHub-Paket.
+

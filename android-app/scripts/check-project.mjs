@@ -13,10 +13,15 @@ for (const f of source.files) {
   const bytes = await readFile(new URL('../web-source/' + f.path, import.meta.url));
   assert.equal(createHash('sha256').update(bytes).digest('hex'), overrides.get(f.path) || f.sha256, 'Quelle verändert: ' + f.path);
 }
+for (const f of lite.files) {
+  const bytes = await readFile(new URL('../web-source/' + f.path, import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), f.sha256, 'Dokumentierte Quelle verändert: ' + f.path);
+}
 for (const name of await readdir(new URL('../www/', import.meta.url))) {
   if (!/\.(html|js|css)$/.test(name)) continue;
   const text = await readFile(new URL('../www/' + name, import.meta.url), 'utf8');
   assert.ok(!text.includes('serviceWorker.register('), 'Service Worker im lokalen Paket: ' + name);
+  assert.ok(!['beforeinstallprompt', 'web-install.js', 'web-install.css'].some(marker => text.includes(marker)), 'Web-Installation im nativen Paket: ' + name);
   for (const url of text.matchAll(/https?:\/\/[^\s"'<>`\\)]+/g)) {
     // Capacitor includes this documentation URL in a diagnostic message; it is not loaded.
     if (name === 'native-runtime.js' && url[0] === 'https://capacitorjs.com/') continue;
@@ -28,4 +33,5 @@ for (const name of await readdir(new URL('../www/', import.meta.url))) {
     await access(new URL('../www/' + value.replace(/^\.\//, ''), import.meta.url));
   }
 }
-console.log('Lite-Quellen entsprechen dem dokumentierten Stand; lokale Verweise vorhanden; kein Service Worker und keine externen Laufzeitadressen.');
+console.log('Dokumentierte Quellen stimmen überein; lokale Verweise vorhanden; kein Service Worker, keine Web-Installation und keine externen Laufzeitadressen.');
+

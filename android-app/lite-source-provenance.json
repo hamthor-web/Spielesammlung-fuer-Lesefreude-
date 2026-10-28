@@ -1,5 +1,5 @@
 {
-  "description": "Lokale Lite-Änderungen auf Grundlage des unveränderten Herkunftsnachweises.",
+  "description": "Dokumentierte Quelländerungen der vollständigen Android-Kaufversion, einschließlich Lesbarkeit und Auswahlseiten 1.1.20.",
   "files": [
     {
       "path": "geschichten.html",
@@ -27,11 +27,22 @@
     },
     {
       "path": "index.html",
-      "sha256": "a022b3e8596717e6474ac6abb70df074f11fa8af875f645bfdb96e4eb1182714"
+      "sha256": "ad282f374e2f38ed41c3b32f52e18f053108de3cae1a1f5c81e2a5feada5819c"
     },
     {
       "path": "wuerfeln-freizeit.html",
       "sha256": "3f60bacc69592298ee552745313a122f864439679dfdeef7c839204fa0648aee"
+    },
+    {
+      "path": "dice-ui.js",
+      "sha256": "1940a933a60c32238fed9f53e7803f0bda3e1f66922e74d1b6814ee80aac6c71"
+    },
+    {
+      "path": "dice-ui.css",
+      "sha256": "fbb1a67c7c240812a103f3ec9ade472bb74b7fa9ad6791714dcd53b03baaca4a"
     }
-  ]
+  ],
+  "layoutSourceCommit": "a9f23c6b0cddbe373120646d6e04470dcd0e4805",
+  "updatedOn": "2026-10-28"
 }
+
