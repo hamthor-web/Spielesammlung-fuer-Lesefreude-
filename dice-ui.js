@@ -51,3 +51,5 @@ addEventListener('DOMContentLoaded',()=>{
 });
 
 
+
+addEventListener('DOMContentLoaded',()=>{document.getElementById('die')?.setAttribute('aria-hidden','true');});
