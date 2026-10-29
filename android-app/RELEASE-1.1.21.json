@@ -1,0 +1,16 @@
+{
+  "versionName": "1.1.21",
+  "versionCode": 23,
+  "packageId": "de.heikeamthor.lesespiele",
+  "aabFile": "Lesespiele-Play-1.1.21.aab",
+  "aabBytes": 54065023,
+  "aabSha256": "FC84F9C0BF203170B52E7F122DC84C3C494B18B6F076131D19070F777FCA1A32",
+  "uploadCertificateSha256": "EA14AD75C7EFFEA842B6E8BF9FFF61DF3863DC56AC2C1DF60A6889148F0EE70C",
+  "webSourceCommit": "33a4e6211266b5d7d9bf24d0814bc237382eef0e",
+  "builtOn": "2026-10-29",
+  "signatureVerified": true,
+  "deviceTested": false,
+  "googlePlayPublicationStatus": "not confirmed",
+  "localAndroidSourceCommit": "e41f4ad912a6d0a75ff98695666a54ddcf0114bb",
+  "androidSourceUploadStatus": "pending; full Android 1.1.21 source remains local"
+}
