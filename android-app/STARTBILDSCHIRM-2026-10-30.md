@@ -1,0 +1,31 @@
+# Android: bestätigte Hintergrundkorrektur · 30. Oktober 2026
+
+Grundlage: gesicherter Android-Quellstand 1.1.21, Commit 9a37b61c4f80b70b164a55f46cafa0c4358a3152.
+
+Heike hat die lokale Vorschau `Startbildschirm_Hintergrund_Test.html` bestätigt und die Übernahme in Android beauftragt.
+
+## Übernommene Darstellung
+
+- Das vorhandene Original `web-source/start-wiese.png` (683 × 1536 Pixel) ersetzt auf der Android-Startseite die kleine Hochformatdatei (180 × 270 Pixel).
+- Der Hintergrund füllt die gesamte Startseitenfläche einschließlich gegebenenfalls überlaufender Inhalte mit `cover`, ohne Verzerrung und ohne den bisherigen grünen Abschlussstreifen. Je nach Seitenverhältnis wird ein Bildausschnitt sichtbar.
+- Die drei vorhandenen Spielkacheln stehen im Hochformat untereinander und im Querformat nebeneinander. Ihre Größe berücksichtigt die verfügbare Bildschirmhöhe und die vorhandene Profilnavigation.
+- Die Umsetzung verwendet die bestätigte Originalauflösung. Auf großen Bildschirmen bleibt die Auflösung des Originals die Grenze der Schärfe; es wurde keine künstliche Nachschärfung vorgenommen.
+- Die Test-Steuerleiste und die Platzhalterfunktionen der Vorschau werden nicht übernommen. Vorhandene Spielverknüpfungen, Profile, Fortschrittsschlüssel und Navigation bleiben erhalten.
+
+Die Änderung liegt in `src/native-layout.css` und wird über den vorhandenen Android-Build eingebunden. Die Bildoptimierung im Projekt erhält die Bildpixel und löst den lokalen Bildpfad auf. Die Web-App außerhalb von `android-app` wird nicht geändert.
+
+## Release-Status
+
+Dies ist eine Quellkorrektur nach 1.1.21. Die bestehende Release-Dokumentation und die Versionsnummer 1.1.21 beschreiben weiterhin das bereits gebaute Bundle. Für das nächste Store-Update sind eine neue Versionsnummer und ein höherer Versionscode, ein neuer Android-Bau, Signierung und Gerätetest erforderlich. Ein neues signiertes APK/AAB und eine Play-Veröffentlichung sind mit dieser Quelländerung nicht erfolgt.
+
+## Prüfung der Quellkorrektur
+
+- `npm run build`, `npm run check` und alle 31 vorhandenen Tests erfolgreich.
+- `npx cap sync android` erfolgreich; das korrigierte Offline-Webpaket liegt auch im lokalen nativen Android-Projekt.
+- Browserprüfung des erzeugten `www/home.html` bei 393 × 852, 852 × 393, 768 × 1024 und 1366 × 768 Pixeln: Originalauflösung 683 × 1536, Hintergrundgröße `cover`, Hochformatkacheln untereinander, kein horizontaler Überlauf; die drei Kacheln bleiben sichtbar.
+- Die Würfelkachel öffnet weiterhin die bestehende Kategorie. Keine JavaScript-Fehler bei dieser Prüfung.
+- Kein physischer Android-Gerätetest und kein neuer nativer APK/AAB-Bau in diesem Arbeitsschritt.
+
+## Projektverwaltung / nächster Schritt
+
+Bestätigte Entscheidung: Darstellung der Testdatei übernehmen. Bearbeitungsstand: Hintergrundkorrektur im Android-Quellprojekt umgesetzt und geprüft; neues installierbares Update noch offen. Diese Akten-Ergänzung ergänzt die älteren zentralen Projektquellen; sie ersetzt nicht die Release-Unterlagen zu 1.1.21.

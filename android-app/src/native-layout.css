@@ -86,3 +86,45 @@ dialog.reading-dialog {
   .workspace:has(.side > .reading-card) { grid-template-columns: minmax(0, 1.5fr) minmax(380px, 1fr); }
 }
 
+
+/* Approved background preview, 2026-10-30. Keep the original image in both
+   orientations; cover also paints content taller than the viewport. */
+#home {
+  min-height: calc(100dvh - var(--app-navigation-height, 0px));
+  padding: calc(19vw + 24px) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  background: #68bd3e url("./start-wiese.png") center top / cover no-repeat;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+#home .home-inner {
+  width: 100%;
+  max-width: none;
+  flex: 0 0 auto;
+  margin: auto 0;
+}
+#home .tiles {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: clamp(16px, 2.5vw, 36px);
+}
+#home .tile {
+  width: min(clamp(150px, 25vw, 290px), max(100px, calc(100dvh - var(--app-navigation-height, 0px) - 19vw - 48px)));
+  max-width: 100%;
+  max-height: none;
+  flex: 0 0 auto;
+  border-radius: 24px;
+  box-shadow: 0 10px 24px #173c2a40;
+}
+@media (orientation: portrait) {
+  #home { padding-top: calc(22vw + 20px); }
+  #home .tiles { flex-direction: column; gap: 14px; }
+  #home .tile {
+    width: clamp(125px, calc((100dvh - var(--app-navigation-height, 0px) - 194px) / 3), 220px);
+    max-width: 58vw;
+  }
+}
