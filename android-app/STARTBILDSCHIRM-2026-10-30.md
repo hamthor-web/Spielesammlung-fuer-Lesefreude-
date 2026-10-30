@@ -16,7 +16,7 @@ Die Änderung liegt in `src/native-layout.css` und wird über den vorhandenen An
 
 ## Release-Status
 
-Dies ist eine Quellkorrektur nach 1.1.21. Die bestehende Release-Dokumentation und die Versionsnummer 1.1.21 beschreiben weiterhin das bereits gebaute Bundle. Für das nächste Store-Update sind eine neue Versionsnummer und ein höherer Versionscode, ein neuer Android-Bau, Signierung und Gerätetest erforderlich. Ein neues signiertes APK/AAB und eine Play-Veröffentlichung sind mit dieser Quelländerung nicht erfolgt.
+Das Update ist anschließend als 1.1.22 mit Versionscode 24 gebaut und geprüft worden. Test-APK und unsigned.aab sind fertig; siehe `RELEASE-1.1.22.md`. Die ursprünglichen Unterlagen zu 1.1.21 bleiben erhalten. Lokale Signierung mit dem bisherigen Upload-Schlüssel, physischer Gerätetest und Play-Veröffentlichung stehen noch aus.
 
 ## Prüfung der Quellkorrektur
 
@@ -24,8 +24,8 @@ Dies ist eine Quellkorrektur nach 1.1.21. Die bestehende Release-Dokumentation u
 - `npx cap sync android` erfolgreich; das korrigierte Offline-Webpaket liegt auch im lokalen nativen Android-Projekt.
 - Browserprüfung des erzeugten `www/home.html` bei 393 × 852, 852 × 393, 768 × 1024 und 1366 × 768 Pixeln: Originalauflösung 683 × 1536, Hintergrundgröße `cover`, Hochformatkacheln untereinander, kein horizontaler Überlauf; die drei Kacheln bleiben sichtbar.
 - Die Würfelkachel öffnet weiterhin die bestehende Kategorie. Keine JavaScript-Fehler bei dieser Prüfung.
-- Kein physischer Android-Gerätetest und kein neuer nativer APK/AAB-Bau in diesem Arbeitsschritt.
+- Beim ursprünglichen Schritt der Quellkorrektur noch kein nativer APK/AAB-Bau. Der anschließende erfolgreiche Bau ist in RELEASE-1.1.22.md dokumentiert; der physische Gerätetest bleibt offen.
 
 ## Projektverwaltung / nächster Schritt
 
-Bestätigte Entscheidung: Darstellung der Testdatei übernehmen. Bearbeitungsstand: Hintergrundkorrektur im Android-Quellprojekt umgesetzt und geprüft; neues installierbares Update noch offen. Diese Akten-Ergänzung ergänzt die älteren zentralen Projektquellen; sie ersetzt nicht die Release-Unterlagen zu 1.1.21.
+Bestätigte Entscheidung: Darstellung der Testdatei übernehmen. Bearbeitungsstand: Hintergrundkorrektur im Android-Quellprojekt umgesetzt und geprüft; Test-APK und unsigned.aab 1.1.22 gebaut; Upload-Signierung und Gerätetest offen. Diese Akten-Ergänzung ergänzt die älteren zentralen Projektquellen; sie ersetzt nicht die Release-Unterlagen zu 1.1.21.

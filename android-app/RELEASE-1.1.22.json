@@ -1,0 +1,35 @@
+{
+  "versionName": "1.1.22",
+  "versionCode": 24,
+  "packageId": "de.heikeamthor.lesespiele",
+  "sourceBaseCommit": "8af10337de2d22f2ba9e61b14b00a91e0c775575",
+  "builtOn": "2026-10-30",
+  "aab": {
+    "file": "Lesespiele-Play-1.1.22-unsigned.aab",
+    "size": 53983263,
+    "sha256": "29E93B481E15B27A1F8E9224DF162E4716ED7EB7EE2F6528FD717DD6F74CF5D1"
+  },
+  "aabSigningStatus": "unsigned; awaiting local signing with existing upload key",
+  "expectedUploadCertificateSha256": "EA14AD75C7EFFEA842B6E8BF9FFF61DF3863DC56AC2C1DF60A6889148F0EE70C",
+  "testApk": {
+    "file": "Lesespiele-Test-1.1.22.apk",
+    "size": 53464083,
+    "sha256": "7E0458A63A864222DD40BCD464D957B4BAD4D11A1B20C983E9E885C7171F9C5A",
+    "packageId": "de.heikeamthor.lesespiele.test",
+    "versionName": "1.1.22-test",
+    "signing": "Android debug certificate; separate test app"
+  },
+  "deviceTested": false,
+  "googlePlayPublicationStatus": "not uploaded by this task",
+  "checks": {
+    "existingTestsPassed": 31,
+    "projectCheck": true,
+    "capacitorSync": true,
+    "assembleInternalTest": true,
+    "bundleRelease": true,
+    "lintVitalRelease": true,
+    "bundletoolValidate": true,
+    "embeddedBackgroundPixelsUnchanged": true,
+    "signerSelfTest": true
+  }
+}
