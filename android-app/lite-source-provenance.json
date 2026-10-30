@@ -19,7 +19,7 @@
     },
     {
       "path": "wuerfeln-maerchen.html",
-      "sha256": "e64c26c36ae321a2c542afc381dfd73592ea37f4b96e841a5f509512044dab24"
+      "sha256": "7261cc925779d0e91df51ac45dff5e9620850df2fcb9a097b36e52db0154eb8c"
     },
     {
       "path": "verruecktes-fussball.html",
@@ -43,6 +43,7 @@
     }
   ],
   "layoutSourceCommit": "a9f23c6b0cddbe373120646d6e04470dcd0e4805",
-  "updatedOn": "2026-10-29",
-  "diceSourceCommit": "33a4e6211266b5d7d9bf24d0814bc237382eef0e"
+  "updatedOn": "2026-10-30",
+  "diceSourceCommit": "33a4e6211266b5d7d9bf24d0814bc237382eef0e",
+  "textCorrection": "Märchenfrage: Würdest du lieber auf einem Pferd reiten oder in einer Kutsche fahren?"
 }
