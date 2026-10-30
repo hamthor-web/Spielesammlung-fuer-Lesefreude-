@@ -1,0 +1,24 @@
+{
+  "versionName": "1.1.23",
+  "versionCode": 25,
+  "packageId": "de.heikeamthor.lesespiele",
+  "file": "Lesespiele-Play-1.1.23-unsigned.aab",
+  "size": 53983267,
+  "sha256": "A1D4D1C4990ED677B1769296A5A41D17224B1454D2E57789A8A73617D4B5B775",
+  "previousUnsignedSha256": "29E93B481E15B27A1F8E9224DF162E4716ED7EB7EE2F6528FD717DD6F74CF5D1",
+  "changedEntries": [
+    "base/assets/public/wuerfeln-maerchen.html",
+    "base/manifest/AndroidManifest.xml"
+  ],
+  "signingStatus": "unsigned; local upload signature required",
+  "expectedUploadCertificateSha256": "EA14AD75C7EFFEA842B6E8BF9FFF61DF3863DC56AC2C1DF60A6889148F0EE70C",
+  "nativeCompilationRepeated": false,
+  "assembly": "Regenerated web asset and updated manifest in existing compiled Android shell",
+  "checks": {
+    "bundletoolValidate": true,
+    "manifestVersionVerified": true,
+    "webPackageBuildAndCheck": true,
+    "signerRoundTripTest": true,
+    "deviceTested": false
+  }
+}

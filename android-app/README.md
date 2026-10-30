@@ -1,8 +1,8 @@
 # Lesen, entdecken, erzählen – Android-App
 
-**Aktueller Quellstand: 1.1.22 · Versionscode 24 · 30. Oktober 2026**
+**Aktueller Quellstand: 1.1.23 · Versionscode 25 · 30. Oktober 2026**
 
-Das Hintergrund-Update ist als Test-APK und als unsigned.aab gebaut und geprüft. Die lokale Signierung mit dem bisherigen Upload-Schlüssel und der Gerätetest stehen aus. Details: [RELEASE-1.1.22.md](RELEASE-1.1.22.md). Das letzte hier dokumentierte mit dem Upload-Schlüssel signierte Bundle bleibt 1.1.21.
+Die korrigierte Märchenfrage ist im neuen unsigned.aab 1.1.23 enthalten. Paket und Signierhilfe sind geprüft; lokale Upload-Signierung und Gerätetest stehen aus. Details: [RELEASE-1.1.23.md](RELEASE-1.1.23.md). Die bestätigte Hintergrund-Testfassung bleibt als 1.1.22 dokumentiert. Das letzte hier dokumentierte mit dem Upload-Schlüssel signierte Bundle bleibt 1.1.21.
 
 Der vollständige Quellstand der am 29. Oktober 2026 gebauten und signierten Version 1.1.21 ist jetzt gesichert. Änderungen, Prüfungen und AAB-Prüfsumme stehen in [RELEASE-1.1.21.md](RELEASE-1.1.21.md) und [RELEASE-1.1.21.json](RELEASE-1.1.21.json). Neuere Repository-Änderungen wurden erhalten. Der Startbildschirm wurde bei der Quellsicherung nicht verändert. Der aktuelle Veröffentlichungsstatus in Google Play ist nicht bestätigt.
 
