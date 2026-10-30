@@ -1,8 +1,8 @@
 # Lesen, entdecken, erzählen – Android-App
 
-**Dokumentiertes signiertes Release: 1.1.21 · Versionscode 23 · 29. Oktober 2026**
+**Gesicherter Android-Quellstand: 1.1.21 · Versionscode 23 · 30. Oktober 2026**
 
-Die signierte und geprüfte AAB 1.1.21 ist in [RELEASE-1.1.21.md](RELEASE-1.1.21.md) und [RELEASE-1.1.21.json](RELEASE-1.1.21.json) dokumentiert. Die vollständigen Android-Quelländerungen sind noch lokal; die Synchronisierung nach GitHub steht aus. Der Quellstand in diesem Ordner ist daher weiterhin 1.1.20. Der aktuelle Google-Play-Veröffentlichungsstatus ist nicht bestätigt.
+Der vollständige Quellstand der am 29. Oktober 2026 gebauten und signierten Version 1.1.21 ist jetzt gesichert. Änderungen, Prüfungen und AAB-Prüfsumme stehen in [RELEASE-1.1.21.md](RELEASE-1.1.21.md) und [RELEASE-1.1.21.json](RELEASE-1.1.21.json). Neuere Repository-Änderungen wurden erhalten. Der Startbildschirm wurde bei der Quellsicherung nicht verändert. Der aktuelle Veröffentlichungsstatus in Google Play ist nicht bestätigt.
 
 Vollständige Kauf-App, einmalig 5,99 EUR über Google Play. Alle sieben Spiele enthalten; keine In-App-Käufe und kein Abo. Dieser Ordner archiviert die aktuelle native Capacitor-App. Die Browser-/GitHub-Pages-Fassung im übergeordneten Repository wird damit nicht ersetzt.
 

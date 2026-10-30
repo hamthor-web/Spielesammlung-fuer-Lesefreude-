@@ -12,5 +12,6 @@
   "deviceTested": false,
   "googlePlayPublicationStatus": "not confirmed",
   "localAndroidSourceCommit": "e41f4ad912a6d0a75ff98695666a54ddcf0114bb",
-  "androidSourceUploadStatus": "pending; full Android 1.1.21 source remains local"
+  "androidSourceUploadStatus": "complete in the commit containing this file; verified against local Android 1.1.21 source",
+  "sourceBackupDate": "2026-10-30"
 }

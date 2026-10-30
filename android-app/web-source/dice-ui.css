@@ -52,3 +52,16 @@
 
 .dice-board-tools .dice-zoom-reset { margin: 0; }
 
+/* Approved task completion and larger flat die, 2026-10-29. */
+#cardDock .task-done{display:block;align-self:center;flex:none;min-width:180px;min-height:64px;margin:24px auto 4px;padding:14px 36px;border:2px solid #17472b;border-radius:18px;background:linear-gradient(#397b45,#245f35);color:#fff;font:800 28px/1.2 "Trebuchet MS",Arial,sans-serif;box-shadow:0 5px 0 #153e24,0 8px 14px #173c2a22;cursor:pointer;touch-action:manipulation}
+#cardDock .task-done[hidden]{display:none!important}
+#cardDock .task-done:active{transform:translateY(3px);box-shadow:0 2px 0 #153e24}
+#cardDock .task-done:focus-visible,#diceBtn:focus-visible{outline:4px solid #d39819;outline-offset:6px}
+#cardDock :is(#moveCard,#footballCard,#jokerCard){cursor:default}
+#app #taskDock #dicePanel{min-height:132px;padding:12px 4px 14px;overflow:visible}
+#app #diceBtn{width:124px;height:124px;cursor:pointer}
+#app #die{box-sizing:border-box;width:108px;height:108px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:15px;gap:6px;border-radius:20px;background:#fff;box-shadow:0 5px 14px #23352230,inset 0 0 0 3px #444;transform:none;transform-style:flat}
+#die .pip{width:16px;height:16px;background:#222;border-radius:50%;align-self:center;justify-self:center}
+#app #die.roll{animation:flat-dice-roll .7s cubic-bezier(.17,.84,.44,1)}
+@keyframes flat-dice-roll{0%{transform:rotate(0deg) scale(1)}30%{transform:rotate(130deg) scale(.92)}65%{transform:rotate(290deg) scale(1.08)}100%{transform:rotate(360deg) scale(1)}}
+@media(prefers-reduced-motion:reduce){#app #die.roll{animation:none}}

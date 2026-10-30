@@ -1,5 +1,5 @@
 {
-  "description": "Dokumentierte Quelländerungen der vollständigen Android-Kaufversion, einschließlich Lesbarkeit und Auswahlseiten 1.1.20.",
+  "description": "Dokumentierte Quelländerungen der vollständigen Android-Kaufversion, einschließlich Fertig-Buttons und größerem flachen Würfel 1.1.21.",
   "files": [
     {
       "path": "geschichten.html",
@@ -7,7 +7,7 @@
     },
     {
       "path": "wuerfeln-sport.html",
-      "sha256": "14395d5a3ba54ed7049ce6cf89da95f93cc19889920423dc6577e520bdcc948a"
+      "sha256": "5ed2f6c5a589a0084b9939a415ad057602f9ed2b843571f33421d8708a123156"
     },
     {
       "path": "finde-den-fehler.html",
@@ -19,7 +19,7 @@
     },
     {
       "path": "wuerfeln-maerchen.html",
-      "sha256": "d939f1bb704cb9ab74f0b9044e7a9f1c9cc61407b9d62c93994c2ad211d3f0d8"
+      "sha256": "e64c26c36ae321a2c542afc381dfd73592ea37f4b96e841a5f509512044dab24"
     },
     {
       "path": "verruecktes-fussball.html",
@@ -31,18 +31,18 @@
     },
     {
       "path": "wuerfeln-freizeit.html",
-      "sha256": "3f60bacc69592298ee552745313a122f864439679dfdeef7c839204fa0648aee"
+      "sha256": "f5067b0df9bf51c6870e01da5a944e2e47c938de4a6f198bfcd5c6a95a4a0e8e"
     },
     {
       "path": "dice-ui.js",
-      "sha256": "1940a933a60c32238fed9f53e7803f0bda3e1f66922e74d1b6814ee80aac6c71"
+      "sha256": "481d4228e480ffb02e3b53b2d8830527a33ad4bbd2d1699448cf2f181796fc7a"
     },
     {
       "path": "dice-ui.css",
-      "sha256": "fbb1a67c7c240812a103f3ec9ade472bb74b7fa9ad6791714dcd53b03baaca4a"
+      "sha256": "4d67a50614e8f836c1b7109ebd6d65101c379bff6ec73b072a2b14b2287d34e7"
     }
   ],
   "layoutSourceCommit": "a9f23c6b0cddbe373120646d6e04470dcd0e4805",
-  "updatedOn": "2026-10-28"
+  "updatedOn": "2026-10-29",
+  "diceSourceCommit": "33a4e6211266b5d7d9bf24d0814bc237382eef0e"
 }
-

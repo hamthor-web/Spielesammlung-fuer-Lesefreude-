@@ -36,4 +36,6 @@ Die AAB liegt im lokalen Arbeitsordner und ist nicht Teil dieses Repositorys. Si
 
 ## Stand der Quellsicherung
 
-Diese Release-Dokumentation beschreibt die lokal gebaute und geprüfte AAB. Die vollständigen Android-Quelländerungen für 1.1.21 sind noch nicht auf GitHub übertragen. Der Upload des lokalen Quellcommits e41f4ad912a6d0a75ff98695666a54ddcf0114bb scheiterte; die GitHub-App konnte die große eingebettete Märchendatei nicht übertragen, und lokal war keine nichtinteraktive Git-Anmeldung verfügbar. Der Android-Quellstand im Repository ist deshalb weiterhin 1.1.20. Für einen erneuten Bau von 1.1.21 muss zuerst die Quellsynchronisierung abgeschlossen werden.
+Der vollständige Android-Quellstand 1.1.21 wurde am 30. Oktober 2026 mit dem aktuellen Repository abgeglichen und gesichert. Die sieben geänderten Quelldateien stimmen mit dem lokal gebauten Stand überein. Neuere Repository-Änderungen und die bestehenden Release-Dokumente bleiben erhalten. Der Startbildschirm wurde bei dieser Sicherung nicht verändert.
+
+Build-Ausgaben, installierte Abhängigkeiten, lokale SDK-Pfade und Signierschlüssel sind ausgeschlossen. Diese Dateien gehören nicht zum übertragbaren Quellprojekt. Die vorhandenen Build-Skripte erzeugen das Offline-Spielepaket erneut; zum Signieren ist weiterhin der private Upload-Schlüssel nötig.

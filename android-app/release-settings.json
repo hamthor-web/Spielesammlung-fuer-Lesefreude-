@@ -1,7 +1,6 @@
 {
   "packageId": "de.heikeamthor.lesespiele",
-  "versionCode": 22,
-  "versionName": "1.1.20",
+  "versionCode": 23,
+  "versionName": "1.1.21",
   "note": "Vor dem Play-Upload mit dem höchsten bereits verwendeten Versionscode abgleichen."
 }
-
