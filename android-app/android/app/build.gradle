@@ -60,8 +60,9 @@ android {
         }
         internalTest {
             initWith release
-            applicationIdSuffix ".test"
+            applicationIdSuffix ".bg22"
             versionNameSuffix "-test"
+            resValue "string", "app_name", "Lesespiele Bildprüfung"
             signingConfig signingConfigs.debug
             matchingFallbacks = ['release']
         }

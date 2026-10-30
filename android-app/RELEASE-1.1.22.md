@@ -38,3 +38,12 @@ Die direkt installierbare Testdatei **Lesespiele-Test-1.1.22.apk** verwendet `de
 ## Offene Schritte / Projektakte
 
 Bearbeitungsstand: **Android-Update 1.1.22 gebaut; lokale Upload-Signierung und physischer Gerätetest offen.** Die Test-APK dient dem Gerätetest. Anschließend die unsigned.aab lokal signieren und die signierte Ausgabe in Google Play hochladen. Dieser Arbeitsschritt hat keine Play-Veröffentlichung ausgelöst.
+
+
+## Installationskorrektur der Test-APK · 30.10.2026
+
+Heike meldet: „App aktualisieren?“ und anschließend „Die App wurde nicht installiert“. Das spricht für einen Konflikt mit einer bereits installierten Test-App; die unspezifische Meldung beweist die genaue Ursache nicht. Die ursprüngliche Test-APK war mit einem neu erzeugten Debugzertifikat signiert und nutzte die allgemeine Kennung `.test`.
+
+Zusätzliche Testfassung: `Lesespiele-Hintergrundtest-1.1.22.apk`, Kennung `de.heikeamthor.lesespiele.bg22`, sichtbarer Name „Lesespiele Bildprüfung“, Version 1.1.22-test, Code 24. Sie aktualisiert weder die Kauf-App noch die alte allgemeine Test-App. Spielstände der bestehenden Apps bleiben in deren eigenen App-Bereichen.
+
+Die bereits gebaute Test-APK wurde ausschließlich in Manifest- und Ressourcenmetadaten isoliert, neu ausgerichtet und mit einem separaten Testzertifikat signiert. Kein erneuter nativer Vollbau. Alle Assets und DEX-Dateien wurden byteweise mit der ursprünglichen Test-APK verglichen und sind unverändert. APK-Signaturen v2/v3 und Manifestangaben wurden erfolgreich geprüft. SHA-256: `85438117B23591B4C39699C391B1B7354D845F5471B9CCBC9D6FF8C1E1F409F7`. Ein Gerätetest bleibt offen. Die Gradle-Konfiguration für internalTest übernimmt Kennung und sichtbaren Namen für spätere Quellbauten. Store-Bundle und Kaufpaket werden dadurch nicht geändert.
