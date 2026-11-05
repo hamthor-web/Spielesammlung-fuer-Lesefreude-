@@ -34,7 +34,7 @@ addEventListener('DOMContentLoaded',()=>{
       document.documentElement.style.setProperty('--reading-scale', scale);
       toolbars.forEach(({less, reset, more}) => {
         reset.textContent = percentage();
-        reset.setAttribute('aria-label', 'Textgr��e ' + percentage() + '. Auf 100 Prozent zur�cksetzen');
+        reset.setAttribute('aria-label', 'Textgröße ' + percentage() + '. Auf 100 Prozent zurücksetzen');
         less.disabled = scale <= 1;
         more.disabled = scale >= 3;
       });
@@ -50,14 +50,14 @@ addEventListener('DOMContentLoaded',()=>{
     function makeToolbar(card) {
       const bar = document.createElement('div');
       bar.className = 'reading-controls';
-      bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Textgr��e der Aufgabenkarte');
-      const less = makeButton('Text kleiner', 'A-', () => setScale(scale - .25));
-      const reset = makeButton('Textgr��e zur�cksetzen', percentage(), () => setScale(1));
+      bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Textgröße der Aufgabenkarte');
+      const less = makeButton('Text kleiner', 'A−', () => setScale(scale - .25));
+      const reset = makeButton('Textgröße zurücksetzen', percentage(), () => setScale(1));
       reset.className = 'reading-percentage';
-      const more = makeButton('Text gr��er', 'A+', () => setScale(scale + .25));
+      const more = makeButton('Text größer', 'A+', () => setScale(scale + .25));
       bar.append(less, reset, more);
       if (card) {
-        const expand = makeButton('Aufgabenkarte gro� lesen', 'Gro� lesen', () => openReader(card));
+        const expand = makeButton('Aufgabenkarte groß lesen', 'Groß lesen', () => openReader(card));
         expand.className = 'reading-expand'; bar.append(expand);
       }
       bar.addEventListener('click', event => event.stopPropagation());
@@ -100,13 +100,13 @@ addEventListener('DOMContentLoaded',()=>{
         dialog = document.createElement('dialog'); dialog.className = 'reading-dialog';
         dialog.setAttribute('aria-labelledby', 'readingDialogTitle');
         const header = document.createElement('header'); header.className = 'reading-dialog-header';
-        const title = document.createElement('h2'); title.id = 'readingDialogTitle'; title.textContent = 'Gro� lesen';
-        const close = makeButton('Zur�ck zur Aufgabe', 'Zur�ck zur Aufgabe', () => dialog.close());
+        const title = document.createElement('h2'); title.id = 'readingDialogTitle'; title.textContent = 'Groß lesen';
+        const close = makeButton('Zurück zur Aufgabe', 'Zurück zur Aufgabe', () => dialog.close());
         close.autofocus = true; close.className = 'reading-close';
         header.append(title, close);
         readerBody = document.createElement('div'); readerBody.className = 'reading-dialog-body';
         const footer = document.createElement('p'); footer.className = 'reading-dialog-note';
-        footer.textContent = 'In Ruhe lesen. Zum Antworten oder Weiterspielen zur�ck zur Aufgabe.';
+        footer.textContent = 'In Ruhe lesen. Zum Antworten oder Weiterspielen zurück zur Aufgabe.';
         dialog.append(header, makeToolbar(null), readerBody, footer);
         document.body.append(dialog);
         dialog.addEventListener('close', () => { sourceObserver?.disconnect(); sourceCard = null; });
@@ -171,11 +171,11 @@ addEventListener('DOMContentLoaded',()=>{
       button.setAttribute('aria-controls', gallery.id);
       return button;
     };
-    const left = makeArrow('Suchbilder nach links verschieben', '?');
-    const right = makeArrow('Suchbilder nach rechts verschieben', '?');
+    const left = makeArrow('Suchbilder nach links verschieben', '❮');
+    const right = makeArrow('Suchbilder nach rechts verschieben', '❯');
     rail.append(left, gallery, right);
     gallery.classList.add('search-preview-gallery');
-    gallery.setAttribute('aria-label', 'Suchbilder - zum Vergr��ern antippen');
+    gallery.setAttribute('aria-label', 'Suchbilder – zum Vergrößern antippen');
     let expanded = null;
     const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
     function updateArrows() {
@@ -222,7 +222,7 @@ addEventListener('DOMContentLoaded',()=>{
       if (expanded && !gallery.contains(expanded)) setExpanded(null);
       for (const button of gallery.querySelectorAll(selector)) {
         if (!button.hasAttribute('aria-expanded')) button.setAttribute('aria-expanded', 'false');
-        if (!button.hasAttribute('aria-label')) button.setAttribute('aria-label', 'Suchbild ' + button.dataset.id + ' ausw�hlen und vergr��ern');
+        if (!button.hasAttribute('aria-label')) button.setAttribute('aria-label', 'Suchbild ' + button.dataset.id + ' auswählen und vergrößern');
       }
       updateArrows();
     }
