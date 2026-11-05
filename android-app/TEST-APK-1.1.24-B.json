@@ -1,0 +1,12 @@
+{
+  "packageId": "de.heikeamthor.lesespiele.test1124b",
+  "appName": "Lesespiele Test 1.1.24 B",
+  "versionCode": 26,
+  "versionName": "1.1.24-test-b",
+  "apkSha256": "D551C72A66A45D2EE3DEE4FEB0016BC1C4A0D21AA56B210ABA686B6DBF2DB0EA",
+  "webFilesVerified": 364,
+  "signatureVerified": true,
+  "deviceInstallationConfirmed": false,
+  "reason": "Previous test APK reused the older .test package ID. New isolated ID avoids update/signature collision.",
+  "productionAabChanged": false
+}

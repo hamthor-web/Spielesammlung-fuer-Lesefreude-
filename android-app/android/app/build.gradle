@@ -40,8 +40,9 @@ android {
     buildTypes {
         debug {
             // Install alongside the published app; local previews never replace it.
-            applicationIdSuffix ".test"
-            versionNameSuffix "-test"
+            applicationIdSuffix ".test1124b"
+            versionNameSuffix "-test-b"
+            resValue "string", "app_name", "Lesespiele Test 1.1.24 B"
         }
         release {
             if (signingReady) signingConfig signingConfigs.release
