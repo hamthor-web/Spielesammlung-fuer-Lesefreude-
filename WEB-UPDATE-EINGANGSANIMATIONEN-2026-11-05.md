@@ -28,3 +28,20 @@ Echte Geräte- und vollständige Offlineabnahme bleiben offen.
 
 Dieses Update betrifft ausschließlich die Webversion. Android-Quellen,
 Signierung, APK/AAB und Google-Play-Veröffentlichung werden nicht geändert.
+
+## Hochformat-Korrektur nach Rückmeldung
+
+Die bisherige Einspalten-Regel galt nur bis 760 CSS-Pixel Breite. Auf größeren
+Tablets oder schmalen hohen Desktopfenstern wurden deshalb im Hochformat drei
+Spalten angezeigt. Heike hat die senkrechte Anordnung für jedes Hochformat
+beauftragt. Die Regel gilt nun unabhängig von der Breite. Die quadratischen
+Kacheln teilen die verfügbare Höhe nach Abzug von Profilnavigation, Banner,
+Abständen und unterem Rand; Mindestgröße 144 Pixel zur Lesbarkeit auf sehr
+kurzen Ansichten, bei Bedarf bleibt Scrollen möglich.
+
+Chromium-Viewportprüfung: 390×844, 768×1024, 820×1180 und 1024×1366 zeigen
+drei Kacheln untereinander und innerhalb der verfügbaren Höhe. Wechsel nach
+844×390 stellt wieder die bestehende Reihe her; beim Zurückdrehen wird erneut
+eine Spalte angezeigt. Eingangsanimation und anschließende Spielauswahl geprüft.
+Die Hintergrundbilder, Kachelmotive und die Querformatregeln bleiben erhalten.
+Der Service-Worker-Cache wird zur Auslieferung der Korrektur erneuert.

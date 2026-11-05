@@ -134,12 +134,12 @@ body{min-height:100dvh}
 #home .tile:focus-visible { outline: 5px solid #fff; outline-offset: 7px; }
 #home .web-install { margin-top: 28px; flex-shrink: 0; }
 #home .adult-entry { margin-top: 24px; }
-@media (max-width: 760px) and (orientation: portrait) {
+@media (orientation: portrait) {
   #home {
     --home-scene-width: 100vw;
     --home-sign-space: calc(28vw + 28px);
-    --home-tile-size: min(64vw, 280px);
-    --home-gap: 20px;
+    --home-gap: clamp(10px, 1.5dvh, 22px);
+    --home-tile-size: min(82vw, max(144px, calc((var(--home-view-height) - var(--home-sign-space) - 2 * var(--home-gap) - 28px) / 3)));
     --home-row-height: calc(3 * var(--home-tile-size) + 2 * var(--home-gap));
     background-image: url("./start-hoch.webp");
   }
