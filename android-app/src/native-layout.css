@@ -1,4 +1,22 @@
 /* Keep the shared game frame inside the device viewport. */
+/* Search previews grow in normal flow, above the board. */
+.search-preview-rail { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 4px; min-width: 0; margin-bottom: 12px; }
+.search-preview-rail > .search-preview-gallery { min-width: 0; width: 100%; margin: 0; align-items: center; scroll-snap-type: none; overflow-x: auto; }
+.search-preview-arrow { display: grid; place-items: center; width: 44px; min-height: 48px; padding: 4px; border: 2px solid #8ca184; border-radius: 12px; background: #fffdf2; color: #315d39; font: 900 24px/1 Arial, sans-serif; cursor: pointer; touch-action: manipulation; }
+.search-preview-arrow:disabled { opacity: .35; cursor: default; }
+.search-preview-arrow:focus-visible { outline: 3px solid #226aa8; outline-offset: 1px; }
+.search-preview-gallery .tile.selected { flex-basis: 108px; height: 80px; transform: none; }
+.search-preview-gallery .tile.search-preview-expanded { flex-basis: var(--search-preview-width, 200px); height: 152px; }
+.search-preview-gallery .tile.search-preview-expanded img { object-fit: contain; }
+.search-preview-gallery .storyPreview.search-preview-expanded { flex-basis: var(--search-preview-width, 200px); width: var(--search-preview-width, 200px); }
+.search-preview-gallery .storyPreview.search-preview-expanded .ring { width: 100%; height: 142px; border-radius: 16px; transform: none; }
+.search-preview-gallery .storyPreview.search-preview-expanded .ring::after { border-radius: 12px; }
+.search-preview-gallery .storyPreview.search-preview-expanded .ring img { width: 100%; height: 130px; object-fit: contain; border-radius: 10px; }
+@media(max-width: 700px) {
+  .search-preview-gallery .tile.selected { flex-basis: 92px; height: 68px; }
+  .search-preview-gallery .tile.search-preview-expanded { flex-basis: var(--search-preview-width, 180px); height: 142px; }
+}
+@media(prefers-reduced-motion: reduce) { .search-preview-gallery .tile { transition: none; } }
 .preview-shell,.shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);min-width:0;min-height:0;overflow:hidden}
 .preview-shell .bar,.shell .bar{min-width:0;max-width:100%}
 .preview-shell .name,.shell .name{min-width:0;flex:1 1 0}
@@ -86,45 +104,14 @@ dialog.reading-dialog {
   .workspace:has(.side > .reading-card) { grid-template-columns: minmax(0, 1.5fr) minmax(380px, 1fr); }
 }
 
-
-/* Approved background preview, 2026-10-30. Keep the original image in both
-   orientations; cover also paints content taller than the viewport. */
-#home {
-  min-height: calc(100dvh - var(--app-navigation-height, 0px));
-  padding: calc(19vw + 24px) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-  background: #68bd3e url("./start-wiese.png") center top / cover no-repeat;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
-}
-#home .home-inner {
-  width: 100%;
-  max-width: none;
-  flex: 0 0 auto;
-  margin: auto 0;
-}
-#home .tiles {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  gap: clamp(16px, 2.5vw, 36px);
-}
-#home .tile {
-  width: min(clamp(150px, 25vw, 290px), max(100px, calc(100dvh - var(--app-navigation-height, 0px) - 19vw - 48px)));
-  max-width: 100%;
-  max-height: none;
-  flex: 0 0 auto;
-  border-radius: 24px;
-  box-shadow: 0 10px 24px #173c2a40;
-}
+/* Portrait search games: board, reading card, zoom controls, then reward. */
 @media (orientation: portrait) {
-  #home { padding-top: calc(22vw + 20px); }
-  #home .tiles { flex-direction: column; gap: 14px; }
-  #home .tile {
-    width: clamp(125px, calc((100dvh - var(--app-navigation-height, 0px) - 194px) / 3), 220px);
-    max-width: 58vw;
-  }
+  body.portrait-search .workspace,
+  body.portrait-search .workspace:has(.side > .reading-card) { grid-template-columns: minmax(0, 1fr); }
+  body.portrait-search .workspace > div:first-child { display: contents; }
+  body.portrait-search .workspace > div:first-child > .stage { grid-column: 1; grid-row: 1; }
+  body.portrait-search .workspace > .side { grid-column: 1; grid-row: 2; min-height: 0; }
+  body.portrait-search .workspace > div:first-child > .zoomrow { grid-column: 1; grid-row: 3; }
+  body.portrait-search .workspace > div:first-child > .reward-mount { grid-column: 1; grid-row: 4; }
+  body.portrait-search #card { scroll-margin-block: 16px; }
 }

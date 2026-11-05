@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#72c94c">
-<link rel="manifest" href="./manifest.webmanifest">
+
 <title>Lesen, entdecken, erzählen</title>
 <style>
 *{box-sizing:border-box}
@@ -90,7 +90,7 @@ body{min-height:100dvh}
 
 #home{flex-direction:column;justify-content:flex-start;align-items:center}.home-inner{margin:0 auto}.adult-entry{margin:32px auto 0;padding:12px 0 max(10px,env(safe-area-inset-bottom));text-align:center}.adult-entry button{border:0;background:rgba(255,255,255,.74);color:#28523a;text-decoration:underline;text-underline-offset:3px;border-radius:12px;padding:7px 12px;font:600 .83rem Nunito,Arial,sans-serif;cursor:pointer}.adult-panel{border:0;border-radius:20px;width:min(380px,92vw);max-height:85dvh;overflow:auto;background:#fff;padding:20px;color:#173c2a;box-shadow:0 8px 30px #0005}@media(orientation:landscape){.home-inner,.adult-entry{flex-shrink:0}.adult-entry{margin-top:12px;padding-top:6px}}.adult-panel::backdrop{background:#132f20a6}.adult-panel button{display:block;width:100%;margin:7px 0;text-align:left;font:inherit;font-weight:800;border:1px solid #8da982;border-radius:12px;padding:10px;background:white;color:#173c2a}
 </style>
-<style>.preview-shell{position:fixed;inset:0;z-index:80;background:#fff;display:grid;grid-template-rows:auto 1fr}.preview-shell[hidden]{display:none}.preview-shell .bar{display:flex;align-items:center;gap:8px;padding:calc(7px + env(safe-area-inset-top)) 10px 7px;background:#fffe;box-shadow:0 2px 10px #0002}.preview-shell .nav{border:0;border-radius:999px;padding:10px 14px;background:#e7f3e8;color:#173c2a;font:900 15px Nunito,Arial;cursor:pointer}.preview-shell .nav.home{background:#fff2c9}.preview-shell .name{font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.preview-shell iframe{width:100%;height:100%;border:0;background:#fff}@media(max-width:420px){.preview-shell .name{display:none}.preview-shell .nav{flex:1;padding:9px 6px;font-size:13px}}</style><style>.lite-note{background:#fff2c9;color:#173c2a;padding:12px 18px;font:17px Arial;line-height:1.4;position:relative;z-index:0}.lite-note button{font:inherit;padding:8px;margin-left:10px;border-radius:10px}</style><script src="./lite-policy.js"></script><script src="./lite-view.js" defer></script><style id="home-layout-centered">
+<style>.preview-shell{position:fixed;inset:0;z-index:80;background:#fff;display:grid;grid-template-rows:auto 1fr}.preview-shell[hidden]{display:none}.preview-shell .bar{display:flex;align-items:center;gap:8px;padding:calc(7px + env(safe-area-inset-top)) 10px 7px;background:#fffe;box-shadow:0 2px 10px #0002}.preview-shell .nav{border:0;border-radius:999px;padding:10px 14px;background:#e7f3e8;color:#173c2a;font:900 15px Nunito,Arial;cursor:pointer}.preview-shell .nav.home{background:#fff2c9}.preview-shell .name{font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.preview-shell iframe{width:100%;height:100%;border:0;background:#fff}@media(max-width:420px){.preview-shell .name{display:none}.preview-shell .nav{flex:1;padding:9px 6px;font-size:13px}}</style><style>.lite-note{background:#fff2c9;color:#173c2a;padding:12px 18px;font:17px Arial;line-height:1.4;position:relative;z-index:0}.lite-note button{font:inherit;padding:8px;margin-left:10px;border-radius:10px}</style><script src="./lite-policy.js"></script><script src="./lite-view.js" defer></script><link rel="stylesheet" href="./native-layout.css"><script src="./native-runtime.js"></script><script src="./image-paths.js"></script><link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#68bd3e"><script src="./web-update.js" defer></script><link rel="stylesheet" href="./web-install.css"><script src="./web-install.js" defer></script><style id="home-layout-centered">
 /* Center the three game packages, with a reserved band for the background sign. */
 #home {
   --home-view-height: calc(100dvh - var(--app-navigation-height, 0px));
@@ -105,7 +105,7 @@ body{min-height:100dvh}
   align-items: center;
   justify-content: flex-start;
   overflow: visible;
-  background: #68bd3e url("./start-wiese.png") center top / var(--home-scene-width) auto no-repeat;
+  background: #68bd3e url("./start-wiese.png") center top / cover no-repeat;
 }
 #home .home-inner {
   width: 100%;
@@ -132,23 +132,22 @@ body{min-height:100dvh}
   box-shadow: 0 12px 28px rgba(20,72,24,.28);
 }
 #home .tile:focus-visible { outline: 5px solid #fff; outline-offset: 7px; }
+#home .web-install { margin-top: 28px; flex-shrink: 0; }
 #home .adult-entry { margin-top: 24px; }
-@media (max-width: 760px) and (orientation: portrait) {
+@media (orientation: portrait) {
   #home {
     --home-scene-width: 100vw;
     --home-sign-space: calc(28vw + 28px);
-    --home-tile-size: min(64vw, 280px);
-    --home-gap: 20px;
+    --home-gap: clamp(10px, 1.5dvh, 22px);
+    --home-tile-size: min(82vw, max(144px, calc((var(--home-view-height) - var(--home-sign-space) - 2 * var(--home-gap) - 28px) / 3)));
     --home-row-height: calc(3 * var(--home-tile-size) + 2 * var(--home-gap));
-    background-image: url("./start-hoch.webp");
   }
   #home .tiles { grid-template-columns: var(--home-tile-size); }
 }
 @media (prefers-reduced-motion: no-preference) and (hover: hover) {
   #home .tile:hover { transform: translateY(-5px); box-shadow: 0 16px 32px rgba(20,72,24,.32); }
 }
-</style>
-<style id="category-layout-separated">
+</style><style id="category-layout-separated">
 /* Category headings and game choices occupy separate areas. */
 .subpage {
   min-height: calc(100dvh - var(--app-navigation-height, 0px));
@@ -201,9 +200,47 @@ body{min-height:100dvh}
   .subpage .preview-grid { flex-direction: column; flex-wrap: nowrap; gap: 24px; padding: 36px 0; }
   .subpage .preview-card { flex: 0 0 auto; width: min(78vw, 340px); }
 }
-</style></head>
-<body><div class="lite-note">Kostenlose Lesespiele Lite · Freizeit &amp; Abenteuer vollständig, weitere Spiele als Demo oder Spielfeld-Vorschau.</div>
-<dialog id="confirmAdult" style="border:0;border-radius:20px;padding:24px;max-width:min(420px,92vw);font:inherit;color:#173c2a"><p id="confirmAdultText"></p><form method="dialog" style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap"><button value="cancel" style="padding:12px;border-radius:12px">Abbrechen</button><button id="confirmAdultAction" value="yes" style="padding:12px;border-radius:12px;background:#3d754a;color:#fff">Spiel zurücksetzen</button></form></dialog><dialog class="adult-panel" id="adultPanel"><h2>Für Erwachsene</h2><section class="lite-note"><h3>Lesespiele Lite</h3><p>Freizeit &amp; Abenteuer ist vollständig spielbar. Die anderen Spiele bieten je ein Beispiel oder eine Spielfeld-Vorschau.</p><p>Die Kaufmöglichkeit und „Käufe wiederherstellen“ findest du weiter unten.</p></section><p id="adultProfile"></p><p id="offlineStatus" role="status" aria-live="polite">Offline-Paket wird vorbereitet …</p><button type="button" id="profileSwitch">Profil wechseln</button><button type="button" data-reset="dice-freizeit">Freizeit & Abenteuer zurücksetzen</button><button type="button" data-reset="dice-sport">Sport & Spiel zurücksetzen</button><button type="button" data-reset="dice-maerchen">Märchen & Zauber zurücksetzen</button><button type="button" data-reset="park">Herbstpark zurücksetzen</button><button type="button" data-reset="football">Fußballplatz zurücksetzen</button><button type="button" data-reset="crazy">Verrücktes Fußballspiel zurücksetzen</button><button type="button" data-reset="finde">Finde den Fehler zurücksetzen</button><button type="button" id="resetAll">Alle Spiele dieses Profils zurücksetzen</button><button type="button" id="deleteProfile">Profil löschen</button><button type="button" id="adultClose">Schließen</button></dialog><section id="home" class="page active" aria-label="Hauptauswahl">
+
+/* Every portrait viewport: one column, with square cards fitted to the available rows. */
+@media (orientation: portrait) {
+  .subpage.page.active {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: calc(100dvh - var(--app-navigation-height, 0px));
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .subpage .top { grid-template-columns: 1fr; padding: 20px 16px; gap: 12px; }
+  .subpage .top h1 { grid-column: 1; }
+  .subpage .top .back { grid-column: 1; grid-row: 2; justify-self: center; }
+  #dice { --category-count: 3; }
+  .subpage .preview-grid {
+    --category-gap: clamp(12px, 1.5dvh, 22px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(var(--category-count, 2), minmax(144px, 1fr));
+    align-content: stretch;
+    align-items: center;
+    justify-items: center;
+    gap: var(--category-gap);
+    width: 94%;
+    height: 100%;
+    min-height: calc(var(--category-count, 2) * 144px + (var(--category-count, 2) - 1) * var(--category-gap) + 32px);
+    margin: 0 auto;
+    padding: 16px 0;
+  }
+  .subpage .preview-card {
+    width: auto;
+    height: 100%;
+    max-height: 82vw;
+    max-width: 100%;
+    min-width: 0;
+    aspect-ratio: 1;
+  }
+}
+</style><link rel="stylesheet" href="./world-intros.css"><script src="./world-intros.js"></script></head>
+<body>
+<dialog id="confirmAdult" style="border:0;border-radius:20px;padding:24px;max-width:min(420px,92vw);font:inherit;color:#173c2a"><p id="confirmAdultText"></p><form method="dialog" style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap"><button value="cancel" style="padding:12px;border-radius:12px">Abbrechen</button><button id="confirmAdultAction" value="yes" style="padding:12px;border-radius:12px;background:#3d754a;color:#fff">Spiel zurücksetzen</button></form></dialog><dialog class="adult-panel" id="adultPanel"><h2>Für Erwachsene</h2><p id="adultProfile"></p><p id="offlineStatus" role="status" aria-live="polite">Offline-Paket wird vorbereitet …</p><button type="button" id="profileSwitch">Profil wechseln</button><button type="button" data-reset="dice-freizeit">Freizeit & Abenteuer zurücksetzen</button><button type="button" data-reset="dice-sport">Sport & Spiel zurücksetzen</button><button type="button" data-reset="dice-maerchen">Märchen & Zauber zurücksetzen</button><button type="button" data-reset="park">Herbstpark zurücksetzen</button><button type="button" data-reset="football">Fußballplatz zurücksetzen</button><button type="button" data-reset="crazy">Verrücktes Fußballspiel zurücksetzen</button><button type="button" data-reset="finde">Finde den Fehler zurücksetzen</button><button type="button" id="resetAll">Alle Spiele dieses Profils zurücksetzen</button><button type="button" id="deleteProfile">Profil löschen</button><button type="button" id="adultClose">Schließen</button></dialog><section id="home" class="page active" aria-label="Hauptauswahl">
   <div class="home-inner">
     <nav class="tiles" aria-label="Spielpakete">
       <a class="tile dice" href="#dice" data-section="dice"><img src="./kachel-wuerfeln.webp" alt="Würfeln – Würfeln, lesen und losspielen" decoding="async"></a>
@@ -264,10 +301,20 @@ body{min-height:100dvh}
 (()=>{
   const pages=[...document.querySelectorAll('.page')];
   const valid=new Set(['home','dice','stories','crazy']);
-  function current(){const h=location.hash.slice(1);return valid.has(h)?h:'home'}
+  let introStarting=false;
+  function current(){let h=location.hash.slice(1);if(h.startsWith('intro-')&&!introStarting&&!document.querySelector('.world-intro[open]'))h=h.slice(6);return valid.has(h)?h:'home'}
   function render(){const id=current();pages.forEach(p=>p.classList.toggle('active',p.id===id));scrollTo(0,0)}
   document.querySelectorAll('[data-section]').forEach(a=>a.addEventListener('click',e=>{
-    e.preventDefault();history.pushState(null,'',a.getAttribute('href'));render()
+    e.preventDefault();
+    if(document.querySelector('.world-intro[open]'))return;
+    const id=a.dataset.section;introStarting=true;
+    history.pushState(null,'','#intro-'+id);
+    dispatchEvent(new PopStateEvent('popstate'));
+    window.LeseWorldIntro.play(id).then(completed=>{
+      if(location.hash!=='#intro-'+id)return;
+      if(completed){history.replaceState(null,'','#'+id);render();dispatchEvent(new PopStateEvent('popstate'))}
+      else history.back();
+    });introStarting=false;
   }));
   document.querySelectorAll('[data-home]').forEach(b=>b.addEventListener('click',()=>{
     history.pushState(null,'',location.pathname+location.search);render()
@@ -315,31 +362,6 @@ body{min-height:100dvh}
  addEventListener('message',e=>{if(e.source!==frame.contentWindow||!e.data?.previewNav)return;closeTo(e.data.previewNav==='stories'?'stories':'home')});
  addEventListener('popstate',()=>{const m=location.hash.match(/^#spiel-(.+)$/);if(m&&config[m[1]]){if(current!==m[1])openGame(m[1],false)}else{if(current){version++;current=null;frame.removeAttribute('src');shell.hidden=true}}});
 })();
-</script><script>
-(()=>{
- const status=document.getElementById('offlineStatus');
- if(!('serviceWorker' in navigator)){status.textContent='Offline-Test nur über HTTPS möglich.';return}
- navigator.serviceWorker.addEventListener('message',event=>{
-   if(event.data?.type==='OFFLINE_STATUS'){
-     const info=event.data;
-     status.textContent=info.ready?'Alle Spiele sind für die Offline-Nutzung bereit.':
-       `Offline-Paket wird vorbereitet (${info.completed} von ${info.total} Dateien). Bitte online geöffnet lassen.`;
-   }
- });
- addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(reg=>{
-   const check=()=>reg.active?.postMessage({type:'OFFLINE_STATUS'});
-   const watch=worker=>worker?.addEventListener('statechange',()=>{
-     if(worker.state==='activated')check();
-     if(worker.state==='redundant')status.textContent='Offline-Paket konnte nicht geladen werden. Bitte online erneut öffnen.';
-   });
-   watch(reg.installing);
-   reg.addEventListener('updatefound',()=>watch(reg.installing));
-   navigator.serviceWorker.addEventListener('controllerchange',check);
-   addEventListener('online',check);
-   check();
- }).catch(()=>{status.textContent='Offline-Paket konnte nicht geladen werden. Bitte online erneut öffnen.'}),{once:true});
-})();
-</script></body>
+</script><script>document.getElementById("offlineStatus").textContent="Alle Spiele sind in dieser App enthalten und offline verfügbar.";</script></body>
 </html>
-
 

@@ -49,6 +49,11 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        unsignedRelease {
+            initWith release
+            signingConfig null
+            matchingFallbacks = ['release']
+        }
         localPreview {
             initWith release
             applicationIdSuffix ".test"

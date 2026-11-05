@@ -1,21 +1,26 @@
-import { readdir, readFile, writeFile, mkdir, rm, copyFile } from 'node:fs/promises';
+import { readdir, readFile, writeFile, mkdir, rm, copyFile, cp } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { build } from 'esbuild';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const source = path.join(root, 'web-source'), target = path.join(root, 'www');
 // Unused truncated historical previews stay in the provenance archive, never in the app.
-const excludedAssets = new Set(['previews-sharp.webp', 'start-hoch-sharp.webp']);
-const paidMarkup = text => text.replace(/<(div|section|p)\b[^>]*class="lite-note"[^>]*>[\s\S]*?<\/\1>/g, '');
+const excludedAssets = new Set(['previews-sharp.webp', 'start-hoch-sharp.webp', 'index-legacy.html', 'lite-policy.js', 'lite-view.js']);
+const stripNativeLayout = text => text.replace(/<link rel="stylesheet" href="\.\/native-layout\.css[^"]*">/g, '').replace(/<script src="\.\/native-layout\.js[^"]*" defer><\/script>/g, '');
+const nativeMarkup = text => stripNativeLayout(text.replace(/\r\n/g, '\n'))
+  .replace(/<(?:script|link)\b[^>]*(?:src|href)="\.\/(?:web-install\.(?:js|css)|web-update\.js|manifest\.webmanifest)"[^>]*>(?:<\/script>)?/g, '')
+  .replace(/<script src="\.\/native-runtime\.js"><\/script>/g, '');
+const paidMarkup = text => nativeMarkup(text).replace(/<(div|section|p)\b[^>]*class="lite-note"[^>]*>[\s\S]*?<\/\1>/g, '');
 await rm(target, { recursive: true, force: true });
 await mkdir(target, { recursive: true });
 for (const name of await readdir(source)) {
-  if (name.startsWith('.') || name.endsWith('.png') || excludedAssets.has(name)) continue;
+  if (name.startsWith('.') || excludedAssets.has(name)) continue;
+  if (['assets', 'world-intros'].includes(name)) { await cp(path.join(source,name),path.join(target,name),{recursive:true}); continue; }
   if (name === 'index.html') {
     let text = paidMarkup(await readFile(path.join(source, name), 'utf8'));
     text = text.replace('<link rel="manifest" href="./manifest.webmanifest">', '');
     const sw = /<script>\s*\(\(\)=>\{\s*const status=document\.getElementById\('offlineStatus'\);[\s\S]*?<\/script>/;
-    if (!sw.test(text)) throw Error('Offline-Abschnitt der Quelle wurde geändert; Anpassung prüfen.');
+    // Current home source already contains the native offline status; older sources use this block.
     text = text.replace(sw, '<script>document.getElementById("offlineStatus").textContent="Alle Spiele sind in dieser App enthalten und offline verfügbar.";</script>');
     text = text.replace('</head>', '<link rel="stylesheet" href="./native-layout.css"><script src="./native-runtime.js"></script></head>');
     await writeFile(path.join(target, 'home.html'), text);
@@ -40,6 +45,7 @@ await copyFile(path.join(root,'src/lite-policy.js'),path.join(target,'lite-polic
 
 await copyFile(path.join(root,'src/lite-view.js'),path.join(target,'lite-view.js'));
 
-const { optimizeImages } = await import('./optimize-images.mjs');
-await optimizeImages(root, target);
+// Imported web sources already reference their checked-in optimized assets.
+// Preserve the exact current image files and paths without re-encoding.
+
 

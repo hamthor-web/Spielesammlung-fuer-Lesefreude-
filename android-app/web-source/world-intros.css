@@ -1,0 +1,10 @@
+.world-intro{position:fixed;inset:0;box-sizing:border-box;width:100%;max-width:none;height:100%;max-height:none;margin:0;border:0;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:#173c2af5;color:#fffdf0;overflow:auto;text-align:center;font-family:Nunito,"Trebuchet MS",Arial,sans-serif}
+.world-intro[open]{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.world-intro::backdrop{background:#173c2a}
+.world-intro h2{font-size:clamp(20px,4vw,28px);line-height:1.2;margin:0}
+.world-intro img{display:block;width:min(560px,calc(100vw - 32px),calc(100dvh - 160px));aspect-ratio:1;object-fit:contain;border-radius:20px;background:#fffdf0}
+.world-intro img[hidden]{display:none}
+.world-intro p{max-width:40ch;margin:0;line-height:1.4}
+.world-intro p:empty{display:none}
+.world-intro button{flex-shrink:0;min-height:48px;border:2px solid #fffdf0;border-radius:999px;padding:10px 24px;font:800 18px Nunito,"Trebuchet MS",Arial,sans-serif;background:#fffdf0;color:#173c2a;cursor:pointer}
+.world-intro button:focus-visible{outline:4px solid #e5ba53;outline-offset:4px}
