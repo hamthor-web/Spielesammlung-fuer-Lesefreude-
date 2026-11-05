@@ -105,7 +105,7 @@ body{min-height:100dvh}
   align-items: center;
   justify-content: flex-start;
   overflow: visible;
-  background: #68bd3e url("./start-wiese.png") center top / var(--home-scene-width) auto no-repeat;
+  background: #68bd3e url("./start-wiese.png") center top / cover no-repeat;
 }
 #home .home-inner {
   width: 100%;
@@ -141,7 +141,6 @@ body{min-height:100dvh}
     --home-gap: clamp(10px, 1.5dvh, 22px);
     --home-tile-size: min(82vw, max(144px, calc((var(--home-view-height) - var(--home-sign-space) - 2 * var(--home-gap) - 28px) / 3)));
     --home-row-height: calc(3 * var(--home-tile-size) + 2 * var(--home-gap));
-    background-image: url("./start-hoch.webp");
   }
   #home .tiles { grid-template-columns: var(--home-tile-size); }
 }
@@ -200,6 +199,44 @@ body{min-height:100dvh}
   .subpage .top .back { grid-column: 1; grid-row: 2; justify-self: center; }
   .subpage .preview-grid { flex-direction: column; flex-wrap: nowrap; gap: 24px; padding: 36px 0; }
   .subpage .preview-card { flex: 0 0 auto; width: min(78vw, 340px); }
+}
+
+/* Every portrait viewport: one column, with square cards fitted to the available rows. */
+@media (orientation: portrait) {
+  .subpage.page.active {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: calc(100dvh - var(--app-navigation-height, 0px));
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .subpage .top { grid-template-columns: 1fr; padding: 20px 16px; gap: 12px; }
+  .subpage .top h1 { grid-column: 1; }
+  .subpage .top .back { grid-column: 1; grid-row: 2; justify-self: center; }
+  #dice { --category-count: 3; }
+  .subpage .preview-grid {
+    --category-gap: clamp(12px, 1.5dvh, 22px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(var(--category-count, 2), minmax(144px, 1fr));
+    align-content: stretch;
+    align-items: center;
+    justify-items: center;
+    gap: var(--category-gap);
+    width: 94%;
+    height: 100%;
+    min-height: calc(var(--category-count, 2) * 144px + (var(--category-count, 2) - 1) * var(--category-gap) + 32px);
+    margin: 0 auto;
+    padding: 16px 0;
+  }
+  .subpage .preview-card {
+    width: auto;
+    height: 100%;
+    max-height: 82vw;
+    max-width: 100%;
+    min-width: 0;
+    aspect-ratio: 1;
+  }
 }
 </style><link rel="stylesheet" href="./world-intros.css"><script src="./world-intros.js"></script></head>
 <body>
