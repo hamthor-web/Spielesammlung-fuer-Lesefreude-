@@ -241,3 +241,32 @@ addEventListener('DOMContentLoaded',()=>{
   if (document.readyState === 'loading') addEventListener('DOMContentLoaded', initSearchPreviews, {once: true});
   else initSearchPreviews();
 })();
+
+/* Center newly opened reading cards on portrait screens of every width. */
+(() => {
+  function initPortraitReading() {
+    if (!/\/(?:finde-den-fehler|verruecktes-fussball)\.html$/.test(location.pathname)) return;
+    const card = document.querySelector('.side > #card');
+    if (!card) return;
+    document.body.classList.add('portrait-search');
+    const portrait = matchMedia('(orientation: portrait)');
+    let wasOpen = card.classList.contains('show');
+    function revealCard() {
+      requestAnimationFrame(() => {
+        if (!portrait.matches || !card.classList.contains('show')) return;
+        const available = (window.visualViewport?.height || innerHeight) - 32;
+        const block = card.getBoundingClientRect().height <= available ? 'center' : 'start';
+        card.scrollIntoView({block, inline: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+      });
+    }
+    new MutationObserver(() => {
+      const isOpen = card.classList.contains('show');
+      if (isOpen && !wasOpen) revealCard();
+      wasOpen = isOpen;
+    }).observe(card, {attributes: true, attributeFilter: ['class']});
+    portrait.addEventListener('change', () => { if (portrait.matches && wasOpen) revealCard(); });
+    if (wasOpen) revealCard();
+  }
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', initPortraitReading, {once: true});
+  else initPortraitReading();
+})();

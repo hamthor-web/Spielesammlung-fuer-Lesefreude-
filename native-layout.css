@@ -103,3 +103,15 @@ dialog.reading-dialog {
 @media (min-width: 1000px) {
   .workspace:has(.side > .reading-card) { grid-template-columns: minmax(0, 1.5fr) minmax(380px, 1fr); }
 }
+
+/* Portrait search games: board, reading card, zoom controls, then reward. */
+@media (orientation: portrait) {
+  body.portrait-search .workspace,
+  body.portrait-search .workspace:has(.side > .reading-card) { grid-template-columns: minmax(0, 1fr); }
+  body.portrait-search .workspace > div:first-child { display: contents; }
+  body.portrait-search .workspace > div:first-child > .stage { grid-column: 1; grid-row: 1; }
+  body.portrait-search .workspace > .side { grid-column: 1; grid-row: 2; min-height: 0; }
+  body.portrait-search .workspace > div:first-child > .zoomrow { grid-column: 1; grid-row: 3; }
+  body.portrait-search .workspace > div:first-child > .reward-mount { grid-column: 1; grid-row: 4; }
+  body.portrait-search #card { scroll-margin-block: 16px; }
+}
