@@ -34,7 +34,7 @@ addEventListener('DOMContentLoaded',()=>{
       document.documentElement.style.setProperty('--reading-scale', scale);
       toolbars.forEach(({less, reset, more}) => {
         reset.textContent = percentage();
-        reset.setAttribute('aria-label', 'Textgröße ' + percentage() + '. Auf 100 Prozent zurücksetzen');
+        reset.setAttribute('aria-label', 'Textgr��e ' + percentage() + '. Auf 100 Prozent zur�cksetzen');
         less.disabled = scale <= 1;
         more.disabled = scale >= 3;
       });
@@ -50,14 +50,14 @@ addEventListener('DOMContentLoaded',()=>{
     function makeToolbar(card) {
       const bar = document.createElement('div');
       bar.className = 'reading-controls';
-      bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Textgröße der Aufgabenkarte');
-      const less = makeButton('Text kleiner', 'A−', () => setScale(scale - .25));
-      const reset = makeButton('Textgröße zurücksetzen', percentage(), () => setScale(1));
+      bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Textgr��e der Aufgabenkarte');
+      const less = makeButton('Text kleiner', 'A-', () => setScale(scale - .25));
+      const reset = makeButton('Textgr��e zur�cksetzen', percentage(), () => setScale(1));
       reset.className = 'reading-percentage';
-      const more = makeButton('Text größer', 'A+', () => setScale(scale + .25));
+      const more = makeButton('Text gr��er', 'A+', () => setScale(scale + .25));
       bar.append(less, reset, more);
       if (card) {
-        const expand = makeButton('Aufgabenkarte groß lesen', 'Groß lesen', () => openReader(card));
+        const expand = makeButton('Aufgabenkarte gro� lesen', 'Gro� lesen', () => openReader(card));
         expand.className = 'reading-expand'; bar.append(expand);
       }
       bar.addEventListener('click', event => event.stopPropagation());
@@ -100,13 +100,13 @@ addEventListener('DOMContentLoaded',()=>{
         dialog = document.createElement('dialog'); dialog.className = 'reading-dialog';
         dialog.setAttribute('aria-labelledby', 'readingDialogTitle');
         const header = document.createElement('header'); header.className = 'reading-dialog-header';
-        const title = document.createElement('h2'); title.id = 'readingDialogTitle'; title.textContent = 'Groß lesen';
-        const close = makeButton('Zurück zur Aufgabe', 'Zurück zur Aufgabe', () => dialog.close());
+        const title = document.createElement('h2'); title.id = 'readingDialogTitle'; title.textContent = 'Gro� lesen';
+        const close = makeButton('Zur�ck zur Aufgabe', 'Zur�ck zur Aufgabe', () => dialog.close());
         close.autofocus = true; close.className = 'reading-close';
         header.append(title, close);
         readerBody = document.createElement('div'); readerBody.className = 'reading-dialog-body';
         const footer = document.createElement('p'); footer.className = 'reading-dialog-note';
-        footer.textContent = 'In Ruhe lesen. Zum Antworten oder Weiterspielen zurück zur Aufgabe.';
+        footer.textContent = 'In Ruhe lesen. Zum Antworten oder Weiterspielen zur�ck zur Aufgabe.';
         dialog.append(header, makeToolbar(null), readerBody, footer);
         document.body.append(dialog);
         dialog.addEventListener('close', () => { sourceObserver?.disconnect(); sourceCard = null; });
@@ -152,4 +152,92 @@ addEventListener('DOMContentLoaded',()=>{
   }
   if (document.readyState === 'loading') addEventListener('DOMContentLoaded', initReadingTools, {once: true});
   else initReadingTools();
+})();
+
+/* Search previews stay in their own row; a successful find closes the enlargement. */
+(() => {
+  function initSearchPreviews() {
+    if (!/\/(?:geschichten|verruecktes-fussball)\.html$/.test(location.pathname)) return;
+    const gallery = document.getElementById('gallery');
+    if (!gallery || !document.querySelector('#storyArea, #activeHit')) return;
+    const selector = '.storyPreview, .tile';
+    const rail = document.createElement('div');
+    rail.className = 'search-preview-rail';
+    gallery.before(rail);
+    const makeArrow = (label, text) => {
+      const button = document.createElement('button');
+      button.type = 'button'; button.className = 'search-preview-arrow';
+      button.textContent = text; button.setAttribute('aria-label', label);
+      button.setAttribute('aria-controls', gallery.id);
+      return button;
+    };
+    const left = makeArrow('Suchbilder nach links verschieben', '?');
+    const right = makeArrow('Suchbilder nach rechts verschieben', '?');
+    rail.append(left, gallery, right);
+    gallery.classList.add('search-preview-gallery');
+    gallery.setAttribute('aria-label', 'Suchbilder - zum Vergr��ern antippen');
+    let expanded = null;
+    const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function updateArrows() {
+      const max = Math.max(0, gallery.scrollWidth - gallery.clientWidth);
+      left.disabled = gallery.scrollLeft <= 2;
+      right.disabled = gallery.scrollLeft >= max - 2;
+      gallery.style.setProperty('--search-preview-width', Math.max(100, Math.min(220, gallery.clientWidth - 20)) + 'px');
+    }
+    function setExpanded(button) {
+      if (expanded) { expanded.classList.remove('search-preview-expanded'); expanded.setAttribute('aria-expanded', 'false'); }
+      expanded = button;
+      if (expanded) { expanded.classList.add('search-preview-expanded'); expanded.setAttribute('aria-expanded', 'true'); }
+      requestAnimationFrame(updateArrows);
+    }
+    function reveal(button) {
+      requestAnimationFrame(() => {
+        if (!button.isConnected || button !== expanded) return;
+        const frame = gallery.getBoundingClientRect(), item = button.getBoundingClientRect();
+        const zoom = frame.width / (gallery.offsetWidth || frame.width || 1);
+        const delta = item.left < frame.left + 6 ? item.left - frame.left - 6 : item.right > frame.right - 6 ? item.right - frame.right + 6 : 0;
+        gallery.scrollBy({left: delta / zoom, behavior: 'auto'});
+        // Overrides the original story-selection scroll so the enlarged preview stays visible.
+        button.scrollIntoView({block: 'nearest', inline: 'nearest', behavior: reduceMotion() ? 'auto' : 'smooth'});
+        updateArrows();
+      });
+    }
+    for (const [button, direction] of [[left, -1], [right, 1]]) {
+      button.addEventListener('click', () => gallery.scrollBy({left: direction * Math.max(100, gallery.clientWidth * .8), behavior: reduceMotion() ? 'auto' : 'smooth'}));
+    }
+    // Re-tapping the current preview changes only its size, preserving the reading card.
+    gallery.addEventListener('click', event => {
+      const button = event.target.closest(selector);
+      if (!button || !gallery.contains(button) || !button.classList.contains('selected')) return;
+      event.preventDefault(); event.stopImmediatePropagation();
+      setExpanded(expanded === button ? null : button);
+      if (expanded) reveal(button);
+    }, true);
+    gallery.addEventListener('click', event => {
+      const button = event.target.closest(selector);
+      if (!button || !gallery.contains(button)) return;
+      setExpanded(button); reveal(button);
+    });
+    function decorate() {
+      if (expanded && !gallery.contains(expanded)) setExpanded(null);
+      for (const button of gallery.querySelectorAll(selector)) {
+        if (!button.hasAttribute('aria-expanded')) button.setAttribute('aria-expanded', 'false');
+        if (!button.hasAttribute('aria-label')) button.setAttribute('aria-label', 'Suchbild ' + button.dataset.id + ' ausw�hlen und vergr��ern');
+      }
+      updateArrows();
+    }
+    new MutationObserver(decorate).observe(gallery, {childList: true});
+    const storyArea = document.getElementById('storyArea');
+    const card = storyArea || document.getElementById('card');
+    if (card) new MutationObserver(() => {
+      const opened = storyArea ? !storyArea.hidden : card.classList.contains('show');
+      if (opened) setExpanded(null);
+    }).observe(card, {attributes: true, attributeFilter: storyArea ? ['hidden'] : ['class']});
+    gallery.addEventListener('scroll', updateArrows, {passive: true});
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(updateArrows).observe(gallery);
+    addEventListener('resize', updateArrows);
+    decorate();
+  }
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', initSearchPreviews, {once: true});
+  else initSearchPreviews();
 })();

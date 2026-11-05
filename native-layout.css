@@ -1,4 +1,22 @@
 /* Keep the shared game frame inside the device viewport. */
+/* Search previews grow in normal flow, above the board. */
+.search-preview-rail { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 4px; min-width: 0; margin-bottom: 12px; }
+.search-preview-rail > .search-preview-gallery { min-width: 0; width: 100%; margin: 0; align-items: center; scroll-snap-type: none; overflow-x: auto; }
+.search-preview-arrow { display: grid; place-items: center; width: 44px; min-height: 48px; padding: 4px; border: 2px solid #8ca184; border-radius: 12px; background: #fffdf2; color: #315d39; font: 900 24px/1 Arial, sans-serif; cursor: pointer; touch-action: manipulation; }
+.search-preview-arrow:disabled { opacity: .35; cursor: default; }
+.search-preview-arrow:focus-visible { outline: 3px solid #226aa8; outline-offset: 1px; }
+.search-preview-gallery .tile.selected { flex-basis: 108px; height: 80px; transform: none; }
+.search-preview-gallery .tile.search-preview-expanded { flex-basis: var(--search-preview-width, 200px); height: 152px; }
+.search-preview-gallery .tile.search-preview-expanded img { object-fit: contain; }
+.search-preview-gallery .storyPreview.search-preview-expanded { flex-basis: var(--search-preview-width, 200px); width: var(--search-preview-width, 200px); }
+.search-preview-gallery .storyPreview.search-preview-expanded .ring { width: 100%; height: 142px; border-radius: 16px; transform: none; }
+.search-preview-gallery .storyPreview.search-preview-expanded .ring::after { border-radius: 12px; }
+.search-preview-gallery .storyPreview.search-preview-expanded .ring img { width: 100%; height: 130px; object-fit: contain; border-radius: 10px; }
+@media(max-width: 700px) {
+  .search-preview-gallery .tile.selected { flex-basis: 92px; height: 68px; }
+  .search-preview-gallery .tile.search-preview-expanded { flex-basis: var(--search-preview-width, 180px); height: 142px; }
+}
+@media(prefers-reduced-motion: reduce) { .search-preview-gallery .tile { transition: none; } }
 .preview-shell,.shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);min-width:0;min-height:0;overflow:hidden}
 .preview-shell .bar,.shell .bar{min-width:0;max-width:100%}
 .preview-shell .name,.shell .name{min-width:0;flex:1 1 0}
