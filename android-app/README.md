@@ -1,5 +1,7 @@
 # Lesen, entdecken, erzählen – Android-App
 
+**Korrektur 1.1.25 / Code 27 · 05.11.2026:** 21 redundante PNG-Pokalbilder werden im Android-Paket nicht mehr doppelt eingebettet. Verlustfreie WebP-Dateien und alle Spielinhalte bleiben erhalten. Neue AAB und passende Signierhilfe erforderlich. Details: [RELEASE-1.1.25.md](RELEASE-1.1.25.md).
+
 **Neues vorbereitetes Update: 1.1.24 / Code 26 · 05.11.2026.** Aktuelle Webfassung in die native App übernommen; Test-APK und unsigned AAB vollständig neu gebaut und geprüft. Gerätetest, Versionscode-Abgleich, lokale Upload-Signierung und Veröffentlichung offen. Details: [RELEASE-1.1.24.md](RELEASE-1.1.24.md). Die folgenden älteren Angaben sind Historie.
 
 **Aktueller Quellstand: 1.1.23 · Versionscode 25 · 30. Oktober 2026**

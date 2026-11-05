@@ -15,6 +15,8 @@ await rm(target, { recursive: true, force: true });
 await mkdir(target, { recursive: true });
 for (const name of await readdir(source)) {
   if (name.startsWith('.') || excludedAssets.has(name)) continue;
+  // Reward PNGs are archival originals. Runtime paths resolve to identical existing WebP images.
+  if (/^pokal-(?:sport|freizeit|maerchen)-[1-7]\.png$/.test(name)) continue;
   if (['assets', 'world-intros'].includes(name)) { await cp(path.join(source,name),path.join(target,name),{recursive:true}); continue; }
   if (name === 'index.html') {
     let text = paidMarkup(await readFile(path.join(source, name), 'utf8'));

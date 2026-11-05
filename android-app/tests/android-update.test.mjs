@@ -18,3 +18,14 @@ for(const world of ['dice','stories','crazy']) test(`${world}: Einleitung übers
  const skipped=c.window.LeseWorldIntro.play(world);dialog.parts.button.onclick();assert.equal(await skipped,true);
  const canceled=c.window.LeseWorldIntro.play(world);dialog.close();assert.equal(await canceled,false);
 });
+
+test('Belohnungsbilder sind genau einmal vorhanden; alle dynamischen PNG-Pfade lösen zur vorhandenen WebP-Datei auf',()=>{
+ const c={window:{}}; vm.runInNewContext(readFileSync(new URL('image-paths.js',root),'utf8'),vm.createContext(c));
+ for(const world of ['sport','freizeit','maerchen']) for(let i=1;i<=7;i++){
+  const original=`./pokal-${world}-${i}.png`;
+  assert.ok(!existsSync(new URL(original,root)));
+  const actual=c.window.LeseImagePath(original);
+  assert.equal(actual,original.replace('.png','.webp'));
+  assert.ok(existsSync(new URL(actual,root)));
+ }
+});
