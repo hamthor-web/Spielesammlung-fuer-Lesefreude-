@@ -15,7 +15,7 @@
    navigator.serviceWorker.addEventListener('controllerchange',()=>{
     check();
     // Never interrupt a game. A safe return to the selection loads the new version.
-    if(!reloaded&&navigator.serviceWorker.controller&&!location.hash.startsWith('#spiel-')&&document.getElementById('home')){reloaded=true;location.reload()}
+    if(!reloaded&&navigator.serviceWorker.controller&&!location.hash.startsWith('#spiel-')&&!location.hash.startsWith('#intro-')&&document.getElementById('home')){reloaded=true;location.reload()}
    });
    await reg.update().catch(()=>{});check();
   }catch{tell('Offline-Paket konnte nicht vollständig geladen werden. Bitte später mit Internet erneut öffnen.')}

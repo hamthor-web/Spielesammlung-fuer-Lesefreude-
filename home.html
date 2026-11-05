@@ -201,7 +201,7 @@ body{min-height:100dvh}
   .subpage .preview-grid { flex-direction: column; flex-wrap: nowrap; gap: 24px; padding: 36px 0; }
   .subpage .preview-card { flex: 0 0 auto; width: min(78vw, 340px); }
 }
-</style></head>
+</style><link rel="stylesheet" href="./world-intros.css"><script src="./world-intros.js"></script></head>
 <body>
 <dialog id="confirmAdult" style="border:0;border-radius:20px;padding:24px;max-width:min(420px,92vw);font:inherit;color:#173c2a"><p id="confirmAdultText"></p><form method="dialog" style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap"><button value="cancel" style="padding:12px;border-radius:12px">Abbrechen</button><button id="confirmAdultAction" value="yes" style="padding:12px;border-radius:12px;background:#3d754a;color:#fff">Spiel zurücksetzen</button></form></dialog><dialog class="adult-panel" id="adultPanel"><h2>Für Erwachsene</h2><p id="adultProfile"></p><p id="offlineStatus" role="status" aria-live="polite">Offline-Paket wird vorbereitet …</p><button type="button" id="profileSwitch">Profil wechseln</button><button type="button" data-reset="dice-freizeit">Freizeit & Abenteuer zurücksetzen</button><button type="button" data-reset="dice-sport">Sport & Spiel zurücksetzen</button><button type="button" data-reset="dice-maerchen">Märchen & Zauber zurücksetzen</button><button type="button" data-reset="park">Herbstpark zurücksetzen</button><button type="button" data-reset="football">Fußballplatz zurücksetzen</button><button type="button" data-reset="crazy">Verrücktes Fußballspiel zurücksetzen</button><button type="button" data-reset="finde">Finde den Fehler zurücksetzen</button><button type="button" id="resetAll">Alle Spiele dieses Profils zurücksetzen</button><button type="button" id="deleteProfile">Profil löschen</button><button type="button" id="adultClose">Schließen</button></dialog><section id="home" class="page active" aria-label="Hauptauswahl">
   <div class="home-inner">
@@ -264,10 +264,20 @@ body{min-height:100dvh}
 (()=>{
   const pages=[...document.querySelectorAll('.page')];
   const valid=new Set(['home','dice','stories','crazy']);
-  function current(){const h=location.hash.slice(1);return valid.has(h)?h:'home'}
+  let introStarting=false;
+  function current(){let h=location.hash.slice(1);if(h.startsWith('intro-')&&!introStarting&&!document.querySelector('.world-intro[open]'))h=h.slice(6);return valid.has(h)?h:'home'}
   function render(){const id=current();pages.forEach(p=>p.classList.toggle('active',p.id===id));scrollTo(0,0)}
   document.querySelectorAll('[data-section]').forEach(a=>a.addEventListener('click',e=>{
-    e.preventDefault();history.pushState(null,'',a.getAttribute('href'));render()
+    e.preventDefault();
+    if(document.querySelector('.world-intro[open]'))return;
+    const id=a.dataset.section;introStarting=true;
+    history.pushState(null,'','#intro-'+id);
+    dispatchEvent(new PopStateEvent('popstate'));
+    window.LeseWorldIntro.play(id).then(completed=>{
+      if(location.hash!=='#intro-'+id)return;
+      if(completed){history.replaceState(null,'','#'+id);render();dispatchEvent(new PopStateEvent('popstate'))}
+      else history.back();
+    });introStarting=false;
   }));
   document.querySelectorAll('[data-home]').forEach(b=>b.addEventListener('click',()=>{
     history.pushState(null,'',location.pathname+location.search);render()
