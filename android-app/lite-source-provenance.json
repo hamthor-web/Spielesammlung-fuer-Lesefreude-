@@ -27,7 +27,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "1df81ca1c6ee7ef52e22c7cb84920e15824732e99dd91a74512242521b8ee54d"
+      "sha256": "aa9038087dc33cf58811558ec9bc30cd95408acf2750e5af4b66e2e22893e768"
     },
     {
       "path": "wuerfeln-freizeit.html",
@@ -40,6 +40,14 @@
     {
       "path": "dice-ui.css",
       "sha256": "4d67a50614e8f836c1b7109ebd6d65101c379bff6ec73b072a2b14b2287d34e7"
+    },
+    {
+      "path": "impressum.html",
+      "sha256": "e948eb4bf0881eb30660283e726fb3289f979d81e0728072ea17614999e7bb60"
+    },
+    {
+      "path": "datenschutz.html",
+      "sha256": "542a2bb1006f31c03a55313bb784650973205d0188066846efe0c385121129d0"
     }
   ],
   "layoutSourceCommit": "a9f23c6b0cddbe373120646d6e04470dcd0e4805",

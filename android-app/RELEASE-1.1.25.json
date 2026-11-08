@@ -1,0 +1,30 @@
+{
+  "versionName": "1.1.25-test",
+  "versionCode": 27,
+  "applicationId": "de.heikeamthor.lesespiele.test",
+  "displayName": "Lesespiele Test",
+  "buildVariant": "debug",
+  "baseCommit": "84a68f2",
+  "apkSha256": "f8adea90eef6b64fd999640263e3fa4bed4a125f64cda3943732107030ef7723",
+  "apkSizeBytes": 56809392,
+  "verifiedBundledFiles": 304,
+  "checks": [
+    "assembleDebug",
+    "npm test: alle 9 Testdateien erfolgreich",
+    "npm run check: lokale Ressourcen, nur erlaubte externe Rechtslinks",
+    "Mobile Chromium: Impressum und Datenschutz ohne Profil, Rückwege, Hoch- und Querformat",
+    "Webversion: Rechtstexte nach Paketdownload offline gelesen",
+    "Android-Webpaket: Rechtstexte aus lokalen Dateien offline gelesen; keine externen Abrufe",
+    "apksigner verify: gültige APK-v2-Debug-Signatur",
+    "aapt: Test-App-ID, Versionscode 27 und App-Name bestätigt",
+    "Alle 304 Webpaket-Dateien bytegleich in der APK"
+  ],
+  "physicalDeviceTest": "ausstehend",
+  "publishedToGooglePlay": false,
+  "features": [
+    "Offline-Impressum",
+    "Appbezogene Datenschutzhinweise",
+    "E-Mail-Kontakt im Erwachsenenbereich",
+    "Rechtstexte vor der Profilauswahl erreichbar"
+  ]
+}

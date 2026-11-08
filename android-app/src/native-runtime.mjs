@@ -118,7 +118,31 @@ function handleBack() {
   if (native) persist().finally(() => App.exitApp());
 }
 
+function mountLegal() {
+  const panel=document.getElementById('adultPanel');
+  if(!panel||document.getElementById('legalDialog'))return;
+  const titles={'impressum.html':'Impressum','datenschutz.html':'Datenschutz'};
+  const style=document.createElement('style');
+  style.textContent='.legal-entries{border-top:1px solid #abc49b;margin-top:20px;padding-top:8px}.legal-entries a{display:inline-block;padding:8px 0;overflow-wrap:anywhere}.legal-email{font-size:.95em;overflow-wrap:anywhere}dialog.legal-dialog{box-sizing:border-box;width:min(780px,96vw);height:92dvh;max-height:92dvh;max-width:96vw;padding:0;border:2px solid #8ca184;border-radius:18px;background:#f3f8ed;color:#173c2a;overflow:hidden}dialog.legal-dialog[open]{display:grid;grid-template-rows:auto minmax(0,1fr)}.legal-dialog::backdrop{background:#142b36ba}.legal-dialog header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:#fffdf0;border-bottom:1px solid #abc49b}.legal-dialog h2{margin:0;font:800 20px Arial,sans-serif}.legal-dialog button{min-height:44px;padding:8px 14px;border:2px solid #8ca184;border-radius:12px;background:#e7f3e8;color:#173c2a;font:800 17px Arial,sans-serif}.legal-dialog iframe{display:block;width:100%;height:100%;min-height:0;border:0}';
+  document.head.append(style);
+  const dialog=document.createElement('dialog');dialog.id='legalDialog';dialog.className='legal-dialog';dialog.setAttribute('aria-labelledby','legalTitle');
+  dialog.innerHTML='<header><h2 id="legalTitle"></h2><button type="button" autofocus>← Zurück</button></header><iframe title="Rechtliche Hinweise" referrerpolicy="no-referrer"></iframe>';
+  document.body.append(dialog);
+  const frame=dialog.querySelector('iframe'),heading=dialog.querySelector('h2'),close=dialog.querySelector('button');let opener;
+  panel.querySelectorAll('[data-legal]').forEach(button=>button.addEventListener('click',()=>{
+    const file=button.dataset.legal;if(!Object.hasOwn(titles,file))return;
+    opener=button;heading.textContent=titles[file];frame.title=titles[file];frame.src='./'+file;dialog.showModal();close.focus();
+  }));
+  frame.addEventListener('load',()=>{
+    const title=frame.contentDocument?.querySelector('h1')?.textContent;
+    if(title){heading.textContent=title;frame.title=title;}
+  });
+  close.onclick=()=>dialog.close();
+  dialog.addEventListener('close',()=>{frame.removeAttribute('src');opener?.focus();});
+}
+
 function mount() {
+  mountLegal();
   mountNavigation();
   const panel = document.getElementById('adultPanel');
   if (!panel) return;
