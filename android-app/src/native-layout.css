@@ -128,3 +128,7 @@ dialog.reading-dialog {
     max-width: 58vw;
   }
 }
+.game-help{display:flex;justify-content:flex-end;padding:6px 12px;background:#fffdf0;color:#173c2a}
+.game-help button,.game-rules button{min-height:44px;padding:8px 16px;border:2px solid #8ca184;border-radius:12px;background:#e7f3e8;color:#173c2a;font:800 17px Arial,sans-serif}
+dialog.game-rules{box-sizing:border-box;width:min(560px,94vw);max-height:90dvh;overflow:auto;border:2px solid #8ca184;border-radius:20px;background:#fffdf0;color:#173c2a;font:20px/1.5 "Trebuchet MS",Arial,sans-serif;padding:20px}
+.game-rules li{margin:12px 0}.game-rules::backdrop{background:#142b36ba}

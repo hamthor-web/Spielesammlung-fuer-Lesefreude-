@@ -238,9 +238,9 @@ body{min-height:100dvh}
     aspect-ratio: 1;
   }
 }
-</style><link rel="stylesheet" href="./world-intros.css"><script src="./world-intros.js"></script></head>
+</style><link rel="stylesheet" href="./world-intros.css"><script src="./world-intros.js"></script><script src="./lite-view.js"></script></head>
 <body>
-<dialog id="confirmAdult" style="border:0;border-radius:20px;padding:24px;max-width:min(420px,92vw);font:inherit;color:#173c2a"><p id="confirmAdultText"></p><form method="dialog" style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap"><button value="cancel" style="padding:12px;border-radius:12px">Abbrechen</button><button id="confirmAdultAction" value="yes" style="padding:12px;border-radius:12px;background:#3d754a;color:#fff">Spiel zurücksetzen</button></form></dialog><dialog class="adult-panel" id="adultPanel"><h2>Für Erwachsene</h2><p id="adultProfile"></p><p id="offlineStatus" role="status" aria-live="polite">Offline-Paket wird vorbereitet …</p><button type="button" id="profileSwitch">Profil wechseln</button><button type="button" data-reset="dice-freizeit">Freizeit & Abenteuer zurücksetzen</button><button type="button" data-reset="dice-sport">Sport & Spiel zurücksetzen</button><button type="button" data-reset="dice-maerchen">Märchen & Zauber zurücksetzen</button><button type="button" data-reset="park">Herbstpark zurücksetzen</button><button type="button" data-reset="football">Fußballplatz zurücksetzen</button><button type="button" data-reset="crazy">Verrücktes Fußballspiel zurücksetzen</button><button type="button" data-reset="finde">Finde den Fehler zurücksetzen</button><button type="button" id="resetAll">Alle Spiele dieses Profils zurücksetzen</button><button type="button" id="deleteProfile">Profil löschen</button><button type="button" id="adultClose">Schließen</button></dialog><section id="home" class="page active" aria-label="Hauptauswahl">
+<dialog id="confirmAdult" style="border:0;border-radius:20px;padding:24px;max-width:min(420px,92vw);font:inherit;color:#173c2a"><p id="confirmAdultText"></p><form method="dialog" style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap"><button value="cancel" style="padding:12px;border-radius:12px">Abbrechen</button><button id="confirmAdultAction" value="yes" style="padding:12px;border-radius:12px;background:#3d754a;color:#fff">Spiel zurücksetzen</button></form></dialog><dialog class="adult-panel" id="adultPanel"><h2>Für Erwachsene</h2><p id="adultProfile"></p><p id="offlineStatus" role="status" aria-live="polite">Offline-Paket wird vorbereitet …</p><button type="button" id="profileSwitch">Profil wechseln</button><button type="button" data-reset="dice-freizeit">Freizeit & Abenteuer zurücksetzen</button><button type="button" data-reset="dice-sport">Sport & Spiel zurücksetzen</button><button type="button" data-reset="dice-maerchen">Märchen & Zauber zurücksetzen</button><button type="button" data-reset="park">Herbstpark zurücksetzen</button><button type="button" data-reset="football">Fußballplatz zurücksetzen</button><button type="button" data-reset="crazy">Verrücktes Fußballspiel zurücksetzen</button><button type="button" data-reset="finde">Finde den Fehler zurücksetzen</button><button type="button" id="resetAll">Alle Spiele dieses Profils zurücksetzen</button><button type="button" id="deleteProfile">Profil löschen</button><button type="button" id="adultClose">Schließen</button></dialog><section id="home" class="page active" aria-label="Startmenü">
   <div class="home-inner">
     <nav class="tiles" aria-label="Spielpakete">
       <a class="tile dice" href="#dice" data-section="dice"><img src="./kachel-wuerfeln.webp" alt="Würfeln – Würfeln, lesen und losspielen" decoding="async"></a>
@@ -252,7 +252,7 @@ body{min-height:100dvh}
 </section>
 
 <section id="dice" class="page subpage">
-  <div class="top"><h1>Würfeln</h1><button class="back" type="button" data-home>← Hauptauswahl</button></div>
+  <div class="top"><h1>Würfeln</h1><button class="back" type="button" data-home>← Startmenü</button></div>
   <div class="preview-grid">
     <a class="preview-card" href="./spieler.html?spiel=freizeit"><img src="./freizeit-und-abenteuer.png" alt="Freizeit und Abenteuer" loading="lazy" decoding="async"></a>
     <a class="preview-card" href="./spieler.html?spiel=sport"><img src="./sport-und-spiel.png" alt="Sport und Spiel" loading="lazy" decoding="async"></a>
@@ -261,7 +261,7 @@ body{min-height:100dvh}
 </section>
 
 <section id="stories" class="page subpage">
-  <div class="top"><h1>Interaktive Geschichten</h1><button class="back" type="button" data-home>← Hauptauswahl</button></div>
+  <div class="top"><h1>Interaktive Geschichten</h1><button class="back" type="button" data-home>← Startmenü</button></div>
   <div class="preview-grid">
     <a class="preview-card" href="./spieler.html?spiel=herbstgeschichten"><img src="./im-herbstpark.png" alt="Im Herbstpark" loading="lazy" decoding="async"></a>
     <a class="preview-card" href="./spieler.html?spiel=fussballgeschichten"><img src="./auf-dem-fussballplatz.png" alt="Auf dem Fußballplatz" loading="lazy" decoding="async"></a>
@@ -269,7 +269,7 @@ body{min-height:100dvh}
 </section>
 
 <section id="crazy" class="page subpage">
-  <div class="top"><h1>Verrücktes</h1><button class="back" type="button" data-home>← Hauptauswahl</button></div>
+  <div class="top"><h1>Verrücktes</h1><button class="back" type="button" data-home>← Startmenü</button></div>
   <div class="preview-grid">
     <a class="preview-card" href="./spieler.html?spiel=finde-fehler"><img src="./finde-den-fehler.png" alt="Finde den Fehler" loading="lazy" decoding="async"></a>
     <a class="preview-card" href="./spieler.html?spiel=verruecktes-fussball"><img src="./das-verrueckte-fussballspiel.png" alt="Das verrückte Fußballspiel" loading="lazy" decoding="async"></a>
@@ -322,24 +322,24 @@ body{min-height:100dvh}
   addEventListener('popstate',render);
   render();
   const P=window.LeseProfile, panel=document.getElementById('adultPanel');
-  function updateProfile(){const p=P.active();document.getElementById('profileSwitch').textContent=p?'Profil: '+p.name:'Profil wählen';document.getElementById('adultProfile').textContent=p?'Aktiv: '+p.name:''}
+  function updateProfile(){const p=P.active();document.getElementById('profileSwitch').textContent=p?'Profil: '+p.name:'Profil wählen';document.getElementById('adultProfile').textContent=p?'Aktiv: '+p.name:'';panel.querySelectorAll('[data-reset],#resetAll,#deleteProfile').forEach(b=>b.disabled=!p)}
   updateProfile();
-  document.getElementById('profileSwitch').onclick=async()=>{panel.close();await P.choose();updateProfile()};
+  document.getElementById('profileSwitch').onclick=async()=>{panel.close();window.LeseNavigation?.goHome();await P.choose();updateProfile()};
   document.getElementById('adultOpen').onclick=()=>{updateProfile();panel.showModal()};
   document.getElementById('adultClose').onclick=()=>panel.close();
   const gameNames={'dice-freizeit':'Freizeit & Abenteuer','dice-sport':'Sport & Spiel','dice-maerchen':'Märchen & Zauber',park:'Herbstpark',football:'Fußballplatz',crazy:'Verrücktes Fußballspiel',finde:'Finde den Fehler'};
-  function reset(game){const p=P.active();if(!p)return;const key=P.gameKey(p,game);if(game.startsWith('dice-'))localStorage.removeItem(key);else localStorage.setItem(key,JSON.stringify({decks:{},seen:[],completed:[],colors:{}}))}
+  function reset(game){const p=P.active();if(!p)return;const key=P.gameKey(p,game);if(game.startsWith('dice-'))localStorage.removeItem(key);else localStorage.setItem(key,JSON.stringify({decks:{},seen:[],completed:[],colors:{}}));sessionStorage.removeItem(key+':celebrated');dispatchEvent(new Event('lesespiele-profile-change'))}
   const confirmDialog=document.getElementById('confirmAdult');
   function ask(message,action){document.getElementById('confirmAdultText').textContent=message;document.getElementById('confirmAdultAction').textContent=action;return new Promise(resolve=>{confirmDialog.addEventListener('close',()=>resolve(confirmDialog.returnValue==='yes'),{once:true});confirmDialog.showModal()})}
   panel.querySelectorAll('[data-reset]').forEach(b=>b.onclick=async()=>{const game=b.dataset.reset,name=gameNames[game],detail=game.startsWith('dice-')?'Deine Runde geht dabei verloren.':'Dein Fortschritt und dein Ausmalbild gehen dabei verloren.';if(await ask(`Möchtest du dieses Spiel wirklich zurücksetzen? ${detail} (${name} · Profil ${P.active().name})`,'Spiel zurücksetzen'))reset(game)});
   document.getElementById('resetAll').onclick=async()=>{if(await ask(`Möchtest du alle Spiele des Profils ${P.active().name} wirklich zurücksetzen? Fortschritt, Würfelrunden und Ausmalbilder gehen verloren.`,'Alle Spiele zurücksetzen'))Object.keys(gameNames).forEach(reset)};
-  document.getElementById('deleteProfile').onclick=async()=>{const p=P.active();if(await ask(`Möchtest du dieses Profil wirklich löschen? Alle Spielstände dieses Kindes werden entfernt. (${p.name})`,'Profil löschen')){P.remove(p.id);panel.close();await P.choose();updateProfile()}};
+  document.getElementById('deleteProfile').onclick=async()=>{const p=P.active();if(await ask(`Möchtest du dieses Profil wirklich löschen? Alle Spielstände dieses Kindes werden entfernt. (${p.name})`,'Profil löschen')){P.remove(p.id);panel.close();window.LeseNavigation?.goHome();await P.choose();updateProfile()}};
   // Beim App-Start ein vorhandenes Profil wählen oder ein eigenes anlegen.
   if(!sessionStorage.getItem('lesespiele-profile-selected'))P.choose().then(()=>{sessionStorage.setItem('lesespiele-profile-selected','1');updateProfile()});
 
 })();
 </script>
-<section class="preview-shell" id="previewShell" hidden><header class="bar"><button class="nav" id="previewBackCategory" type="button">← Spielauswahl</button><button class="nav home" id="previewBackHome" type="button">⌂ Hauptauswahl</button><span class="name" id="previewGameName"></span></header><iframe id="previewFrame" title="Spiel" allow="autoplay; fullscreen"></iframe></section><script>
+<section class="preview-shell" id="previewShell" hidden><header class="bar"><button class="nav" id="previewBackCategory" type="button">← Spielauswahl</button><button class="nav home" id="previewBackHome" type="button">⌂ Startmenü</button><span class="name" id="previewGameName"></span></header><iframe id="previewFrame" title="Spiel" allow="autoplay; fullscreen"></iframe></section><script>
 (()=>{
  const config={"freizeit": {"title": "Freizeit & Abenteuer", "category": "dice", "key": "freizeit", "choice": "football"}, "sport": {"title": "Sport & Spiel", "category": "dice", "key": "sport", "choice": "football"}, "maerchen": {"title": "Märchen & Zauber", "category": "dice", "key": "maerchen", "choice": "football"}, "herbstgeschichten": {"title": "Im Herbstpark", "category": "stories", "key": "geschichten", "choice": "park"}, "fussballgeschichten": {"title": "Auf dem Fußballplatz", "category": "stories", "key": "geschichten", "choice": "football"}, "verruecktes-fussball": {"title": "Das verrückte Fußballspiel", "category": "crazy", "key": "verruecktes-fussball", "choice": "football"}, "finde-fehler": {"title": "Finde den Fehler", "category": "crazy", "key": "finde-fehler", "choice": "football"}};
  const shell=document.getElementById('previewShell'),frame=document.getElementById('previewFrame'),name=document.getElementById('previewGameName');
@@ -361,7 +361,8 @@ body{min-height:100dvh}
  document.getElementById('previewBackHome').onclick=()=>closeTo('home');
  addEventListener('message',e=>{if(e.source!==frame.contentWindow||!e.data?.previewNav)return;closeTo(e.data.previewNav==='stories'?'stories':'home')});
  addEventListener('popstate',()=>{const m=location.hash.match(/^#spiel-(.+)$/);if(m&&config[m[1]]){if(current!==m[1])openGame(m[1],false)}else{if(current){version++;current=null;frame.removeAttribute('src');shell.hidden=true}}});
+ const initial=location.hash.match(/^#spiel-(.+)$/);if(initial&&config[initial[1]])openGame(initial[1],false);
 })();
-</script><script>document.getElementById("offlineStatus").textContent="Alle Spiele sind in dieser App enthalten und offline verfügbar.";</script></body>
+</script></body>
 </html>
 

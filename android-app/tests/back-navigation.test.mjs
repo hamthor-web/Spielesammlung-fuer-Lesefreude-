@@ -22,3 +22,10 @@ test('Android-Zurueck in Profilauswahl schliesst die App nicht', () => {
   vm.runInNewContext(handler + ';handleBack();', context);
   assert.equal(canceled, 1); assert.equal(exits, 0);
 });
+
+test('Android-Zurueck schliesst zuerst die Spielregeln im Spielrahmen', () => {
+  let closed=0,backs=0;
+  const context={document:{getElementById:()=>({contentDocument:{querySelectorAll:()=>[{close:()=>closed++}]}})},window:{LeseNavigation:{back:()=>backs++}}};
+  vm.runInNewContext(handler+';handleBack();',context);
+  assert.equal(closed,1);assert.equal(backs,0);
+});

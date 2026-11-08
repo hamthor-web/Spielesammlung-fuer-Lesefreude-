@@ -97,6 +97,9 @@ async function chooseBackup() {
 }
 
 function handleBack() {
+  const gameDocument = document.getElementById?.('previewFrame')?.contentDocument;
+  const gameDialogs = [...(gameDocument?.querySelectorAll('dialog[open]') || [])];
+  if (gameDialogs.length) { gameDialogs.at(-1).close(); return; }
   const dialogs = [...document.querySelectorAll('dialog[open]')];
   if (dialogs.length) { dialogs.at(-1).close(); return; }
   const overlay = document.querySelector('.profile-overlay');

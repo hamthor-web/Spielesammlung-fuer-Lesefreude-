@@ -1,9 +1,9 @@
 {
-  "description": "Dokumentierte Quelländerungen der vollständigen Android-Kaufversion, einschließlich Fertig-Buttons und größerem flachen Würfel 1.1.21.",
+  "description": "Dokumentierte Quelländerungen der vollständigen Android-Kaufversion, einschließlich Fertig-Buttons und größerem flachen Würfel 1.1.21. Navigation, Lesewiederaufnahme und Spielregeln 2026-11-08.",
   "files": [
     {
       "path": "geschichten.html",
-      "sha256": "ede5ddedef072c5922af2fe7cf9ad05004a240cf51f716b1aa85b4f19b922608"
+      "sha256": "99af848bae9d788a77178cde5512d5a2c49cd1e740120c630187350ce00dbcfa"
     },
     {
       "path": "wuerfeln-sport.html",
@@ -15,7 +15,7 @@
     },
     {
       "path": "spieler.html",
-      "sha256": "b5caebbae4287fa68689d050c7e86bfb2c3315255d0bb77ad51793e3d83bb6e1"
+      "sha256": "e044fd7385f695fbde1c48112ea8ddd065897cec0fd2a5385360e02fe4616bf7"
     },
     {
       "path": "wuerfeln-maerchen.html",
@@ -27,7 +27,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "ad282f374e2f38ed41c3b32f52e18f053108de3cae1a1f5c81e2a5feada5819c"
+      "sha256": "1df81ca1c6ee7ef52e22c7cb84920e15824732e99dd91a74512242521b8ee54d"
     },
     {
       "path": "wuerfeln-freizeit.html",

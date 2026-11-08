@@ -154,3 +154,39 @@ addEventListener('DOMContentLoaded',()=>{
   else initReadingTools();
 })();
 
+
+/* Short instructions stay available inside every game, including offline. */
+addEventListener('DOMContentLoaded', () => {
+  const file=location.pathname.split('/').pop();
+  let steps;
+  if(/^wuerfeln-(freizeit|sport|maerchen)\.html$/.test(file))steps=[
+    'Spielt zu zweit oder führe beide Figuren. Blau beginnt. Danach ist Rot dran. Oben steht immer, wer dran ist.',
+    'Tippe auf den Würfel. Deine Figur zieht von allein. Lies die Karte und erledige ihre Aufgabe. Erst danach geht es weiter.',
+    'Bei einer Suchaufgabe tippst du auf das gesuchte Feld oder Bild. Eine falsche Antwort darfst du noch einmal versuchen.',
+    'Du darfst mit einer zu großen Würfelzahl ins Ziel. Wer schon im Ziel ist, zieht im eigenen Zug weiter Karten. Ihr seid fertig, wenn beide im Ziel sind.',
+    'Deine Runde wird für dein Profil gespeichert. Öffne dasselbe Spiel, um weiterzuspielen. Mit „Neu starten“ beginnt die Runde von vorn.'
+  ];
+  else if(file==='geschichten.html')steps=[
+    'Wähle ein kleines Bild. Suche es im großen Bild und tippe darauf.',
+    'Lies die fünf Karten. Mit „Nächste Karte“ geht es weiter. Am Schluss tippst du auf „Geschichte beenden“.',
+    'Für jede fertige Geschichte darfst du eine Fläche ausmalen. Dein Profil merkt sich deine Bilder und die zuletzt offene Lesekarte.'
+  ];
+  else if(file==='finde-den-fehler.html')steps=[
+    'Wähle oben ein kleines Suchbild. Finde den Ausschnitt im großen Bild und tippe darauf.',
+    'Lies den Satz. Überlege, was daran nicht stimmt. Erzähle, wie es richtig wäre. Tippe dann auf „Fertig“.',
+    'Für jede fertige Aufgabe bekommst du einen Malzug. Deine Häkchen und Farben bleiben für dein Profil gespeichert.'
+  ];
+  else if(file==='verruecktes-fussball.html')steps=[
+    'Wähle ein Suchbild oder entdecke etwas direkt im großen Bild.',
+    'Lies die Geschichte. Suche danach die Dinge, nach denen die Aufgabe fragt. Tippe auf sie. Wenn alles gefunden ist, wird „Fertig“ frei.',
+    'Für jede fertige Geschichte bekommst du einen Malzug. Deine Häkchen und Farben bleiben für dein Profil gespeichert.'
+  ];
+  if(!steps)return;
+  const bar=document.createElement('div');bar.className='game-help';
+  const button=document.createElement('button');button.type='button';button.textContent='So geht’s';
+  const dialog=document.createElement('dialog');dialog.className='game-rules';dialog.setAttribute('aria-labelledby','gameRulesHeading');
+  const title=document.createElement('h2');title.id='gameRulesHeading';title.textContent='So geht’s';
+  const list=document.createElement('ol');for(const step of steps){const li=document.createElement('li');li.textContent=step;list.append(li)}
+  const close=document.createElement('button');close.type='button';close.textContent='Zurück zum Spiel';close.onclick=()=>dialog.close();
+  dialog.append(title,list,close);button.onclick=()=>dialog.showModal();bar.append(button);document.body.prepend(bar);document.body.append(dialog);
+});
