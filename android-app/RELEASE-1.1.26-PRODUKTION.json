@@ -1,0 +1,26 @@
+{
+  "versionName": "1.1.26",
+  "versionCode": 28,
+  "packageId": "de.heikeamthor.lesespiele",
+  "sourceCommit": "d389ae6d022e22cea82202a635ad85e6d732fbd4",
+  "aabFile": "Lesespiele-Play-1.1.26-unsigned.aab",
+  "aabBytes": 54010971,
+  "aabSha256": "9702E7DD0C604DC287E3AA9DAB51FBF889F05C0932F9D240D50A2AEB5300D4DE",
+  "uploadCertificateSha256": "EA14AD75C7EFFEA842B6E8BF9FFF61DF3863DC56AC2C1DF60A6889148F0EE70C",
+  "signingStatus": "unsigned; Signierung mit bisherigem Upload-Schluessel ausstehend",
+  "debuggable": false,
+  "testOnly": false,
+  "minSdk": 24,
+  "verifiedBundledFiles": 304,
+  "checks": [
+    "Gradle bundleUnsignedRelease mit R8 erfolgreich",
+    "Bundletool 1.18.3 validate erfolgreich",
+    "Produktions-App-ID und Manifestversion bestätigt",
+    "Alle 304 Spieldateien bytegleich mit aktuellem Android-Webpaket",
+    "Signierhilfe am vollständigen Bundle mit getrenntem Prüfschlüssel getestet",
+    "Unpassender Bundle-Hash wird abgewiesen",
+    "Regulärer signierter Release-Bau ohne Upload-Schlüssel bleibt gesperrt"
+  ],
+  "physicalDeviceTest": "ausstehend",
+  "googlePlayUpload": "nicht erfolgt"
+}

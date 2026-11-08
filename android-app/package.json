@@ -3,7 +3,9 @@
   "version": "1.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "node scripts/build-web.mjs",
     "check": "node scripts/check-project.mjs",
@@ -12,7 +14,8 @@
     "android:open": "cap open android",
     "android:debug": "npm run android:sync && node scripts/gradle.mjs assembleDebug",
     "android:apk": "npm run android:sync && node scripts/gradle.mjs assembleRelease",
-    "android:aab": "npm run android:sync && node scripts/gradle.mjs bundleRelease"
+    "android:aab": "npm run android:sync && node scripts/gradle.mjs bundleRelease",
+    "android:aab:unsigned": "npm run android:sync && node scripts/gradle.mjs bundleUnsignedRelease"
   },
   "dependencies": {
     "@capacitor/core": "8.5.2",

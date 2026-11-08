@@ -51,6 +51,13 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        // Preparation artifact only: sign with the existing upload key before Play upload.
+        unsignedRelease {
+            initWith release
+            signingConfig = null
+            debuggable false
+            matchingFallbacks = ['release']
+        }
         localPreview {
             initWith release
             applicationIdSuffix ".test"
@@ -72,6 +79,8 @@ android {
 }
 
 gradle.taskGraph.whenReady { graph ->
+    if (graph.allTasks.any { it.project == project && it.name in ['bundleUnsignedRelease', 'assembleUnsignedRelease'] } && releaseSettings.packageId != android.defaultConfig.applicationId)
+        throw new GradleException('Die Paket-ID des vorbereiteten Bundles stimmt nicht mit release-settings.json ueberein.')
     if (graph.allTasks.any { it.project == project && it.name in ['assembleRelease', 'bundleRelease', 'packageRelease', 'signReleaseBundle'] }) {
         if (releaseSettings.packageId != android.defaultConfig.applicationId)
             throw new GradleException('Die Paket-ID in release-settings.json stimmt nicht mit der Android-App überein.')

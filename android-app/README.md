@@ -2,6 +2,8 @@
 
 **Aktueller Quellstand: 1.1.26 · Versionscode 28 · 8. November 2026**
 
+Das aktuelle Produktionspaket mit ursprünglicher App-ID ist gebaut und validiert. Bundle, lokale Signierhilfe und Prüfnachweise sind in [RELEASE-1.1.26-PRODUKTION.md](RELEASE-1.1.26-PRODUKTION.md) dokumentiert. Signierung mit dem bisherigen Upload-Schlüssel und Google-Play-Upload stehen aus.
+
 Der Android-Testbuild 1.1.26-test enthält ausschließlich auf die Google-Play-App bezogene Datenschutzhinweise und ergänzt das Offline-Impressum, appbezogene Datenschutzhinweise und den E-Mail-Kontakt im Erwachsenenbereich. Die Korrekturen an Navigation, Fortschrittsanzeigen, Lesewiederaufnahme und Spielregeln sind weiterhin enthalten. Er nutzt die separate Kennung `de.heikeamthor.lesespiele.test` und heißt „Lesespiele Test“. Details und Handytest: [RELEASE-1.1.26.md](RELEASE-1.1.26.md). Die Informationswebsite verweist für die Spiele auf Google Play.
 
 Die korrigierte Märchenfrage ist im neuen unsigned.aab 1.1.23 enthalten. Paket und Signierhilfe sind geprüft; lokale Upload-Signierung und Gerätetest stehen aus. Details: [RELEASE-1.1.23.md](RELEASE-1.1.23.md). Die bestätigte Hintergrund-Testfassung bleibt als 1.1.22 dokumentiert. Das letzte hier dokumentierte mit dem Upload-Schlüssel signierte Bundle bleibt 1.1.21.
