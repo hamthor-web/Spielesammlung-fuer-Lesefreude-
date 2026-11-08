@@ -7,3 +7,5 @@ Das veröffentlichte Impressum unter lesespiele.heike-amthor.de/impressum liefer
 Die Paketprüfung erlaubt ausschließlich die angegebenen, bewusst zu öffnenden externen Rechtslinks mit sicheren Linkattributen. Externe Skripte, Bilder, Iframes, Stylesheets und Netzabrufe bleiben ausgeschlossen. Die mobilen Prüfungen bestätigen lokale Anzeige ohne Profil, Offlinebetrieb, Hoch-/Querformat und Rückwege ohne Profil- oder Spielstandsänderung.
 
 Die App-/Webänderungen werden zunächst als Prüfzweig bereitgestellt. Die Übernahme auf main und damit die Veröffentlichung der Webversion stehen noch aus. Die APK kann unabhängig davon lokal getestet werden.
+
+Korrektur nach Nutzerhinweis: Die Spiele werden ausschließlich über Google Play ausgeliefert. Hinweise auf eine Webversion der Spiele und GitHub Pages wurden aus den aktuellen App-Datenschutztexten entfernt. Der entsprechend korrigierte Abschnitt 9 ist im Canva-Design gespeichert und kontrolliert. Für das Erscheinen auf der Informationswebsite muss diese in Canva erneut veröffentlicht werden. Die Repository-Änderungen bleiben auf dem Prüfzweig.

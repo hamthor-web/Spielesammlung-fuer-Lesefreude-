@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 const legalLinks={
   'impressum.html':new Set(['https://lesespiele.heike-amthor.de/','https://lesespiele.heike-amthor.de/impressum','https://lesespiele.heike-amthor.de/datenschutz']),
-  'datenschutz.html':new Set(['https://lesespiele.heike-amthor.de/datenschutz','https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement'])
+  'datenschutz.html':new Set(['https://lesespiele.heike-amthor.de/datenschutz'])
 };
 
 export function checkExternalLinks(name,text){
