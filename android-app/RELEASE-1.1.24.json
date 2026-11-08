@@ -1,0 +1,23 @@
+{
+  "versionName": "1.1.24-test",
+  "versionCode": 26,
+  "applicationId": "de.heikeamthor.lesespiele.test",
+  "displayName": "Lesespiele Test",
+  "buildVariant": "debug",
+  "gameChangesBaseCommit": "01b709a",
+  "apkSha256": "36a8ba3964b1f48dde230fe5c96f72379bfda107ffa619c0dd8ff409f050ad71",
+  "apkSizeBytes": 56806046,
+  "verifiedBundledFiles": 303,
+  "checks": [
+    "assembleDebug",
+    "npm test",
+    "npm run check",
+    "Mobile Chromium: Android-Webpaket, Profile und Wiederaufnahme",
+    "SHA256-Vergleich der veröffentlichten Webdateien",
+    "Alle www-Dateien bytegleich in der APK",
+    "apksigner verify: gültige APK-v2-Debug-Signatur",
+    "aapt: Test-App-ID, Versionscode 26, Mindest-API 24 und App-Name bestätigt"
+  ],
+  "physicalDeviceTest": "ausstehend",
+  "publishedToGooglePlay": false
+}
