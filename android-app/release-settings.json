@@ -1,6 +1,6 @@
 {
   "packageId": "de.heikeamthor.lesespiele",
-  "versionCode": 26,
-  "versionName": "1.1.24",
-  "note": "Testbuild mit Bedienungs- und Wiederaufnahme-Korrekturen vom 8. November 2026. Vor einem Play-Upload den höchsten verwendeten Versionscode abgleichen."
+  "versionCode": 28,
+  "versionName": "1.1.26",
+  "note": "App-Datenschutz auf Google-Play-Auslieferung und lokalen Offlinebetrieb begrenzt. Vor Play-Upload den höchsten Versionscode abgleichen."
 }

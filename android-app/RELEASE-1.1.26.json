@@ -1,0 +1,17 @@
+{
+  "versionName": "1.1.26-test",
+  "versionCode": 28,
+  "applicationId": "de.heikeamthor.lesespiele.test",
+  "apkSha256": "45c2657c44d8af56d7525512b8ba3ce9c6a38faff73bd0152125fd0d10c91b33",
+  "apkSizeBytes": 56809220,
+  "verifiedBundledFiles": 304,
+  "checks": [
+    "assembleDebug",
+    "npm test: alle 9 Testdateien erfolgreich",
+    "npm run check",
+    "Alle Webpaket-Dateien bytegleich in der APK",
+    "App-Datenschutz in der APK: Google Play vorhanden, Webversion und GitHub entfernt"
+  ],
+  "physicalDeviceTest": "ausstehend",
+  "publishedToGooglePlay": false
+}

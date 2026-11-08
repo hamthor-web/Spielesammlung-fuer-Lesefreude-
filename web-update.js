@@ -1,5 +1,5 @@
 (() => {
- const version='1.1.22';let reloaded=false;
+ const version='1.1.23';let reloaded=false;
  const tell=text=>{const el=document.getElementById('offlineStatus');if(el)el.textContent=text};
  addEventListener('DOMContentLoaded',()=>{
   const panel=document.getElementById('adultPanel');if(panel){const p=document.createElement('p');p.textContent='Web-Version '+version;panel.append(p)}
