@@ -654,6 +654,12 @@ body { display:block; background:#e6edcf; }
 #squirrelFigure { left:23.15%; top:5.1%; width:7%; height:9.893%; }
 #board .magicHit[data-magic="squirrel"] { display:block; background:none; border:0; box-shadow:none; cursor:default; }
 #board .magicHit[data-magic="squirrel"]:focus:not(:focus-visible) { outline:0; }
+#knightLayer, #knightAnimation { position:absolute; pointer-events:none; z-index:2; }
+#knightLayer { inset:0; width:100%; height:100%; object-fit:cover; }
+#knightAnimation { object-fit:contain; object-position:center bottom; }
+#board .magicHit[data-magic="knight"] { display:block; border:0; background:transparent; box-shadow:none; cursor:pointer; }
+#board .magicHit[data-magic="knight"]:focus:not(:focus-visible) { outline:0; }
+
 </style>
 </head>
 <body>
@@ -717,7 +723,7 @@ body { display:block; background:#e6edcf; }
       <button class="magicHit" data-magic="owl" aria-label="owl" style="left:18%;top:6%;width:12%;height:12%"></button>
       <button class="magicHit" data-magic="frog" aria-label="frog" style="left:48.5%;top:74%;width:11%;height:16%"></button>
       <button class="magicHit" data-magic="dragon" aria-label="dragon" style="left:66.5%;top:10%;width:11%;height:16%"></button>
-      <button class="magicHit" data-magic="knight" aria-label="knight" style="left:80.5%;top:32%;width:13%;height:18%"></button>
+      <button class="magicHit" data-magic="knight" aria-label="Ritter" style="left:81%;top:31%;width:14%;height:19%"></button>
       <button class="magicHit" data-magic="lamp" aria-label="lamp" style="left:65.5%;top:50%;width:6%;height:13%"></button>
       <button class="magicHit" data-magic="dragonfly" aria-label="dragonfly" style="left:56%;top:72.5%;width:7%;height:9%"></button>
       <button class="magicHit" data-magic="butterfly" aria-label="butterfly" style="left:12%;top:81%;width:7%;height:11%"></button>
@@ -829,7 +835,7 @@ document.getElementById('boardWrap').after(taskDock);
 <script>if(window.LeseLite.full){
 (() => {
   const TEST_MODE=false;
-  const freeMagicTargets = new Set(['rapunzel', 'squirrel']);
+  const freeMagicTargets = new Set(['rapunzel', 'squirrel', 'knight']);
   const isFreeMagicTap = () => !busy && !waitingForJoker && !waitingForCardTarget &&
     !waitingForMoveCard && !waitingForFootballCard;
   let epoch=0;
@@ -1960,7 +1966,7 @@ document.getElementById('boardWrap').after(taskDock);
   const imageURL=getComputedStyle(board).backgroundImage.slice(5,-2);
   const defs=svg('defs');svg('image',{id:'fairyScene',href:imageURL,x:0,y:0,width:100,height:100,preserveAspectRatio:'none'},defs);
   let sequence=0;
-  function clearFairy(){stopRapunzel();stopSquirrel();fx.querySelectorAll(':scope > g').forEach(n=>n.remove());defs.querySelectorAll('clipPath').forEach(n=>n.remove());playingAudio.forEach(a=>a.pause());playingAudio.clear();}
+  function clearFairy(){stopRapunzel();stopSquirrel();stopKnight();fx.querySelectorAll(':scope > g').forEach(n=>n.remove());defs.querySelectorAll('clipPath').forEach(n=>n.remove());playingAudio.forEach(a=>a.pause());playingAudio.clear();}
   const rapunzel = document.createElement('canvas');
   rapunzel.id = 'rapunzelFigure';
   rapunzel.width = 384;
@@ -2076,12 +2082,131 @@ document.getElementById('boardWrap').after(taskDock);
     squirrelRequest = requestAnimationFrame(nextFrame);
   }
 
+
+  const knightLayer = document.createElement('canvas');
+  knightLayer.id = 'knightLayer';
+  knightLayer.setAttribute('aria-hidden', 'true');
+  knightLayer.hidden = true;
+  const knightAnimation = new Image();
+  knightAnimation.alt = '';
+  knightAnimation.id = 'knightAnimation';
+  knightAnimation.hidden = true;
+  board.append(knightLayer, knightAnimation);
+
+  const knightContext = knightLayer.getContext('2d');
+  const knightScenery = new Image();
+  const knightSource = './assets/ritter-dornroeschen.gif';
+  // The GIF has eight 160 ms frames and repeats once.
+  const knightDuration = 2 * 8 * 160;
+  let knightAsset, knightStill, knightUrl, knightTimer;
+
+  knightScenery.src = imageURL;
+  Promise.all([
+    fetch(knightSource).then(response => {
+      if (!response.ok) throw new Error('Ritter-GIF konnte nicht geladen werden.');
+      return response.blob();
+    }),
+    knightScenery.decode()
+  ]).then(async ([asset]) => {
+    const source = URL.createObjectURL(asset);
+    try {
+      const first = new Image();
+      first.src = source;
+      await first.decode();
+      // Canvas drawImage uses the initial frame of an animated image.
+      knightStill = document.createElement('canvas');
+      knightStill.width = first.naturalWidth;
+      knightStill.height = first.naturalHeight;
+      knightStill.getContext('2d').drawImage(first, 0, 0);
+      knightLayer.width = knightScenery.naturalWidth;
+      knightLayer.height = knightScenery.naturalHeight;
+      drawKnight();
+      knightLayer.hidden = false;
+      knightAsset = asset;
+    } finally {
+      URL.revokeObjectURL(source);
+    }
+  }).catch(() => {
+    // If the GIF is unavailable, keep the original illustration and effect.
+  });
+
+  function drawKnight(showStill = true) {
+    const c = knightContext;
+    c.clearRect(0, 0, knightLayer.width, knightLayer.height);
+    c.save();
+    c.beginPath();
+    c.moveTo(1139, 324);
+    [[1144, 291], [1168, 278], [1204, 282], [1228, 298], [1288, 253],
+      [1292, 265], [1251, 306], [1234, 327], [1233, 373], [1224, 414],
+      [1194, 411], [1150, 400], [1137, 372]].forEach(([x,y]) => c.lineTo(x,y));
+    c.closePath();
+    c.clip();
+    c.drawImage(knightScenery, 1232, 319, 139, 98, 1135, 251, 161, 168);
+    c.restore();
+    if (showStill) {
+      const scale = Math.min(178 / knightStill.width, 186 / knightStill.height);
+      const width = knightStill.width * scale, height = knightStill.height * scale;
+      c.drawImage(knightStill, 1211 - width / 2, 416 - height, width, height);
+    }
+  }
+
+  function sizeKnight() {
+    const width = board.clientWidth, height = board.clientHeight;
+    if (!width || !height) return;
+    const sceneWidth = knightLayer.width, sceneHeight = knightLayer.height;
+    const scale = Math.max(width / sceneWidth, height / sceneHeight);
+    Object.assign(knightAnimation.style, {
+      width: 178 * scale / width * 100 + '%',
+      height: 186 * scale / height * 100 + '%',
+      left: ((1211 - 89 - sceneWidth / 2) * scale / width * 100 + 50) + '%',
+      top: ((416 - 186 - sceneHeight / 2) * scale / height * 100 + 50) + '%'
+    });
+  }
+  new ResizeObserver(() => {
+    if (knightUrl) sizeKnight();
+  }).observe(board);
+
+  function stopKnight() {
+    if (!knightUrl) return;
+    clearTimeout(knightTimer);
+    knightAnimation.hidden = true;
+    knightAnimation.onload = null;
+    knightAnimation.onerror = null;
+    knightAnimation.removeAttribute('src');
+    URL.revokeObjectURL(knightUrl);
+    knightUrl = null;
+    drawKnight();
+  }
+
+  function playKnight(done) {
+    if (knightUrl && !done) return;
+    clearFairy();
+    fairySound('knight');
+    sizeKnight();
+    knightUrl = URL.createObjectURL(knightAsset);
+    const finish = () => {
+      stopKnight();
+      done?.();
+    };
+    knightAnimation.onload = () => {
+      drawKnight(false);
+      knightAnimation.hidden = false;
+      knightTimer = window.setTimeout(finish, knightDuration + 50);
+    };
+    knightAnimation.onerror = finish;
+    knightAnimation.src = knightUrl;
+  }
+
   function animate(n,frames,duration){return n.animate(frames,{duration,easing:'ease-in-out',fill:'forwards'});}
   function cutout(box,parent){const id='clip'+(++sequence);const c=svg('clipPath',{id,clipPathUnits:'userSpaceOnUse'},defs);svg('rect',{x:box[0],y:box[1],width:box[2],height:box[3],rx:.7},c);const g=svg('g',{'clip-path':'url(#'+id+')'},parent);svg('use',{href:'#fairyScene'},g);g.style.transformBox='view-box';g.style.transformOrigin=(box[0]+box[2]/2)+'% '+(box[1]+box[3]/2)+'%';return g;}
   function sparkle(parent,x,y,spread=5,count=30,duration=2200,color='#ffe16b'){
     for(let i=0;i<count;i++){const a=i*2.4,r=Math.sqrt(i/count)*spread;const n=svg('path',{d:'M0 -.6 L.15 -.15 .6 0 .15 .15 0 .6 -.15 .15 -.6 0 -.15 -.15 Z',fill:color,transform:`translate(${x+Math.cos(a)*r} ${y+Math.sin(a)*r})`,class:'fairySpark'},parent);animate(n,[{opacity:0},{opacity:1,offset:.2},{opacity:.3,offset:.55},{opacity:1,offset:.8},{opacity:0}],duration+i*13);}
   }
   playMagicEffect=function(target,done){
+    if (target === 'knight' && knightAsset) {
+      playKnight(done);
+      return;
+    }
     if(target==='rapunzel'){
       playRapunzel(done);
       return;
@@ -2150,7 +2275,7 @@ document.getElementById('boardWrap').after(taskDock);
     later(()=>{g.remove();if(done)done();},duration);
   };
   // Only the object requested by the current card accepts input during a task.
-  function syncMagic(){magicHits.forEach(b=>{const enabled=waitingForJoker&&currentJoker?.type==='magic'&&!busy?b.dataset.magic===currentJoker.target:(freeMagicTargets.has(b.dataset.magic)||TEST_MODE)&&isFreeMagicTap();b.style.pointerEvents=enabled?'auto':'none';if(b.dataset.magic==='squirrel')b.disabled=!enabled;});}
+  function syncMagic(){magicHits.forEach(b=>{const enabled=waitingForJoker&&currentJoker?.type==='magic'&&!busy?b.dataset.magic===currentJoker.target:(freeMagicTargets.has(b.dataset.magic)||TEST_MODE)&&isFreeMagicTap();b.style.pointerEvents=enabled?'auto':'none';if(b.dataset.magic==='squirrel'||b.dataset.magic==='knight')b.disabled=!enabled;});}
   new MutationObserver(syncMagic).observe(board,{attributes:true,attributeFilter:['class'],subtree:true});syncMagic();
   // The long waterfall has three separate hit regions, all on visible water.
   const waterBase=magicHits.find(b=>b.dataset.magic==='waterfall');
