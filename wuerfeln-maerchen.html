@@ -637,7 +637,19 @@ body { display:block; background:#e6edcf; }
 #trophySlot{height:auto;min-height:120px}
 .finalTrophy.chestArtwork{width:min(300px,48vw,38vh);height:min(300px,48vw,38vh);object-fit:contain;filter:drop-shadow(0 0 9px #ffe08a)}
 #winnerCard{max-height:95dvh;overflow:auto}
-</style><style>#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}</style><style>#reset{display:none!important}</style><script src="./lite-policy.js"></script><script>if(!LeseLite.full){document.documentElement.style.visibility='hidden';location.replace('./wuerfeln-maerchen-vorschau.html')}</script><script src="./dice-rewards.js"></script><style>#winnerCard{max-height:85dvh;overflow:auto;box-sizing:border-box;max-width:94vw;padding:16px} .sport-trophy{width:min(220px,45vw);height: min(220px,35dvh);object-fit:contain;display:block;margin:auto}.trophy-dialog{border:0;border-radius:22px;background:#fffbea;max-width:650px;width:88vw;max-height:85dvh;overflow:auto;text-align:center;color:#304a30}.trophy-dialog::backdrop{background:#142b36ae}.trophy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:12px}.trophy-grid img{width:100%;height:130px;object-fit:contain}.trophy-grid figure{margin:0;padding:8px;background:white;border-radius:12px}.trophy-dialog button,#trophyOpen{font:inherit;border-radius:12px;padding:8px 12px;background:#fff4b3;color:#304a30;border:2px solid #c4a445}#trophyOpen{font-size:14px;margin:5px}</style><style>.rewards-row{display:flex;justify-content:center;width:100%;margin:0 0 14px}.rewards-row #trophyOpen{margin:0}</style><link rel="stylesheet" href="./dice-ui.css"><script src="./dice-ui.js" defer></script><link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script><script src="./image-paths.js"></script></head>
+</style><style>#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}</style><style>#reset{display:none!important}</style><script src="./lite-policy.js"></script><script>if(!LeseLite.full){document.documentElement.style.visibility='hidden';location.replace('./wuerfeln-maerchen-vorschau.html')}</script><script src="./dice-rewards.js"></script><style>#winnerCard{max-height:85dvh;overflow:auto;box-sizing:border-box;max-width:94vw;padding:16px} .sport-trophy{width:min(220px,45vw);height: min(220px,35dvh);object-fit:contain;display:block;margin:auto}.trophy-dialog{border:0;border-radius:22px;background:#fffbea;max-width:650px;width:88vw;max-height:85dvh;overflow:auto;text-align:center;color:#304a30}.trophy-dialog::backdrop{background:#142b36ae}.trophy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:12px}.trophy-grid img{width:100%;height:130px;object-fit:contain}.trophy-grid figure{margin:0;padding:8px;background:white;border-radius:12px}.trophy-dialog button,#trophyOpen{font:inherit;border-radius:12px;padding:8px 12px;background:#fff4b3;color:#304a30;border:2px solid #c4a445}#trophyOpen{font-size:14px;margin:5px}</style><style>.rewards-row{display:flex;justify-content:center;width:100%;margin:0 0 14px}.rewards-row #trophyOpen{margin:0}</style><link rel="stylesheet" href="./dice-ui.css"><script src="./dice-ui.js" defer></script><link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script><script src="./image-paths.js"></script><style>
+#board #rapunzelTower, #board #rapunzelFigure {
+  position:absolute; display:none; z-index:3; pointer-events:none;
+}
+#board.rapunzelReady #rapunzelTower, #board.rapunzelReady #rapunzelFigure { display:block; }
+#rapunzelTower { left:62.89%; top:17.35%; width:4.59%; height:18.34%; }
+#rapunzelFigure { left:61.07%; top:17.63%; width:5.49%; height:7.28%; }
+#board .magicHit[data-magic="rapunzel"] {
+  display:block; background:none; border:0; box-shadow:none; cursor:default;
+}
+#board .magicHit[data-magic="rapunzel"]:focus:not(:focus-visible) { outline:0; }
+</style>
+</head>
 <body>
 <div id="app">
   <div id="boardWrap">
@@ -703,7 +715,7 @@ body { display:block; background:#e6edcf; }
       <button class="magicHit" data-magic="lamp" aria-label="lamp" style="left:65.5%;top:50%;width:6%;height:13%"></button>
       <button class="magicHit" data-magic="dragonfly" aria-label="dragonfly" style="left:56%;top:72.5%;width:7%;height:9%"></button>
       <button class="magicHit" data-magic="butterfly" aria-label="butterfly" style="left:12%;top:81%;width:7%;height:11%"></button>
-      <button class="magicHit" data-magic="rapunzel" aria-label="rapunzel" style="left:65.5%;top:26%;width:9%;height:20%"></button>
+      <button class="magicHit" data-magic="rapunzel" aria-label="Rapunzel" style="left:65.0%;top:21.7%;width:9%;height:12%"></button>
       <button class="magicHit" data-magic="rainbow" aria-label="rainbow" style="left:40%;top:12%;width:18%;height:9%"></button>
       <button class="magicHit" data-magic="carriage" aria-label="carriage" style="left:46%;top:48%;width:17%;height:17%"></button>
       <button class="magicHit" data-magic="horses" aria-label="horses" style="left:57%;top:50%;width:15%;height:14%"></button>
@@ -811,6 +823,8 @@ document.getElementById('boardWrap').after(taskDock);
 <script>if(window.LeseLite.full){
 (() => {
   const TEST_MODE=false;
+  const isFreeRapunzelTap = () => !busy && !waitingForJoker && !waitingForCardTarget &&
+    !waitingForMoveCard && !waitingForFootballCard;
   let epoch=0;
   const timers=new Set(), intervals=new Set();
   function later(callback,ms){const e=epoch; const id=window.setTimeout(()=>{timers.delete(id);if(e===epoch)callback();},ms);timers.add(id);return id;}
@@ -1836,7 +1850,10 @@ document.getElementById('boardWrap').after(taskDock);
   trackHits.forEach(b=>b.addEventListener('click',()=>selectJokerTarget('track',+b.dataset.index)));
   goalHit.addEventListener('click',()=>selectJokerTarget('goal'));
   magicHits.forEach(b=>b.addEventListener('click',()=>{
-    if(!waitingForJoker){ if(TEST_MODE && !busy && !waitingForCardTarget && !waitingForMoveCard && !waitingForFootballCard) playMagicEffect(b.dataset.magic); return; }
+    if(!waitingForJoker){
+      if((b.dataset.magic==='rapunzel' || TEST_MODE) && isFreeRapunzelTap()) playMagicEffect(b.dataset.magic);
+      return;
+    }
     selectMagicTarget(b.dataset.magic);
   }));
   document.getElementById('moveDone').addEventListener('click',event=>{event.stopPropagation();finishMoveCard();});
@@ -1936,18 +1953,80 @@ document.getElementById('boardWrap').after(taskDock);
   const imageURL=getComputedStyle(board).backgroundImage.slice(5,-2);
   const defs=svg('defs');svg('image',{id:'fairyScene',href:imageURL,x:0,y:0,width:100,height:100,preserveAspectRatio:'none'},defs);
   let sequence=0;
-  function clearFairy(){fx.querySelectorAll(':scope > g').forEach(n=>n.remove());defs.querySelectorAll('clipPath').forEach(n=>n.remove());playingAudio.forEach(a=>a.pause());playingAudio.clear();}
+  function clearFairy(){stopRapunzel();fx.querySelectorAll(':scope > g').forEach(n=>n.remove());defs.querySelectorAll('clipPath').forEach(n=>n.remove());playingAudio.forEach(a=>a.pause());playingAudio.clear();}
+  const rapunzel = document.createElement('canvas');
+  rapunzel.id = 'rapunzelFigure';
+  rapunzel.width = 384;
+  rapunzel.height = 360;
+  rapunzel.setAttribute('aria-hidden', 'true');
+  board.append(rapunzel);
+  const rapunzelContext = rapunzel.getContext('2d');
+  const rapunzelFrames = new Image();
+  const rapunzelTower = new Image();
+  rapunzelTower.id = 'rapunzelTower';
+  rapunzelTower.alt = '';
+  board.insertBefore(rapunzelTower, rapunzel);
+  let rapunzelRequest = 0;
+  let rapunzelPlayback = 0;
+  function drawRapunzel(frame) {
+    rapunzelContext.clearRect(0, 0, 384, 360);
+    rapunzelContext.drawImage(rapunzelFrames, (frame % 6) * 384, Math.floor(frame / 6) * 360,
+      384, 360, 0, 0, 384, 360);
+    rapunzel.dataset.frame = frame;
+  }
+  const rapunzelReady = Promise.all([rapunzelFrames, rapunzelTower].map((asset, i) => {
+    asset.src = i === 0 ? './assets/rapunzel-frames.webp' : './assets/rapunzel-turm.webp';
+    return asset.decode();
+  })).then(() => {
+    drawRapunzel(0);
+    board.classList.add('rapunzelReady');
+    return true;
+  }).catch(() => false);
+  function stopRapunzel() {
+    rapunzelPlayback++;
+    cancelAnimationFrame(rapunzelRequest);
+    rapunzelRequest = 0;
+    if(board.classList.contains('rapunzelReady')) drawRapunzel(0);
+  }
+  async function playRapunzel(done) {
+    if(!done && rapunzelRequest) return;
+    clearFairy();
+    const current = rapunzelPlayback;
+    const ready = await rapunzelReady;
+    if(current !== rapunzelPlayback) return;
+    if(!ready) {
+      done?.();
+      return;
+    }
+    const start = performance.now();
+    function nextFrame(now) {
+      const frame = Math.floor((now - start) / 100);
+      if(frame >= 30) {
+        rapunzelRequest = 0;
+        drawRapunzel(0);
+        done?.();
+        return;
+      }
+      drawRapunzel(Math.max(0, frame));
+      rapunzelRequest = requestAnimationFrame(nextFrame);
+    }
+    rapunzelRequest = requestAnimationFrame(nextFrame);
+  }
   function animate(n,frames,duration){return n.animate(frames,{duration,easing:'ease-in-out',fill:'forwards'});}
   function cutout(box,parent){const id='clip'+(++sequence);const c=svg('clipPath',{id,clipPathUnits:'userSpaceOnUse'},defs);svg('rect',{x:box[0],y:box[1],width:box[2],height:box[3],rx:.7},c);const g=svg('g',{'clip-path':'url(#'+id+')'},parent);svg('use',{href:'#fairyScene'},g);g.style.transformBox='view-box';g.style.transformOrigin=(box[0]+box[2]/2)+'% '+(box[1]+box[3]/2)+'%';return g;}
   function sparkle(parent,x,y,spread=5,count=30,duration=2200,color='#ffe16b'){
     for(let i=0;i<count;i++){const a=i*2.4,r=Math.sqrt(i/count)*spread;const n=svg('path',{d:'M0 -.6 L.15 -.15 .6 0 .15 .15 0 .6 -.15 .15 -.6 0 -.15 -.15 Z',fill:color,transform:`translate(${x+Math.cos(a)*r} ${y+Math.sin(a)*r})`,class:'fairySpark'},parent);animate(n,[{opacity:0},{opacity:1,offset:.2},{opacity:.3,offset:.55},{opacity:1,offset:.8},{opacity:0}],duration+i*13);}
   }
   playMagicEffect=function(target,done){
+    if(target==='rapunzel'){
+      playRapunzel(done);
+      return;
+    }
     clearFairy();const g=svg('g');const p=objectPositions[target];if(!p){if(done)done();return;}
     let duration=2200;
     const sound={dragonfly:'glitter',butterfly:'glitter',rainbow:'glitter',carriage:'horses',boyglasses:null}[target];
     if(sound)fairySound(sound);else if(fairyAudio[target])fairySound(target);else if(target==='ice')soundMmm();else if(target==='frog')soundFrog();else if(target==='lamp')soundMatch();
-    const boxes={owl:[14.5,0,8,10.5],dragon:[62,3,10,12],squirrel:[23,6,8,9],rapunzel:[63,18,5,18],carriage:[39,41,13,13],horses:[50,43,14,13],boyglasses:[69,51,10,19]};
+    const boxes={owl:[14.5,0,8,10.5],dragon:[62,3,10,12],squirrel:[23,6,8,9],carriage:[39,41,13,13],horses:[50,43,14,13],boyglasses:[69,51,10,19]};
     if(boxes[target]){const n=cutout(boxes[target],g);animate(n,target==='squirrel'?[{transform:'rotate(0)'},{transform:'rotate(-12deg) translateY(-.5%)',offset:.18},{transform:'rotate(11deg)',offset:.36},{transform:'rotate(-10deg) translateY(-.5%)',offset:.54},{transform:'rotate(9deg)',offset:.72},{transform:'none'}]:[{transform:'translate(0,0)'},{transform:target==='horses'?'translateX(1.2%)':'rotate(-3deg)',offset:.35},{transform:'rotate(2deg)',offset:.65},{transform:'none'}],duration);}
     if(target==='knight'){
       const blade=svg('path',{d:'M81 31 L86 24',stroke:'#eef6ff','stroke-width':.6,'stroke-linecap':'round'},g);blade.style.transformOrigin='81% 31%';animate(blade,[{transform:'rotate(0)'},{transform:'rotate(55deg)',offset:.45},{transform:'rotate(0)'}],1600);
@@ -2003,7 +2082,7 @@ document.getElementById('boardWrap').after(taskDock);
     later(()=>{g.remove();if(done)done();},duration);
   };
   // Only the object requested by the current card accepts input during a task.
-  function syncMagic(){magicHits.forEach(b=>{const enabled=waitingForJoker&&currentJoker?.type==='magic'&&!busy?b.dataset.magic===currentJoker.target:TEST_MODE&&!busy&&!waitingForJoker&&!waitingForCardTarget&&!waitingForMoveCard&&!waitingForFootballCard;b.style.pointerEvents=enabled?'auto':'none';});}
+  function syncMagic(){magicHits.forEach(b=>{const enabled=waitingForJoker&&currentJoker?.type==='magic'&&!busy?b.dataset.magic===currentJoker.target:(b.dataset.magic==='rapunzel'||TEST_MODE)&&isFreeRapunzelTap();b.style.pointerEvents=enabled?'auto':'none';});}
   new MutationObserver(syncMagic).observe(board,{attributes:true,attributeFilter:['class'],subtree:true});syncMagic();
   // The long waterfall has three separate hit regions, all on visible water.
   const waterBase=magicHits.find(b=>b.dataset.magic==='waterfall');
