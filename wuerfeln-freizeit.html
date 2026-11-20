@@ -152,34 +152,12 @@
   #iceFx .scoop { position:absolute; left:50%; top:5%; width:34px; height:34px; transform:translateX(-50%); border-radius:50%; background:radial-gradient(circle at 35% 30%, #ffb5b5 0%, #ff6b6b 48%, #d93c3c 100%); box-shadow:0 3px 6px rgba(0,0,0,.16); }
   #iceFx.show { animation:icePop 1.08s ease forwards; }
   @keyframes icePop { 0%{opacity:0;transform:translate(-50%,-50%) scale(.18)} 18%{opacity:1;transform:translate(-50%,-62%) scale(1.08)} 76%{opacity:1;transform:translate(-50%,-72%) scale(1)} 100%{opacity:0;transform:translate(-50%,-88%) scale(.9)} }
-  #birdFx { left:75.6%; top:50.4%; width:clamp(46px,6.2vw,78px); height:clamp(34px,4.6vw,58px); transform:translate(-50%,-50%); transform-origin:50% 60%; }
-  #birdFx .birdBody{position:absolute;left:31%;top:34%;width:38%;height:31%;border-radius:58% 55% 52% 48%;background:linear-gradient(145deg,#3e7fb7 0%,#2f6696 58%,#224766 100%);box-shadow:0 2px 4px rgba(0,0,0,.24);}
-  #birdFx .birdBody::before{content:'';position:absolute;right:-26%;top:5%;width:35%;height:35%;border-radius:50%;background:#3f83bb;box-shadow:inset -2px -2px 0 rgba(0,0,0,.08);}
-  #birdFx .birdBody::after{content:'';position:absolute;right:-38%;top:16%;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:11px solid #e5a934;}
-  #birdFx .birdEye{position:absolute;left:73%;top:37%;width:4px;height:4px;border-radius:50%;background:#101820;z-index:3;}
-  #birdFx .birdTail{position:absolute;left:21%;top:43%;width:22%;height:10%;background:#255474;border-radius:70% 0 0 70%;transform:rotate(11deg);transform-origin:right center;}
-  #birdFx .wing{position:absolute;left:36%;top:31%;width:33%;height:38%;border-radius:80% 15% 70% 20%;background:linear-gradient(160deg,#6ba7d2,#2d628c);transform-origin:18% 72%;filter:drop-shadow(0 1px 1px rgba(0,0,0,.16));}
-  #birdFx .wing.back{opacity:.82;transform:rotate(28deg) scale(.92);z-index:-1;}
-  #birdFx .wing.front{z-index:2;}
-  #birdFx.show { opacity:1; animation:birdArc 3.35s cubic-bezier(.18,.65,.24,1) forwards; }
-  #birdFx.show .wing.front{animation:wingFlap .23s ease-in-out 14 alternate;}
-  #birdFx.show .wing.back{animation:wingFlapBack .23s ease-in-out 14 alternate;}
-  #birdFx.show .birdTail{animation:tailFlick .34s ease-in-out 9 alternate;}
-  @keyframes wingFlap{from{transform:rotate(-18deg) scaleY(.72)}to{transform:rotate(58deg) scaleY(1.08)}}
-  @keyframes wingFlapBack{from{transform:rotate(38deg) scale(.9,.7)}to{transform:rotate(-28deg) scale(.96,1.04)}}
-  @keyframes tailFlick{from{transform:rotate(2deg)}to{transform:rotate(20deg)}}
-  @keyframes birdArc{
-    0%{opacity:0;transform:translate(-50%,-50%) scale(.58) scaleX(-1) rotate(10deg)}
-    8%{opacity:1;transform:translate(-53%,-61%) scale(.98) scaleX(-1) rotate(7deg)}
-    22%{opacity:1;transform:translate(-84%,-105%) scale(1.14) scaleX(-1) rotate(-2deg)}
-    42%{opacity:1;transform:translate(-129%,-162%) scale(1.12) scaleX(-1) rotate(-8deg)}
-    62%{opacity:1;transform:translate(-178%,-214%) scale(1.04) scaleX(-1) rotate(-13deg)}
-    82%{opacity:.92;transform:translate(-230%,-267%) scale(.92) scaleX(-1) rotate(-17deg)}
-    100%{opacity:0;transform:translate(-276%,-320%) scale(.72) scaleX(-1) rotate(-21deg)}
-  }
-  @media (max-width:600px){
-    #birdFx{width:60px;height:45px;}
-  }
+  .dice-bird-perch { position:absolute; pointer-events:none; z-index:1; }
+  .dice-bird-perch[hidden] { display:none; }
+  .dice-bird-flight { position:absolute; inset:0; width:100%; height:100%; z-index:45; pointer-events:none; }
+  #board:not(.inputLocked) .magicHit[data-magic="bird"] { display:block; }
+  #board .magicHit[data-magic="bird"] { transform:translate(-50%,-50%); min-width:28px; min-height:28px; }
+  #board .magicHit[data-magic="bird"]:focus-visible { outline:2px solid #fff; outline-offset:2px; border-radius:50%; }
   #laughFx { left:8.0%; top:46.0%; width:19%; height:18%; transform:translate(-50%,-50%); }
   #laughFx::before { content:'✨'; position:absolute; left:30%; top:34%; font-size:clamp(22px,2.8vw,34px); opacity:0; }
   #laughFx.show { opacity:1; animation:giggleNudge 1.05s ease; }
@@ -241,7 +219,6 @@
 #lampGlowFx{left:3.7%;top:45%;}
 #cloudFx{left:35.2%;top:5.5%;}
 #iceFx{left:35%;top:40%;}
-#birdFx{left:80.5%;top:46.5%;}
 #laughFx{left:49%;top:48.5%;}
 #frogFx{left:49%;top:70%;}
 #goalHit{left:11%;top:50%;width:18%;height:15%;}
@@ -618,11 +595,12 @@ body { display:block; background:#e6edcf; }
 #moveTestBtn{border:0;border-radius:14px;padding:10px;background:#dff4ff;font-weight:800;font-size:14px}
 </style><style>/* Gemeinsamer Picknickabschluss: große Speisen mit goldenem Schimmer. */
 #picnicFx .picnicItems{left:-60%;right:-60%;top:-5%;gap:6px;font-size:clamp(30px,4.5vw,62px);filter:drop-shadow(0 0 3px #ffdc65) drop-shadow(0 0 8px #ffd24a) drop-shadow(0 0 14px #fff0a0);}
-#picnicFx .picnicItems span{display:inline-block;}</style><style>#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}</style><style>#reset{display:none!important}</style><script src="./dice-rewards.js"></script><style>#winnerCard{max-height:85dvh;overflow:auto;box-sizing:border-box;max-width:94vw;padding:16px} .sport-trophy{width:min(220px,45vw);height: min(220px,35dvh);object-fit:contain;display:block;margin:auto}.trophy-dialog{border:0;border-radius:22px;background:#fffbea;max-width:650px;width:88vw;max-height:85dvh;overflow:auto;text-align:center;color:#304a30}.trophy-dialog::backdrop{background:#142b36ae}.trophy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:12px}.trophy-grid img{width:100%;height:130px;object-fit:contain}.trophy-grid figure{margin:0;padding:8px;background:white;border-radius:12px}.trophy-dialog button,#trophyOpen{font:inherit;border-radius:12px;padding:8px 12px;background:#fff4b3;color:#304a30;border:2px solid #c4a445}#trophyOpen{font-size:14px;margin:5px}</style><style>.rewards-row{display:flex;justify-content:center;width:100%;margin:0 0 14px}.rewards-row #trophyOpen{margin:0}</style><link rel="stylesheet" href="./dice-ui.css"><script src="./dice-ui.js" defer></script><link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script><script src="./image-paths.js"></script></head>
+#picnicFx .picnicItems span{display:inline-block;}</style><style>#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}</style><style>#reset{display:none!important}</style><script src="./dice-rewards.js"></script><style>#winnerCard{max-height:85dvh;overflow:auto;box-sizing:border-box;max-width:94vw;padding:16px} .sport-trophy{width:min(220px,45vw);height: min(220px,35dvh);object-fit:contain;display:block;margin:auto}.trophy-dialog{border:0;border-radius:22px;background:#fffbea;max-width:650px;width:88vw;max-height:85dvh;overflow:auto;text-align:center;color:#304a30}.trophy-dialog::backdrop{background:#142b36ae}.trophy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:12px}.trophy-grid img{width:100%;height:130px;object-fit:contain}.trophy-grid figure{margin:0;padding:8px;background:white;border-radius:12px}.trophy-dialog button,#trophyOpen{font:inherit;border-radius:12px;padding:8px 12px;background:#fff4b3;color:#304a30;border:2px solid #c4a445}#trophyOpen{font-size:14px;margin:5px}</style><style>.rewards-row{display:flex;justify-content:center;width:100%;margin:0 0 14px}.rewards-row #trophyOpen{margin:0}</style><link rel="stylesheet" href="./dice-ui.css"><script src="./dice-ui.js" defer></script><link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script><script src="./image-paths.js"></script><script src="./dice-bird-flight.js"></script></head>
 <body>
 <div id="app">
   <div id="boardWrap">
     <div id="board" aria-label="Wochen-Spielbrett Freizeit und Abenteuer">
+      <img class="dice-bird-perch" src="./assets/bird-perch-freizeit.png" alt="" style="left:78.38397790055248%;top:35.17495395948435%;width:11.049723756906078%;height:14.732965009208105%" hidden>
       <div class="token" id="boy" aria-label="Blaue Spielfigur"><div class="head"></div><div class="hair"></div><div class="eye e1"></div><div class="eye e2"></div><div class="smile"></div><div class="body"></div></div>
       <div class="token" id="girl" aria-label="Rote Spielfigur"><div class="head"></div><div class="hair"></div><div class="eye e1"></div><div class="eye e2"></div><div class="smile"></div><div class="body"></div></div>
       <div id="goalBurst" aria-hidden="true"></div>
@@ -634,7 +612,7 @@ body { display:block; background:#e6edcf; }
       <div id="weatherDimFx"></div>
       <div id="cloudFx" class="effectFx">☁️</div>
       <div id="iceFx" class="effectFx"><div class="cone"></div><div class="scoop"></div></div>
-      <div id="birdFx" class="effectFx"><div class="birdTail"></div><div class="wing back"></div><div class="birdBody"></div><div class="wing front"></div><div class="birdEye"></div></div>
+      <canvas class="dice-bird-flight" aria-hidden="true"></canvas>
       <div id="laughFx" class="effectFx"><span>Ha!</span><span>Ha!</span><span>Ha!</span></div>
       <div id="frogFx" class="effectFx"><span>Quak!</span><span>Quak!</span></div>
       <div id="questionCard" aria-live="polite" aria-hidden="true" style="display:none;">
@@ -675,7 +653,7 @@ body { display:block; background:#e6edcf; }
       <button class="magicHit" data-magic="lamp" style="left:3.7%;top:45.0%;width:6.5%;height:20%;" aria-label="Laterne"></button>
       <button class="magicHit" data-magic="sun" style="left:35.2%;top:5.5%;width:10%;height:11%;border-radius:50%;" aria-label="Sonne"></button>
       <button class="magicHit" data-magic="ice" style="left:35.0%;top:40.0%;width:16%;height:24%;" aria-label="Eisstand"></button>
-      <button class="magicHit" data-magic="bird" style="left:80.5%;top:46.5%;width:8%;height:12%;border-radius:40%;" aria-label="Blauer Vogel"></button>
+      <button class="magicHit" data-magic="bird" style="left:84%;top:42%;width:9%;height:12%;" aria-label="Blauer Vogel"></button>
       <button class="magicHit" data-magic="girl" style="left:49.0%;top:48.5%;width:10%;height:21%;border-radius:36%;" aria-label="Mädchen auf der Brücke"></button>
       <button class="magicHit" data-magic="owl" style="left:86.2%;top:14.5%;width:8.5%;height:12%;border-radius:40%;" aria-label="Eule"></button>
       <button class="magicHit" data-magic="frog" style="left:49.0%;top:70.0%;width:9%;height:10%;border-radius:40%;" aria-label="Frosch"></button>
@@ -826,10 +804,10 @@ document.getElementById('boardWrap').after(taskDock);
   const cloudFx=document.getElementById('cloudFx');
   const weatherDimFx=document.getElementById('weatherDimFx');
   const iceFx=document.getElementById('iceFx');
-  const birdFx=document.getElementById('birdFx');
+  const birdFlight=window.DiceBirdFlight?.mount(board,0.84,0.42);
   const laughFx=document.getElementById('laughFx');
   const frogFx=document.getElementById('frogFx');
-  const effectNodes=[lampGlowFx,cloudFx,weatherDimFx,iceFx,birdFx,laughFx,frogFx];
+  const effectNodes=[lampGlowFx,cloudFx,weatherDimFx,iceFx,laughFx,frogFx];
   const tokens=[document.getElementById('boy'), document.getElementById('girl')];
 
   // Feldzentren orientieren sich an den sichtbaren Feldern des illustrierten Rundwegs.
@@ -1264,6 +1242,7 @@ document.getElementById('boardWrap').after(taskDock);
 
   function openJokerCard(forcedJoker=null, testMode=false){
     currentJoker=forcedJoker || nextJoker(players[active].finished);
+    if(currentJoker.target==='bird') birdFlight?.reset();
     jokerTestMode=testMode;
     const source=jokerSource();
     jokerCard.style.setProperty('--fromX',source.x);
@@ -1308,12 +1287,17 @@ document.getElementById('boardWrap').after(taskDock);
   function playMagicEffect(target, done){
     clearMagicEffects();
     playMagicSound(target);
+    if(target==='bird'){
+      if(birdFlight) birdFlight.play(done);
+      else done?.();
+      return;
+    }
     // Die Katze hat keinen sichtbaren Overlay-Effekt. Die Karte bleibt kurz offen,
     // damit das Miau auf iPad/Safari zuverlässig hörbar startet.
     if(target==='dog'){ later(()=>{ if(done) done(); },900); return; }
     if(target==='bottle'){ later(()=>{ if(done) done(); },900); return; }
     if(target==='owl'){ later(()=>{ if(done) done(); },900); return; }
-    const nodeMap={lamp:lampGlowFx, sun:cloudFx, ice:iceFx, bird:birdFx, girl:laughFx, frog:frogFx};
+    const nodeMap={lamp:lampGlowFx, sun:cloudFx, ice:iceFx, girl:laughFx, frog:frogFx};
     const node=nodeMap[target];
     if(!node){ if(done) done(); return; }
     node.classList.remove('show');
@@ -1324,7 +1308,7 @@ document.getElementById('boardWrap').after(taskDock);
       void weatherDimFx.offsetWidth;
       weatherDimFx.classList.add('show');
     }
-    const durations={sun:2050, bird:3380, girl:1750, frog:1750, lamp:1100, ice:1060};
+    const durations={sun:2050, girl:1750, frog:1750, lamp:1100, ice:1060};
     later(()=>{
       node.classList.remove('show');
       if(done) done();
@@ -1804,6 +1788,10 @@ document.getElementById('boardWrap').after(taskDock);
   trackHits.forEach(b=>b.addEventListener('click',()=>selectJokerTarget('track',+b.dataset.index)));
   goalHit.addEventListener('click',()=>selectJokerTarget('goal'));
   magicHits.forEach(b=>b.addEventListener('click',()=>{
+    if(b.dataset.magic==='bird' && !waitingForJoker){
+      if(!busy && !waitingForCardTarget && !waitingForMoveCard && !waitingForFootballCard && !birdFlight?.flying) playMagicEffect('bird');
+      return;
+    }
     if(!waitingForJoker){ if(TEST_MODE && !busy && !waitingForCardTarget && !waitingForMoveCard && !waitingForFootballCard) playMagicEffect(b.dataset.magic); return; }
     selectMagicTarget(b.dataset.magic);
   }));
@@ -1826,6 +1814,7 @@ document.getElementById('boardWrap').after(taskDock);
   diceBtn.addEventListener('touchstart',primeGoalSound,{passive:true});
   diceBtn.addEventListener('click',()=>{ primeGoalSound(); roll(); });
   function restartBase(){
+    birdFlight?.reset();
     rewardProgress={count:rewardProgress.count,credited:false};
     resetCardBags();
     players[0].pos=START_POS; players[1].pos=START_POS; players[0].finished=false; players[1].finished=false; active=0; busy=false; waitingForCardTarget=false; waitingForMoveCard=false; waitingForJoker=false; waitingForFootballCard=false; weekdayTestMode=false; jokerTestMode=false; jokerTestSnapshot=null; footballTestMode=false;
@@ -1868,7 +1857,7 @@ document.getElementById('boardWrap').after(taskDock);
   });
   const objectPositions={lamp:[3.7,44,7,18],sun:[37.2,5,10,10],ice:[38,41,16,22],bird:[84,42,9,12],girl:[53,48.5,12,20],owl:[86.4,15,9,13],frog:[53,69,10,11],dog:[20.5,58.5,13,16],bottle:[11.2,47.5,5,10]};
   magicHits.forEach(b=>{const [x,y,w,h]=objectPositions[b.dataset.magic];Object.assign(b.style,{left:x+'%',top:y+'%',width:w+'%',height:h+'%'});});
-  const effects={lamp:lampGlowFx,sun:cloudFx,ice:iceFx,bird:birdFx,girl:laughFx,frog:frogFx};
+  const effects={lamp:lampGlowFx,sun:cloudFx,ice:iceFx,girl:laughFx,frog:frogFx};
   Object.entries(effects).forEach(([key,node])=>{node.style.left=objectPositions[key][0]+'%';node.style.top=objectPositions[key][1]+'%';});
   goalHit.style.left=goalCenter[0]+'%';goalHit.style.top=goalCenter[1]+'%';
   // Nearest-centre input avoids overlapping circular hit areas stealing a tap.
