@@ -648,6 +648,12 @@ body { display:block; background:#e6edcf; }
   display:block; background:none; border:0; box-shadow:none; cursor:default;
 }
 #board .magicHit[data-magic="rapunzel"]:focus:not(:focus-visible) { outline:0; }
+#squirrelBranch, #squirrelFigure { position:absolute; display:none; z-index:3; pointer-events:none; }
+#board.squirrelReady #squirrelBranch, #board.squirrelReady #squirrelFigure { display:block; }
+#squirrelBranch { left:20.7914%; top:4.2654%; width:12.4078%; height:12.7962%; }
+#squirrelFigure { left:23.15%; top:5.1%; width:7%; height:9.893%; }
+#board .magicHit[data-magic="squirrel"] { display:block; background:none; border:0; box-shadow:none; cursor:default; }
+#board .magicHit[data-magic="squirrel"]:focus:not(:focus-visible) { outline:0; }
 </style>
 </head>
 <body>
@@ -720,7 +726,7 @@ body { display:block; background:#e6edcf; }
       <button class="magicHit" data-magic="carriage" aria-label="carriage" style="left:46%;top:48%;width:17%;height:17%"></button>
       <button class="magicHit" data-magic="horses" aria-label="horses" style="left:57%;top:50%;width:15%;height:14%"></button>
       <button class="magicHit" data-magic="gate" aria-label="gate" style="left:64.5%;top:32%;width:6%;height:10%"></button>
-      <button class="magicHit" data-magic="squirrel" aria-label="squirrel" style="left:27%;top:11%;width:10%;height:11%"></button>
+      <button class="magicHit" data-magic="squirrel" aria-label="Eichhörnchen" style="left:26.65%;top:10.05%;width:max(8%,44px);height:max(10.5%,44px)"></button>
       <button class="magicHit" data-magic="boyglasses" aria-label="boyglasses" style="left:74%;top:61%;width:13%;height:20%"></button>
       <button class="magicHit" data-magic="arrow" aria-label="arrow" style="left:74%;top:61%;width:13%;height:20%"></button>
       <button class="magicHit" data-magic="waterfall" aria-label="waterfall" style="left:39%;top:43%;width:9%;height:13%"></button>
@@ -823,7 +829,8 @@ document.getElementById('boardWrap').after(taskDock);
 <script>if(window.LeseLite.full){
 (() => {
   const TEST_MODE=false;
-  const isFreeRapunzelTap = () => !busy && !waitingForJoker && !waitingForCardTarget &&
+  const freeMagicTargets = new Set(['rapunzel', 'squirrel']);
+  const isFreeMagicTap = () => !busy && !waitingForJoker && !waitingForCardTarget &&
     !waitingForMoveCard && !waitingForFootballCard;
   let epoch=0;
   const timers=new Set(), intervals=new Set();
@@ -1851,7 +1858,7 @@ document.getElementById('boardWrap').after(taskDock);
   goalHit.addEventListener('click',()=>selectJokerTarget('goal'));
   magicHits.forEach(b=>b.addEventListener('click',()=>{
     if(!waitingForJoker){
-      if((b.dataset.magic==='rapunzel' || TEST_MODE) && isFreeRapunzelTap()) playMagicEffect(b.dataset.magic);
+      if((freeMagicTargets.has(b.dataset.magic) || TEST_MODE) && isFreeMagicTap()) playMagicEffect(b.dataset.magic);
       return;
     }
     selectMagicTarget(b.dataset.magic);
@@ -1953,7 +1960,7 @@ document.getElementById('boardWrap').after(taskDock);
   const imageURL=getComputedStyle(board).backgroundImage.slice(5,-2);
   const defs=svg('defs');svg('image',{id:'fairyScene',href:imageURL,x:0,y:0,width:100,height:100,preserveAspectRatio:'none'},defs);
   let sequence=0;
-  function clearFairy(){stopRapunzel();fx.querySelectorAll(':scope > g').forEach(n=>n.remove());defs.querySelectorAll('clipPath').forEach(n=>n.remove());playingAudio.forEach(a=>a.pause());playingAudio.clear();}
+  function clearFairy(){stopRapunzel();stopSquirrel();fx.querySelectorAll(':scope > g').forEach(n=>n.remove());defs.querySelectorAll('clipPath').forEach(n=>n.remove());playingAudio.forEach(a=>a.pause());playingAudio.clear();}
   const rapunzel = document.createElement('canvas');
   rapunzel.id = 'rapunzelFigure';
   rapunzel.width = 384;
@@ -2012,6 +2019,63 @@ document.getElementById('boardWrap').after(taskDock);
     }
     rapunzelRequest = requestAnimationFrame(nextFrame);
   }
+  const squirrelBranch = new Image();
+  squirrelBranch.id = 'squirrelBranch';
+  squirrelBranch.alt = '';
+  const squirrel = document.createElement('canvas');
+  const squirrelFrameSize = 192;
+  const squirrelFrameCount = 9;
+  const squirrelFrameDuration = 220;
+  squirrel.id = 'squirrelFigure';
+  squirrel.width = squirrel.height = squirrelFrameSize;
+  squirrel.setAttribute('aria-hidden', 'true');
+  board.append(squirrelBranch, squirrel);
+  const squirrelContext = squirrel.getContext('2d');
+  const squirrelFrames = new Image();
+  let squirrelRequest = 0;
+
+  function drawSquirrel(frame) {
+    const size = squirrelFrameSize;
+    squirrelContext.clearRect(0, 0, size, size);
+    squirrelContext.drawImage(squirrelFrames, frame % 3 * size, Math.floor(frame / 3) * size,
+      size, size, 0, 0, size, size);
+    squirrel.dataset.frame = frame;
+  }
+
+  squirrelBranch.src = './assets/eichhoernchen-ast.webp';
+  squirrelFrames.src = './assets/eichhoernchen-frames.webp';
+  Promise.all([squirrelBranch.decode(), squirrelFrames.decode()]).then(() => {
+    drawSquirrel(0);
+    board.classList.add('squirrelReady');
+  }).catch(() => {
+    // The original illustration and effect are still available if an image fails to load.
+  });
+
+  function stopSquirrel() {
+    cancelAnimationFrame(squirrelRequest);
+    squirrelRequest = 0;
+    if (board.classList.contains('squirrelReady')) drawSquirrel(0);
+  }
+
+  function playSquirrel(done) {
+    if (squirrelRequest && !done) return;
+    clearFairy();
+    fairySound('squirrel');
+    const start = performance.now();
+    function nextFrame(now) {
+      const frame = Math.floor((now - start) / squirrelFrameDuration);
+      if (frame >= squirrelFrameCount) {
+        squirrelRequest = 0;
+        drawSquirrel(0);
+        done?.();
+        return;
+      }
+      if (Number(squirrel.dataset.frame) !== frame) drawSquirrel(frame);
+      squirrelRequest = requestAnimationFrame(nextFrame);
+    }
+    squirrelRequest = requestAnimationFrame(nextFrame);
+  }
+
   function animate(n,frames,duration){return n.animate(frames,{duration,easing:'ease-in-out',fill:'forwards'});}
   function cutout(box,parent){const id='clip'+(++sequence);const c=svg('clipPath',{id,clipPathUnits:'userSpaceOnUse'},defs);svg('rect',{x:box[0],y:box[1],width:box[2],height:box[3],rx:.7},c);const g=svg('g',{'clip-path':'url(#'+id+')'},parent);svg('use',{href:'#fairyScene'},g);g.style.transformBox='view-box';g.style.transformOrigin=(box[0]+box[2]/2)+'% '+(box[1]+box[3]/2)+'%';return g;}
   function sparkle(parent,x,y,spread=5,count=30,duration=2200,color='#ffe16b'){
@@ -2020,6 +2084,10 @@ document.getElementById('boardWrap').after(taskDock);
   playMagicEffect=function(target,done){
     if(target==='rapunzel'){
       playRapunzel(done);
+      return;
+    }
+    if (target === 'squirrel' && board.classList.contains('squirrelReady')) {
+      playSquirrel(done);
       return;
     }
     clearFairy();const g=svg('g');const p=objectPositions[target];if(!p){if(done)done();return;}
@@ -2082,7 +2150,7 @@ document.getElementById('boardWrap').after(taskDock);
     later(()=>{g.remove();if(done)done();},duration);
   };
   // Only the object requested by the current card accepts input during a task.
-  function syncMagic(){magicHits.forEach(b=>{const enabled=waitingForJoker&&currentJoker?.type==='magic'&&!busy?b.dataset.magic===currentJoker.target:(b.dataset.magic==='rapunzel'||TEST_MODE)&&isFreeRapunzelTap();b.style.pointerEvents=enabled?'auto':'none';});}
+  function syncMagic(){magicHits.forEach(b=>{const enabled=waitingForJoker&&currentJoker?.type==='magic'&&!busy?b.dataset.magic===currentJoker.target:(freeMagicTargets.has(b.dataset.magic)||TEST_MODE)&&isFreeMagicTap();b.style.pointerEvents=enabled?'auto':'none';if(b.dataset.magic==='squirrel')b.disabled=!enabled;});}
   new MutationObserver(syncMagic).observe(board,{attributes:true,attributeFilter:['class'],subtree:true});syncMagic();
   // The long waterfall has three separate hit regions, all on visible water.
   const waterBase=magicHits.find(b=>b.dataset.magic==='waterfall');
