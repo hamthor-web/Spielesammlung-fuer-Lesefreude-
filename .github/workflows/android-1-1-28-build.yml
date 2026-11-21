@@ -1,0 +1,55 @@
+name: Android 1.1.28 - Test APK und unsigniertes Play AAB
+
+on:
+  push:
+    paths:
+      - '.github/workflows/android-1-1-28-build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: android-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: android-app/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK API 36
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+      - name: Install dependencies
+        run: npm ci
+      - name: Unit tests and package checks
+        run: |
+          npm test
+          npm run check
+      - name: Build unsigned Google Play bundle
+        run: npm run android:aab:unsigned
+      - name: Build separate debug test APK
+        run: npm run android:debug
+      - name: Record SHA256 and copy deliverables
+        run: |
+          mkdir -p deliverables
+          cp android/app/build/outputs/bundle/unsignedRelease/app-unsignedRelease.aab deliverables/Lesespiele-Play-1.1.28-unsigned.aab
+          cp android/app/build/outputs/apk/debug/app-debug.apk deliverables/Lesespiele-Test-1.1.28.apk
+          (cd deliverables && sha256sum *.aab *.apk > SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Lesespiele-Android-1.1.28
+          path: android-app/deliverables/*
+          retention-days: 30
