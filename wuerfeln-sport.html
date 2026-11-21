@@ -643,7 +643,12 @@ body { display:block; background:#e6edcf; }
     </div>
   </div>
 
-  <div id="winner"><div id="winnerCard"><h1>Spiel abgeschlossen</h1><p id="winnerText"></p><button id="again">Noch einmal</button></div></div>
+  <style>.winnerActions{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem}.winnerActions button{min-height:44px}</style>
+  <div id="winner"><div id="winnerCard"><h1>Spiel abgeschlossen</h1><p id="winnerText"></p><div class="winnerActions">
+      <button id="again" type="button">Noch einmal</button>
+      <button type="button" data-reward-nav="dice">Spiel beenden</button>
+      <button type="button" data-reward-nav="home">Zurück zum Hauptmenü</button>
+    </div></div></div>
 </div>
 <script>if(window.LeseLite.full){
 // Die vorhandenen Karten behalten ihre Inhalte und Bedienung.
@@ -934,11 +939,13 @@ document.getElementById('boardWrap').after(taskDock);
     const close=document.createElement("button");close.textContent="Zurück zum Spiel";close.onclick=()=>trophyDialog.close();trophyDialog.append(close);
   }
   document.getElementById("trophyOpen").onclick=()=>{renderTrophies();trophyDialog.showModal()};
+  document.querySelectorAll('[data-reward-nav]').forEach(button=>{
+    button.addEventListener('click',()=>DiceRewards.leave(button.dataset.rewardNav));
+  });
   function showTrophyResult(newlyUnlocked=false){
-    document.getElementById("sportTrophyResult")?.remove();if(!newlyUnlocked)return;const box=document.createElement("div");box.id="sportTrophyResult";
-    const image=DiceRewards.image(rewardProgress.count,"sport");
-    if(image) box.append(image);
-    const text=document.createElement("p");text.textContent=DiceRewards.message(rewardProgress.count)+" "+DiceRewards.status(rewardProgress.count);box.append(text);winnerText.after(box);
+    document.getElementById("sportTrophyResult")?.remove();
+    if(!newlyUnlocked) return;
+    DiceRewards.reveal(rewardProgress.count,"sport",document.getElementById("again"));
   }
   function roundKey(){const profile=LeseProfile.active();return profile?LeseProfile.gameKey(profile,diceGameId):null}
   function saveRound(nextActive=active){
@@ -1574,7 +1581,7 @@ document.getElementById('boardWrap').after(taskDock);
     busy=true;updateControls();
     if(players[0].finished && players[1].finished){
       const previousRewardCount=rewardProgress.count;
-      rewardProgress=DiceRewards.complete(rewardProgress);saveRound();showTrophyResult(DiceRewards.unlocked(previousRewardCount,rewardProgress.count));
+      rewardProgress=DiceRewards.complete(rewardProgress);saveRound();
       tokens[0].classList.add('inGoal');
       tokens[1].classList.add('inGoal');
       renderAll();
@@ -1585,6 +1592,7 @@ document.getElementById('boardWrap').after(taskDock);
         busy=false;
         winnerText.textContent='';
         winner.classList.add('show');
+        showTrophyResult(DiceRewards.unlocked(previousRewardCount,rewardProgress.count));
       }, 950);
       return;
     }
