@@ -6,7 +6,12 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const source = path.join(root, 'web-source'), target = path.join(root, 'www');
 // Unused truncated historical previews stay in the provenance archive, never in the app.
 const shared = path.resolve(root, '..');
-const sharedDicePages = new Set(['wuerfeln-freizeit.html', 'wuerfeln-maerchen.html', 'wuerfeln-sport.html']);
+const sharedGamePages = new Set([
+  'wuerfeln-freizeit.html', 'wuerfeln-maerchen.html', 'wuerfeln-sport.html',
+  'finde-den-fehler.html', 'verruecktes-fussball.html', 'geschichten.html',
+]);
+const sharedGameFiles = ['native-layout.js', 'native-layout.css', 'dice-ui.js', 'dice-ui.css'];
+const assetLinks = /assets\/[a-z0-9-]+\.(?:webp|png|gif|jpe?g|mp3|ogg)/g;
 const sharedDiceScripts = ['dice-bird-flight.js', 'dice-owl-animation.js', 'dice-rewards.js'];
 const sharedAssetPaths = new Set();
 const excludedAssets = new Set(['previews-sharp.webp', 'start-hoch-sharp.webp']);
@@ -16,29 +21,33 @@ await mkdir(target, { recursive: true });
 for (const name of await readdir(source)) {
   if (name.startsWith('.') || name.endsWith('.png') || excludedAssets.has(name)) continue;
   if (name === 'index.html') {
-    let text = paidMarkup(await readFile(path.join(source, name), 'utf8'));
-    text = text.replace('<link rel="manifest" href="./manifest.webmanifest">', '');
-    const sw = /<script>\s*\(\(\)=>\{\s*const status=document\.getElementById\('offlineStatus'\);[\s\S]*?<\/script>/;
-    if (!sw.test(text)) throw Error('Offline-Abschnitt der Quelle wurde geändert; Anpassung prüfen.');
-    text = text.replace(sw, '<script>document.getElementById("offlineStatus").textContent="Alle Spiele sind in dieser App enthalten und offline verfügbar.";</script>');
-    text = text.replace('</head>', '<link rel="stylesheet" href="./native-layout.css"><script src="./native-runtime.js"></script></head>');
+    const text = paidMarkup(await readFile(path.join(shared, 'home.html'), 'utf8'))
+      .replace(/<link rel="(?:manifest|apple-touch-icon)"[^>]*>/g, '')
+      .replace(/<meta name="apple-mobile-web-app-capable"[^>]*>/g, '')
+      .replace(/<link rel="stylesheet" href="\.\/web-install\.css">/g, '')
+      .replace(/<script src="\.\/(?:web-install|web-update|image-paths)\.js"[^>]*><\/script>/g, '')
+      .replace(/<script src="\.\/lite-view\.js"><\/script>/g, '')
+      .replace('Offline-Paket wird vorbereitet …', 'Alle Spiele sind in dieser App enthalten und offline verfügbar.');
     await writeFile(path.join(target, 'home.html'), text);
   } else if (name.endsWith('.html')) {
-    const from = sharedDicePages.has(name) ? shared : source;
+    const from = sharedGamePages.has(name) ? shared : source;
     let text = paidMarkup(await readFile(path.join(from, name), 'utf8'));
     if (from === shared) {
       // The native build supplies its layout and image map below.
-      text = text.replace(/<link rel="stylesheet" href="\.\/native-layout\.css">/g, '')
-        .replace(/<script src="\.\/(?:native-layout\.js|image-paths\.js)"[^>]*><\/script>/g, '')
+      text = text.replace(/<link rel="stylesheet" href="\.\/native-layout\.css(?:\?[^"]*)?">/g, '')
+        .replace(/<script src="\.\/(?:native-layout\.js|image-paths\.js)(?:\?[^"]*)?"[^>]*><\/script>/g, '')
         .replace(/window\.LeseImagePath\((`\.\/pokal-[^`]+`)\)/g, '$1');
-      for (const asset of text.match(/assets\/[a-z0-9-]+\.(?:webp|png|gif)/g) ?? []) sharedAssetPaths.add(asset);
+      for (const asset of text.match(assetLinks) ?? []) sharedAssetPaths.add(asset);
     }
     text = text.replace('</head>', '<link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script></head>');
     await writeFile(path.join(target, name), text);
   } else await copyFile(path.join(source, name), path.join(target, name));
 }
-await copyFile(path.join(root, 'src/native-layout.js'), path.join(target, 'native-layout.js'));
-await copyFile(path.join(root, 'src/native-layout.css'), path.join(target, 'native-layout.css'));
+for (const name of sharedGameFiles) {
+  const text = await readFile(path.join(shared, name), 'utf8');
+  for (const asset of text.match(assetLinks) ?? []) sharedAssetPaths.add(asset);
+  await writeFile(path.join(target, name), text);
+}
 await copyFile(path.join(root, 'src/index.html'), path.join(target, 'index.html'));
 await build({ entryPoints: [path.join(root, 'src/native-runtime.mjs')], outfile: path.join(target, 'native-runtime.js'), bundle: true, format: 'iife', target: 'chrome110', minify: true });
 const migration = await build({ entryPoints: [path.join(root, 'src/browser-export.mjs')], bundle: true, format: 'iife', target: 'chrome110', minify: true, write: false });
@@ -68,7 +77,7 @@ for (const world of ['dice', 'stories', 'crazy']) {
 }
 for (const name of sharedDiceScripts) {
   const text = await readFile(path.join(shared, name), 'utf8');
-  for (const asset of text.match(/assets\/[a-z0-9-]+\.(?:webp|png|gif)/g) ?? []) sharedAssetPaths.add(asset);
+  for (const asset of text.match(assetLinks) ?? []) sharedAssetPaths.add(asset);
 }
 for (const asset of sharedAssetPaths) {
   await copyFile(path.join(shared, asset), path.join(target, asset));

@@ -1,8 +1,12 @@
 # Lesen, entdecken, erzählen – Android-App
 
-**Aktueller Quellstand: 1.1.26 · Versionscode 28 · 8. November 2026**
+**Aktueller Quellstand: 1.1.27 · Versionscode 29 · 21. November 2026**
 
-Das aktuelle Produktionspaket mit ursprünglicher App-ID ist gebaut und validiert. Bundle, lokale Signierhilfe und Prüfnachweise sind in [RELEASE-1.1.26-PRODUKTION.md](RELEASE-1.1.26-PRODUKTION.md) dokumentiert. Signierung mit dem bisherigen Upload-Schlüssel und Google-Play-Upload stehen aus.
+Der Android-Build übernimmt die aktuelle Web-Hauptauswahl und die sieben Spiele aus der gemeinsamen Quelle. Enthalten sind die Würstchen-Schaltflächen, die Kategorie-Intros, die Spielfeldanimationen und die Trefferkorrektur in „Finde den Fehler“. Die Test-APK verwendet die Kennung `de.heikeamthor.lesespiele.webtest`. Ein Produktionsbundle wird mit der ursprünglichen App-ID vorbereitet und benötigt zur Einreichung den bisherigen Play-Upload-Schlüssel.
+
+## Frühere Stände
+
+Das Produktionspaket 1.1.26 mit ursprünglicher App-ID ist gebaut und validiert. Bundle, lokale Signierhilfe und Prüfnachweise sind in [RELEASE-1.1.26-PRODUKTION.md](RELEASE-1.1.26-PRODUKTION.md) dokumentiert. Signierung mit dem bisherigen Upload-Schlüssel und Google-Play-Upload stehen aus.
 
 Der Android-Testbuild 1.1.26-test enthält ausschließlich auf die Google-Play-App bezogene Datenschutzhinweise und ergänzt das Offline-Impressum, appbezogene Datenschutzhinweise und den E-Mail-Kontakt im Erwachsenenbereich. Die Korrekturen an Navigation, Fortschrittsanzeigen, Lesewiederaufnahme und Spielregeln sind weiterhin enthalten. Er nutzt die separate Kennung `de.heikeamthor.lesespiele.test` und heißt „Lesespiele Test“. Details und Handytest: [RELEASE-1.1.26.md](RELEASE-1.1.26.md). Die Informationswebsite verweist für die Spiele auf Google Play.
 
@@ -66,7 +70,7 @@ Ergebnis: android/app/build/outputs/bundle/release/app-release.aab. Vor jedem ne
 
 ## Quelldateien und Bilder
 
-Die drei aktiven Würfelspiele, ihre Spielfeldanimationen und die drei Kategorie-Intros kommen beim Build aus dem übergeordneten Repository-Verzeichnis. Die gleichnamigen Würfelspielseiten unter web-source/ sind historische Quellen für die Provenienz. Das erzeugte Paket enthält alle Animationen lokal.
+Hauptauswahl, Spielseiten, Layout, Buttonmotive, Spielfeldanimationen und Kategorie-Intros kommen beim Build aus dem übergeordneten Repository-Verzeichnis. Die gleichnamigen Spielseiten unter web-source/ bleiben als historische Quellen für die Provenienz erhalten. Der Build liefert die Ressourcen lokal aus und verwendet die Android-Rechtstexte und die native Spielstandssicherung.
 
 src/ enthält gemeinsame App-Funktionen, web-source/ die Spiele, android/ das native Projekt, tests/ die Regressionstests. Die Dateinamen lite-policy.js und lite-view.js sind historische Kompatibilitätsnamen: Die Kaufversion ist immer vollständig und hat keine Lite-Beschränkung.
 

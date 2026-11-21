@@ -1,6 +1,6 @@
 {
   "packageId": "de.heikeamthor.lesespiele",
-  "versionCode": 28,
-  "versionName": "1.1.26",
-  "note": "App-Datenschutz auf Google-Play-Auslieferung und lokalen Offlinebetrieb begrenzt. Vor Play-Upload den höchsten Versionscode abgleichen."
+  "versionCode": 29,
+  "versionName": "1.1.27",
+  "note": "Web-Spielstand mit Würstchen-Schaltflächen, Suchbildkorrektur und Animationen. Vor Play-Upload den höchsten Versionscode abgleichen."
 }

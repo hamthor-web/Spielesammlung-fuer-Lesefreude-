@@ -40,7 +40,7 @@ android {
     buildTypes {
         debug {
             // Install alongside the published app; local previews never replace it.
-            applicationIdSuffix ".test"
+            applicationIdSuffix ".webtest"
             versionNameSuffix "-test"
             resValue "string", "app_name", "Lesespiele Test"
             resValue "string", "title_activity_main", "Lesespiele Test"
