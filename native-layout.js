@@ -306,3 +306,17 @@ addEventListener('DOMContentLoaded', () => {
   const close=document.createElement('button');close.type='button';close.textContent='Zurück zum Spiel';close.onclick=()=>dialog.close();
   dialog.append(title,list,close);button.onclick=()=>dialog.showModal();bar.append(button);document.body.prepend(bar);document.body.append(dialog);
 });
+
+// These games share the same button artwork. Stories switch theme with the active scene.
+{
+  const artworkByPage = {
+    'wuerfeln-sport.html': 'sport',
+    'wuerfeln-freizeit.html': 'abenteuer',
+    'wuerfeln-maerchen.html': 'maerchen',
+    'verruecktes-fussball.html': 'sport',
+    'finde-den-fehler.html': 'abenteuer',
+    'geschichten.html': 'geschichten'
+  };
+  const artwork = artworkByPage[location.pathname.split('/').pop()];
+  if (artwork) document.documentElement.dataset.gameButtonArt = artwork;
+}

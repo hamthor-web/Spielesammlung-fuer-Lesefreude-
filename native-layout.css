@@ -120,3 +120,67 @@ dialog.reading-dialog {
 .game-help button,.game-rules button{min-height:44px;padding:8px 16px;border:2px solid #8ca184;border-radius:12px;background:#e7f3e8;color:#173c2a;font:800 17px Arial,sans-serif}
 dialog.game-rules{box-sizing:border-box;width:min(560px,94vw);max-height:90dvh;overflow:auto;border:2px solid #8ca184;border-radius:20px;background:#fffdf0;color:#173c2a;font:20px/1.5 "Trebuchet MS",Arial,sans-serif;padding:20px}
 .game-rules li{margin:12px 0}.game-rules::backdrop{background:#142b36ba}
+
+/* The center stretches horizontally. The two decorated ends keep the source proportions. */
+html[data-game-button-art="sport"], html[data-game-button-art="geschichten"] {
+  --game-button-art: url("./assets/button-sport.png");
+}
+html[data-game-button-art="abenteuer"], html[data-game-button-art="geschichten"] body.park {
+  --game-button-art: url("./assets/button-abenteuer.png");
+}
+html[data-game-button-art="maerchen"] {
+  --game-button-art: url("./assets/button-maerchen.png");
+}
+
+html[data-game-button-art] :is(
+  #trophyOpen, #drawAdventure, #winnerCard button, .task-done, .jokerChoice,
+  .trophy-dialog button, #home, #next, #previous, #replay, #close,
+  #finishClose, #artClose, #finish, #reset, #soundToggle, .reward-close
+):not([hidden]) {
+  position: relative;
+  isolation: isolate;
+  min-height: 64px;
+  min-inline-size: min(100%, 12rem);
+  max-inline-size: 100%;
+  padding: .5em 1.4rem .5em 4.65rem !important;
+  border: 0 !important;
+  border-radius: 1rem;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #2f261e !important;
+  text-shadow: none !important;
+  font-weight: 800;
+  line-height: 1.17;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+html[data-game-button-art] :is(
+  #trophyOpen, #drawAdventure, #winnerCard button, .task-done, .jokerChoice,
+  .trophy-dialog button, #home, #next, #previous, #replay, #close,
+  #finishClose, #artClose, #finish, #reset, #soundToggle, .reward-close
+):not([hidden])::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 50% -6.46px auto -70.3px;
+  height: 76px;
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 31.16px 0 140.6px;
+  transform: translateY(-50%);
+  border-image: var(--game-button-art) 0 82 0 370 fill / 0 31.16px 0 140.6px stretch;
+  pointer-events: none;
+}
+
+html[data-game-button-art] :is(
+  #trophyOpen, #drawAdventure, #winnerCard button, .task-done, .jokerChoice,
+  .trophy-dialog button, #home, #next, #previous, #replay, #close,
+  #finishClose, #artClose, #finish, #reset, #soundToggle, .reward-close
+):focus-visible {
+  outline: 3px solid #22527a;
+  outline-offset: 2px;
+}
