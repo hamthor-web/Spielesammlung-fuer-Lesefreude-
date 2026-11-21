@@ -873,21 +873,31 @@ document.getElementById('boardWrap').after(taskDock);
   function setDie(n){document.getElementById('diceBtn').setAttribute('aria-label','Würfeln. Zuletzt gewürfelt: '+n); document.querySelectorAll('.pip').forEach(p=>p.classList.toggle('on',pipMap[n].includes(+p.dataset.p))); }
   setDie(1);
 
-  // Jede Figur verwaltet pro Kartensorte einen eigenen gemischten Stapel.
-  function refillBag(bags, cards, player=active, eligible=()=>true){
-    const bag=cards.map((card,index)=>({card,index}))
-      .filter(({card})=>eligible(card)).map(({index})=>index);
-    for(let i=bag.length-1;i>0;i--){
-      const j=Math.floor(Math.random()*(i+1));
-      [bag[i],bag[j]]=[bag[j],bag[i]];
+  // Die Stapel bleiben über Partien hinweg erhalten. Diese Sperre gilt nur für die aktuelle Partie.
+  const cardBags=[questionBag,moveBag,footballBag,jokerBag];
+  const cardPools=[weekdayQuestions,movementCards,footballQuestions,jokerCards];
+  const roundCards=new Map(cardBags.map(bag=>[bag,players.map(()=>new Set())]));
+
+  function availableCards(bags,cards,eligible=()=>true){
+    if(!bags[active].length){
+      const bag=cards.map((_,index)=>index).filter(index=>cards[index].enabled!==false);
+      for(let i=bag.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [bag[i],bag[j]]=[bag[j],bag[i]];
+      }
+      bags[active]=bag;
     }
-    bags[player]=bag;
+    const seen=roundCards.get(bags)[active];
+    return bags[active].filter(index=>eligible(cards[index])&&!seen.has(index));
   }
-  function drawFromBag(bags, cards, eligible=()=>true){
-    // Im Ziel entfallen wie bisher Joker, die eine Figur versetzen würden.
-    bags[active]=bags[active].filter(index=>eligible(cards[index]));
-    if(bags[active].length===0) refillBag(bags,cards,active,eligible);
-    return cards[bags[active].pop()];
+  function takeCard(bags,cards,index){
+    if(index===undefined) return null;
+    bags[active].splice(bags[active].indexOf(index),1);
+    roundCards.get(bags)[active].add(index);
+    return cards[index];
+  }
+  function drawFromBag(bags,cards,eligible){
+    return takeCard(bags,cards,availableCards(bags,cards,eligible)[0]);
   }
   function nextQuestion(){ return drawFromBag(questionBag,weekdayQuestions); }
   function nextMoveCard(){ return drawFromBag(moveBag,movementCards); }
@@ -896,13 +906,9 @@ document.getElementById('boardWrap').after(taskDock);
     return drawFromBag(jokerBag,jokerCards,card=>card.enabled!==false &&
       (!actionOnly || ['action','moveChoice','magic'].includes(card.type)));
   }
-  function resetCardBags(){
-    players.forEach((_,player)=>{
-      refillBag(questionBag,weekdayQuestions,player);
-      refillBag(moveBag,movementCards,player);
-      refillBag(footballBag,footballQuestions,player);
-      refillBag(jokerBag,jokerCards,player,card=>card.enabled!==false);
-    });
+
+  function resetRoundCards(){
+    for(const rows of roundCards.values()) rows.forEach(seen=>seen.clear());
   }
 
   // Lokaler Rundenstand nur für das gerade aktive Profil und dieses Würfelspiel.
@@ -931,7 +937,8 @@ document.getElementById('boardWrap').after(taskDock);
       :waitingForFootballCard?{type:'question',index:footballQuestions.indexOf(footballText.textContent)}
       :waitingForJoker?{type:'joker',card:currentJoker}:null;
     const snapshot={v:1,rewards:rewardProgress,players:players.map(p=>({pos:p.pos,finished:p.finished})),active:nextActive,
-      bags:[questionBag,moveBag,footballBag,jokerBag].map(b=>b.map(row=>row.slice())),pending};
+      bags:cardBags.map(b=>b.map(row=>row.slice())),
+      roundCards:cardBags.map(b=>roundCards.get(b).map(seen=>[...seen])),pending};
     try{localStorage.setItem(key,JSON.stringify(snapshot))}catch(e){console.warn('Der Würfelstand konnte nicht gespeichert werden.',e)}
   }
   function restoreRound(){
@@ -939,13 +946,18 @@ document.getElementById('boardWrap').after(taskDock);
     let saved;try{saved=JSON.parse(localStorage.getItem(key))}catch{return}
     if(!saved||saved.v!==1||!Array.isArray(saved.players)||saved.players.length!==2||![0,1].includes(saved.active))return;
     if(!saved.players.every(p=>Number.isInteger(p.pos)&&p.pos>=START_POS&&p.pos<=track.length&&typeof p.finished==='boolean'))return;
-    const bags=[questionBag,moveBag,footballBag,jokerBag],cards=[weekdayQuestions,movementCards,footballQuestions,jokerCards];
-    if(!Array.isArray(saved.bags)||saved.bags.length!==4||!saved.bags.every((group,i)=>Array.isArray(group)&&group.length===2&&group.every(row=>Array.isArray(row)&&row.every(n=>Number.isInteger(n)&&n>=0&&n<cards[i].length))))return;
+    if(!Array.isArray(saved.bags)||saved.bags.length!==4||!saved.bags.every((group,i)=>Array.isArray(group)&&group.length===2&&group.every(row=>Array.isArray(row)&&row.every(n=>Number.isInteger(n)&&n>=0&&n<cardPools[i].length))))return;
     rewardProgress=DiceRewards.restore(saved.rewards, saved.players.every(p=>p.finished));
     restoringRound=true;
     try{
       saved.players.forEach((p,i)=>{players[i].pos=p.pos;players[i].finished=p.finished;tokens[i].classList.toggle('inGoal',p.finished)});
-      saved.bags.forEach((group,i)=>group.forEach((row,j)=>{bags[i][j]=row.slice()}));
+      saved.bags.forEach((group,i)=>group.forEach((row,j)=>{cardBags[i][j]=[...new Set(row)].filter(index=>cardPools[i][index].enabled!==false)}));
+      cardBags.forEach((bag,i)=>roundCards.get(bag).forEach((seen,j)=>{
+        const row=saved.roundCards?.[i]?.[j];
+        if(Array.isArray(row)) row.forEach(index=>{
+          if(Number.isInteger(index)&&cardPools[i][index]!==undefined) seen.add(index);
+        });
+      }));
       active=saved.active;busy=false;renderAll();glowNext();
       const pending=saved.pending;
       if(pending?.type==='weekday'&&weekdayQuestions[pending.index])openWeekdayQuestion(weekdayQuestions[pending.index]);
@@ -1048,6 +1060,7 @@ document.getElementById('boardWrap').after(taskDock);
 
   function openWeekdayQuestion(forcedQuestion=null, testMode=false){
     currentQuestion = forcedQuestion || nextQuestion();
+    if(!currentQuestion){ switchTurn(); return; }
     weekdayTestMode = testMode;
     const source = sourcePosForCurrentField();
     questionCard.style.setProperty('--fromX', source.x);
@@ -1078,7 +1091,9 @@ document.getElementById('boardWrap').after(taskDock);
     const source = sourcePosForCurrentField();
     moveCard.style.setProperty('--fromX', source.x);
     moveCard.style.setProperty('--fromY', source.y);
-    moveText.textContent = forcedMove || nextMoveCard();
+    const task = forcedMove || nextMoveCard();
+    if(!task){ switchTurn(); return; }
+    moveText.textContent = task;
     moveCard.setAttribute('aria-hidden','false');
     board.classList.add('cardMode');
     waitingForMoveCard = true;
@@ -1102,7 +1117,9 @@ document.getElementById('boardWrap').after(taskDock);
     const source=sourcePosForCurrentField();
     footballCard.style.setProperty('--fromX',source.x);
     footballCard.style.setProperty('--fromY',source.y);
-    footballText.textContent=forcedQuestion || nextFootballQuestion();
+    const task=forcedQuestion || nextFootballQuestion();
+    if(!task){ switchTurn(); return; }
+    footballText.textContent=task;
     footballCard.setAttribute('aria-hidden','false');
     board.classList.add('cardMode');
     waitingForFootballCard=true;
@@ -1142,7 +1159,8 @@ document.getElementById('boardWrap').after(taskDock);
     const p=track[players[active].pos];
     return {x:p[0]+'%', y:p[1]+'%'};
   }
-  function randomMovementChoices(count=3){
+  function randomMovementChoices(count=3,testMode=false){
+    if(!testMode) return availableCards(moveBag,movementCards).slice(0,count).map(index=>movementCards[index]);
     const arr=[...movementCards];
     for(let i=arr.length-1;i>0;i--){
       const j=Math.floor(Math.random()*(i+1));
@@ -1167,6 +1185,7 @@ document.getElementById('boardWrap').after(taskDock);
 
   function openJokerCard(forcedJoker=null, testMode=false){
     currentJoker=forcedJoker || nextJoker(players[active].finished);
+    if(!currentJoker){ switchTurn(); return; }
     if(currentJoker.target==='bird') birdFlight?.reset();
     jokerTestMode=testMode;
     const source=jokerSource();
@@ -1185,12 +1204,20 @@ document.getElementById('boardWrap').after(taskDock);
     if(isVisualQuestion) jokerCard.classList.add('visualQuestion');
     if(isMagic && currentJoker.target==='frog') jokerCard.classList.add('frogQuestion');
     if(isMoveChoice){
-      renderJokerChoices(randomMovementChoices(3),(choice)=>{
+      const choices=randomMovementChoices(3,testMode);
+      if(!choices.length){
+        board.classList.remove('jokerTargetMode','dayJokerMode','magicTargetMode');
+        switchTurn();
+        return;
+      }
+      renderJokerChoices(choices,(choice)=>{
+        if(!testMode) takeCard(moveBag,movementCards,movementCards.indexOf(choice));
         clearJokerChoices();
         jokerText.textContent=choice;
         jokerHint.textContent='Mache die Aufgabe selbst. Tippe danach auf „Fertig“.';
         currentJoker={text:choice,type:'action',fromChoice:true};
         document.getElementById('jokerDone').hidden=false;
+        if(!testMode) saveRound();
       });
     }
     jokerCard.setAttribute('aria-hidden','false');
@@ -1758,7 +1785,7 @@ document.getElementById('boardWrap').after(taskDock);
   function restart(){
     birdFlight?.reset();
     rewardProgress={count:rewardProgress.count,credited:false};
-    resetCardBags();
+    resetRoundCards();
     players[0].pos=0; players[1].pos=0; players[0].finished=false; players[1].finished=false; active=0; busy=false; waitingForCardTarget=false; waitingForMoveCard=false; waitingForJoker=false; waitingForFootballCard=false; weekdayTestMode=false; jokerTestMode=false; jokerTestSnapshot=null; footballTestMode=false;
     tokens.forEach(t=>t.classList.remove('inGoal'));
     board.classList.remove('cardMode','jokerTargetMode','magicTargetMode'); winner.classList.remove('show'); weekdayTestOverlay.classList.remove('show'); weekdayTestOverlay.setAttribute('aria-hidden','true'); jokerTestOverlay.classList.remove('show'); jokerTestOverlay.setAttribute('aria-hidden','true'); footballTestOverlay.classList.remove('show'); footballTestOverlay.setAttribute('aria-hidden','true'); toast.classList.remove('show'); questionCard.style.display='none'; questionCard.setAttribute('aria-hidden','true'); questionCard.classList.remove('show','correct','shake'); moveCard.style.display='none'; moveCard.setAttribute('aria-hidden','true'); moveCard.classList.remove('show'); footballCard.style.display='none'; footballCard.setAttribute('aria-hidden','true'); footballCard.classList.remove('show'); jokerCard.style.display='none'; jokerCard.setAttribute('aria-hidden','true'); jokerCard.classList.remove('show','correct','shake','targetMode','visualQuestion','frogQuestion'); clearJokerChoices(); clearMagicEffects(); currentQuestion=null; currentJoker=null; setDie(1); renderAll(); glowNext();
@@ -1796,7 +1823,6 @@ document.getElementById('boardWrap').after(taskDock);
   openWeekdayQuestion=saveAfter(openWeekdayQuestion);openMoveCard=saveAfter(openMoveCard);
   openFootballCard=saveAfter(openFootballCard);openJokerCard=saveAfter(openJokerCard);
   restart=saveAfter(restart);
-  resetCardBags();
   renderAll(); glowNext();
   if(LeseProfile.active())restoreRound();else LeseProfile.choose().then(restoreRound);
 })();
