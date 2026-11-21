@@ -1,6 +1,6 @@
 {
   "packageId": "de.heikeamthor.lesespiele",
-  "versionCode": 29,
-  "versionName": "1.1.27",
-  "note": "Web-Spielstand mit Würstchen-Schaltflächen, Suchbildkorrektur und Animationen. Vor Play-Upload den höchsten Versionscode abgleichen."
+  "versionCode": 30,
+  "versionName": "1.1.28",
+  "note": "Vollversion: korrigierte Abschlussmeldung im verrückten Fußballspiel; aktuelle Web-Animationen, Buttons und Lesespiele. Play-Upload nur nach Prüfung des höchsten bereits verwendeten Versionscodes."
 }
