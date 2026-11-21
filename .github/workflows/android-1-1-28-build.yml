@@ -35,6 +35,8 @@ jobs:
           /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools"
       - name: Install dependencies
         run: npm ci
+      - name: Generate Android web sources
+        run: npm run android:sync
       - name: Unit tests and package checks
         run: |
           npm test
