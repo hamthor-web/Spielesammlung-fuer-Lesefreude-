@@ -3,16 +3,20 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 for(const world of ['sport','freizeit','maerchen']){
- const html=readFileSync(new URL(`../web-source/wuerfeln-${world}.html`,import.meta.url),'utf8');
+ const html=readFileSync(new URL(`../../wuerfeln-${world}.html`,import.meta.url),'utf8');
  test(`${world}: Kartenbutton nur im bereiten eigenen Zug nach Zieleinlauf`,()=>{
   const classes=new Set();
-  const c=vm.createContext({players:[{name:'Blau',finished:true},{name:'Rot',finished:false}],active:0,busy:true,waitingForCardTarget:false,waitingForMoveCard:false,waitingForFootballCard:false,waitingForJoker:false,diceBtn:{},drawAdventure:{},turnLabel:{},board:{classList:{contains:n=>classes.has(n),toggle(n,on){on?classes.add(n):classes.delete(n)}}}});
+  const c=vm.createContext({players:[{name:'Blau',finished:true},{name:'Rot',finished:false}],active:0,busy:true,waitingForCardTarget:false,waitingForMoveCard:false,waitingForFootballCard:false,waitingForJoker:false,TEST_MODE:false,currentJoker:null,magicHits:[{dataset:{magic:'bird'}},{dataset:{magic:'owl'}}],diceBtn:{},drawAdventure:{},turnLabel:{},board:{classList:{contains:n=>classes.has(n),toggle(n,on){on?classes.add(n):classes.delete(n)}}}});
   vm.runInContext(html.match(/function updateControls\(\){[\s\S]*?\n  }/)[0],c);
   const update=()=>vm.runInContext('updateControls()',c);
   update();assert.equal(c.drawAdventure.hidden,true);
   c.busy=false;update();assert.equal(c.drawAdventure.hidden,false);assert.equal(c.diceBtn.hidden,true);
   c.active=1;update();assert.equal(c.drawAdventure.hidden,true);assert.equal(c.diceBtn.hidden,false);
-  c.active=0;c.waitingForJoker=true;update();assert.equal(c.drawAdventure.hidden,true);
+  c.active=0;c.waitingForJoker=true;c.currentJoker={type:'magic',target:'bird'};
+  update();assert.equal(c.drawAdventure.hidden,true);
+  assert.deepEqual(c.magicHits.map(hit=>hit.disabled),[false,true]);
+  c.busy=true;update();assert.ok(c.magicHits.every(hit=>hit.disabled));
+  c.busy=false;
   c.waitingForJoker=false;c.players[1].finished=true;update();assert.equal(c.drawAdventure.hidden,true);assert.equal(c.diceBtn.hidden,true);
  });
  test(`${world}: Noch einmal fragt nach vollständigem Abschluss nicht nach`,()=>{

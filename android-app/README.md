@@ -66,6 +66,8 @@ Ergebnis: android/app/build/outputs/bundle/release/app-release.aab. Vor jedem ne
 
 ## Quelldateien und Bilder
 
+Die drei aktiven Würfelspiele, ihre Spielfeldanimationen und die drei Kategorie-Intros kommen beim Build aus dem übergeordneten Repository-Verzeichnis. Die gleichnamigen Würfelspielseiten unter web-source/ sind historische Quellen für die Provenienz. Das erzeugte Paket enthält alle Animationen lokal.
+
 src/ enthält gemeinsame App-Funktionen, web-source/ die Spiele, android/ das native Projekt, tests/ die Regressionstests. Die Dateinamen lite-policy.js und lite-view.js sind historische Kompatibilitätsnamen: Die Kaufversion ist immer vollständig und hat keine Lite-Beschränkung.
 
 optimized-images/ enthält ausschließlich die im Manifest benötigten Dateien. Ein regulärer Build benötigt kein Python. Nur bei neuen/geänderten Bildquellen die Optimierungsdaten mit Python und Pillow neu erzeugen:

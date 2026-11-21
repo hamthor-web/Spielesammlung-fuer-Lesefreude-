@@ -34,7 +34,7 @@ test('Belohnung wird nur beim neuen Erreichen einer Stufe angezeigt',()=>{
 });
 test('Alle drei Spiele blenden beim Wiederöffnen die Belohnung aus',()=>{
   for(const world of ['sport','freizeit','maerchen']){
-    const html=readFileSync(new URL(`../web-source/wuerfeln-${world}.html`,import.meta.url),'utf8');
+    const html=readFileSync(new URL(`../../wuerfeln-${world}.html`,import.meta.url),'utf8');
     const fn=html.match(/function showTrophyResult\([^]*?\n  }/)[0];
     let removed=0;
     const context=vm.createContext({document:{getElementById:()=>({remove(){removed++}}),createElement(){throw Error('Ohne Freischaltung darf keine Belohnung erzeugt werden')}}});

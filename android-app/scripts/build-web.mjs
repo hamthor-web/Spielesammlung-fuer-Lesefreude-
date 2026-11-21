@@ -5,6 +5,10 @@ import { build } from 'esbuild';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const source = path.join(root, 'web-source'), target = path.join(root, 'www');
 // Unused truncated historical previews stay in the provenance archive, never in the app.
+const shared = path.resolve(root, '..');
+const sharedDicePages = new Set(['wuerfeln-freizeit.html', 'wuerfeln-maerchen.html', 'wuerfeln-sport.html']);
+const sharedDiceScripts = ['dice-bird-flight.js', 'dice-owl-animation.js'];
+const sharedAssetPaths = new Set();
 const excludedAssets = new Set(['previews-sharp.webp', 'start-hoch-sharp.webp']);
 const paidMarkup = text => text.replace(/<(div|section|p)\b[^>]*class="lite-note"[^>]*>[\s\S]*?<\/\1>/g, '');
 await rm(target, { recursive: true, force: true });
@@ -20,7 +24,15 @@ for (const name of await readdir(source)) {
     text = text.replace('</head>', '<link rel="stylesheet" href="./native-layout.css"><script src="./native-runtime.js"></script></head>');
     await writeFile(path.join(target, 'home.html'), text);
   } else if (name.endsWith('.html')) {
-    let text = paidMarkup(await readFile(path.join(source, name), 'utf8'));
+    const from = sharedDicePages.has(name) ? shared : source;
+    let text = paidMarkup(await readFile(path.join(from, name), 'utf8'));
+    if (from === shared) {
+      // The native build supplies its layout and image map below.
+      text = text.replace(/<link rel="stylesheet" href="\.\/native-layout\.css">/g, '')
+        .replace(/<script src="\.\/(?:native-layout\.js|image-paths\.js)"[^>]*><\/script>/g, '')
+        .replace(/window\.LeseImagePath\((`\.\/pokal-[^`]+`)\)/g, '$1');
+      for (const asset of text.match(/assets\/[a-z0-9-]+\.(?:webp|png|gif)/g) ?? []) sharedAssetPaths.add(asset);
+    }
     text = text.replace('</head>', '<link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script></head>');
     await writeFile(path.join(target, name), text);
   } else await copyFile(path.join(source, name), path.join(target, name));
@@ -43,3 +55,21 @@ await copyFile(path.join(root,'src/lite-view.js'),path.join(target,'lite-view.js
 const { optimizeImages } = await import('./optimize-images.mjs');
 await optimizeImages(root, target);
 
+// Bundle the original frames and playback code for offline use.
+for (const name of ['world-intros.js', 'world-intros.css', ...sharedDiceScripts]) {
+  await copyFile(path.join(shared, name), path.join(target, name));
+}
+await mkdir(path.join(target, 'world-intros'));
+for (const world of ['dice', 'stories', 'crazy']) {
+  for (let frame = 0; frame < 12; frame++) {
+    const name = `world-intros/${world}-${String(frame).padStart(2, '0')}.webp`;
+    await copyFile(path.join(shared, name), path.join(target, name));
+  }
+}
+for (const name of sharedDiceScripts) {
+  const text = await readFile(path.join(shared, name), 'utf8');
+  for (const asset of text.match(/assets\/[a-z0-9-]+\.(?:webp|png|gif)/g) ?? []) sharedAssetPaths.add(asset);
+}
+for (const asset of sharedAssetPaths) {
+  await copyFile(path.join(shared, asset), path.join(target, asset));
+}
