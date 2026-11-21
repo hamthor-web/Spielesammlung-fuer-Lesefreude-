@@ -1014,7 +1014,7 @@ document.getElementById('boardWrap').after(taskDock);
     {text:'Wer klappert über die Brücke?', type:'magic', target:'horses', hint:'Tippe die Pferde an.'},
     {text:'Wo ist das Schlosstor?', type:'magic', target:'gate', hint:'Finde das Schlosstor und tippe es an.'},
     {text:'Finde alle Eulen im Bild und tippe sie an.', type:'search', animal:'owls'},
-    {text:'Welche Farbe hat der Hut vom Eisverkäufer?', type:'action', visual:true},
+    {text:'Welche Farbe hat der Hut vom Eisverkäufer?', type:'hatColor'},
     {text:'Wo ist das Eichhörnchen?', type:'magic', target:'squirrel', hint:'Finde das Eichhörnchen und tippe es an.'},
     {text:'Finde alle Häschen im Bild und tippe sie an.', type:'search', animal:'rabbits'},
     {text:'Wo ist der Junge mit der Brille?', type:'magic', target:'boyglasses', hint:'Finde den Jungen mit der Brille und tippe ihn an.'},
@@ -1070,7 +1070,7 @@ document.getElementById('boardWrap').after(taskDock);
   function nextJoker(actionOnly=false){
     return drawFromBag(jokerBag,jokerCards,card=>{
       if(card.enabled===false) return false;
-      if(actionOnly && !['action','moveChoice','magic','search'].includes(card.type)) return false;
+      if(actionOnly && !['action','moveChoice','magic','search','hatColor'].includes(card.type)) return false;
       if(card.type==='relative' && card.delta<0 && players[active].pos + card.delta < START_POS) return false;
       return true;
     });
@@ -1088,14 +1088,15 @@ document.getElementById('boardWrap').after(taskDock);
   function renderTrophies(){
     trophyDialog.replaceChildren();const heading=document.createElement("h2");heading.textContent="Mein Märchenschloss · Märchen und Zauber";trophyDialog.append(heading);
     const status=document.createElement("p");status.textContent=DiceRewards.status(rewardProgress.count,"maerchen");trophyDialog.append(status);
-    const grid=document.createElement("div");grid.className="trophy-grid";
-    DiceRewards.levels.forEach((n,i)=>{const figure=document.createElement("figure"),caption=document.createElement("figcaption");if(rewardProgress.count>=n){const img=document.createElement("img");img.src=window.LeseImagePath(`./pokal-maerchen-${i+1}.png`);img.dataset.trophyStage=String(i+1);img.alt=`Märchenschloss ${i+1}`;figure.append(img)}caption.textContent=rewardProgress.count>=n?`${n} Spiele · geschafft!`:`Noch gesperrt · ${n} Spiele`;figure.append(caption);grid.append(figure)});trophyDialog.append(grid);
+    const image=DiceRewards.image(rewardProgress.count,"maerchen");
+    if(image) trophyDialog.append(image);
     const close=document.createElement("button");close.textContent="Zurück zum Spiel";close.onclick=()=>trophyDialog.close();trophyDialog.append(close);
   }
   document.getElementById("trophyOpen").onclick=()=>{renderTrophies();trophyDialog.showModal()};
   function showTrophyResult(newlyUnlocked=false){
     document.getElementById("sportTrophyResult")?.remove();if(!newlyUnlocked)return;const box=document.createElement("div");box.id="sportTrophyResult";
-    const level=DiceRewards.level(rewardProgress.count);if(level>=0){const img=document.createElement("img");img.className="sport-trophy";img.src=window.LeseImagePath(`./pokal-maerchen-${level+1}.png`);img.dataset.trophyStage=String(level+1);img.alt=`Dein Märchenschloss für ${DiceRewards.levels[level]} Spiele`;box.append(img)}
+    const image=DiceRewards.image(rewardProgress.count,"maerchen");
+    if(image) box.append(image);
     const text=document.createElement("p");text.textContent=DiceRewards.message(rewardProgress.count,"maerchen")+" "+DiceRewards.status(rewardProgress.count,"maerchen");box.append(text);winnerText.after(box);
   }
   function roundKey(){const profile=LeseProfile.active();return profile?LeseProfile.gameKey(profile,diceGameId):null}
@@ -1149,6 +1150,7 @@ document.getElementById('boardWrap').after(taskDock);
         const searchCard=jokerCards.find(entry=>entry.type==='search' &&
           (entry.text===card.text || animalSearches[entry.animal].previousText===card.text));
         if(searchCard) openJokerCard(searchCard,false,pending.found);
+        else if(card.text==='Welche Farbe hat der Hut vom Eisverkäufer?') openJokerCard(jokerCards.find(entry=>entry.type==='hatColor'));
         else if(['day','relative','moveChoice','magic','action'].includes(card.type)) openJokerCard(card);
       }
       if(players.every(p=>p.finished)){tokens.forEach(t=>t.classList.remove('activeGlow'));showTrophyResult();winner.classList.add('show')}
@@ -1455,12 +1457,13 @@ document.getElementById('boardWrap').after(taskDock);
     clearJokerChoices();
     clearAnimalSearch();
     const isSearch=currentJoker.type==='search';
+    const isHatColor=currentJoker.type==='hatColor';
     document.getElementById('jokerDone').hidden=currentJoker.type!=='action';
     const needsTarget=currentJoker.type==='day' || currentJoker.type==='relative';
     const isMoveChoice=currentJoker.type==='moveChoice';
     const isMagic=currentJoker.type==='magic';
     const isVisualQuestion=currentJoker.visual===true || isMagic;
-    jokerHint.textContent = isSearch ? '' : needsTarget ? (currentJoker.type==='relative' ? 'Zähle die Felder und tippe dein Zielfeld an.' : 'Finde das richtige Feld und tippe es an.') : (isMoveChoice ? 'Wähle eine Aufgabe aus.' : (isMagic ? currentJoker.hint : (isVisualQuestion ? 'Schau ins Bild und erzähle. Tippe danach auf „Fertig“.' : 'Mache die Aufgabe selbst. Tippe danach auf „Fertig“.')));
+    jokerHint.textContent = isSearch || isHatColor ? '' : needsTarget ? (currentJoker.type==='relative' ? 'Zähle die Felder und tippe dein Zielfeld an.' : 'Finde das richtige Feld und tippe es an.') : (isMoveChoice ? 'Wähle eine Aufgabe aus.' : (isMagic ? currentJoker.hint : (isVisualQuestion ? 'Schau ins Bild und erzähle. Tippe danach auf „Fertig“.' : 'Mache die Aufgabe selbst. Tippe danach auf „Fertig“.')));
     jokerCard.classList.remove('shake','correct','targetMode','visualQuestion','frogQuestion');
     if(needsTarget) jokerCard.classList.add('targetMode');
     if(isVisualQuestion) jokerCard.classList.add('visualQuestion');
@@ -1490,6 +1493,27 @@ document.getElementById('boardWrap').after(taskDock);
       if(currentJoker && currentJoker.type==='day') board.classList.add('dayJokerMode');
     if(isMagic) board.classList.add('magicTargetMode');
     if(isSearch) openAnimalSearch(animalSearches[currentJoker.animal],savedFound);
+    if(isHatColor){
+      renderJokerChoices(['Blau','Grün','Gelb'],choice=>{
+        if(!waitingForJoker || busy) return;
+        if(choice!=='Blau'){
+          jokerHint.textContent='Schau noch einmal genau hin.';
+          shakeJoker();
+          return;
+        }
+        busy=true;
+        waitingForJoker=false;
+        clearJokerChoices();
+        jokerText.textContent='Richtig, der Hut ist blau!';
+        jokerHint.textContent='';
+        updateControls();
+        if(!jokerTestMode) saveRound(1-active);
+        later(()=>{
+          if(jokerTestMode){ endJokerTest(); return; }
+          closeJokerCard(()=>{ currentJoker=null; switchTurn(); });
+        },1800);
+      });
+    }
     void jokerCard.offsetWidth;
     jokerCard.classList.add('show');
     flyInCard(jokerCard);
@@ -2323,19 +2347,41 @@ document.getElementById('boardWrap').after(taskDock);
     drawKnight();
   }
 
+  function roseRain(parent,duration){
+    for(let i=0;i<42;i++){
+      const x=82+Math.random()*5;
+      const drift=-16+Math.random()*24;
+      const drop=12+Math.random()*25;
+      const petal=svg('ellipse',{
+        cx:x,cy:29,rx:.27+Math.random()*.37,ry:.58,
+        fill:['#a92251','#ed3961','#ff91af'][i%3],stroke:'#ffc1d4','stroke-width':.07
+      },parent);
+      petal.animate([
+        {opacity:0,transform:'translate(0,0)'},
+        {opacity:1,transform:`translate(${drift*.45}px,-${4+drop*.15}px)`,offset:.24},
+        {opacity:.9,offset:.76},
+        {opacity:0,transform:`translate(${drift}px,${drop}px)`}
+      ],{delay:i%7*55,duration:duration-360,easing:'ease-out',fill:'both'});
+    }
+  }
+
   function playKnight(done) {
     if (knightUrl && !done) return;
     clearFairy();
     fairySound('knight');
     sizeKnight();
     knightUrl = URL.createObjectURL(knightAsset);
+    let petals;
     const finish = () => {
+      petals?.remove();
       stopKnight();
       done?.();
     };
     knightAnimation.onload = () => {
       drawKnight(false);
       knightAnimation.hidden = false;
+      petals=svg('g');
+      roseRain(petals,knightDuration);
       knightTimer = window.setTimeout(finish, knightDuration + 50);
     };
     knightAnimation.onerror = finish;
@@ -2513,13 +2559,7 @@ document.getElementById('boardWrap').after(taskDock);
     if(target==='knight'){
       const blade=svg('path',{d:'M81 31 L86 24',stroke:'#eef6ff','stroke-width':.6,'stroke-linecap':'round'},g);blade.style.transformOrigin='81% 31%';animate(blade,[{transform:'rotate(0)'},{transform:'rotate(55deg)',offset:.45},{transform:'rotate(0)'}],1600);
       duration=3400;
-      for(let i=0;i<65;i++){
-        const x=79+Math.random()*4, y=33+Math.random()*2, drift=(Math.random()-.5)*15;
-        const n=svg('ellipse',{cx:x,cy:y,rx:.3+Math.random()*.3,ry:.65,fill:i%2?'#ff8cae':'#e52f66',stroke:'#ffc1d4','stroke-width':.08},g);
-        svg('animate',{attributeName:'cx',values:`${x};${x+drift*.65};${x+drift}`,keyTimes:'0;.35;1',dur:'3.2s',fill:'freeze'},n);
-        svg('animate',{attributeName:'cy',values:`${y};${y-7-Math.random()*6};${y+5+Math.random()*4}`,keyTimes:'0;.35;1',dur:'3.2s',fill:'freeze'},n);
-        animate(n,[{opacity:0},{opacity:1,offset:.12},{opacity:1,offset:.82},{opacity:0}],3200);
-      }
+      roseRain(g,3200);
     }
     if(target==='lamp'){[37.5,65.5].forEach(x=>{svg('ellipse',{cx:x,cy:49.5,rx:2.6,ry:4,fill:'#ffe469',opacity:.55},g);sparkle(g,x,49.5,3,18);});}
     if(target==='dragon'){

@@ -7,7 +7,7 @@ const source = path.join(root, 'web-source'), target = path.join(root, 'www');
 // Unused truncated historical previews stay in the provenance archive, never in the app.
 const shared = path.resolve(root, '..');
 const sharedDicePages = new Set(['wuerfeln-freizeit.html', 'wuerfeln-maerchen.html', 'wuerfeln-sport.html']);
-const sharedDiceScripts = ['dice-bird-flight.js', 'dice-owl-animation.js'];
+const sharedDiceScripts = ['dice-bird-flight.js', 'dice-owl-animation.js', 'dice-rewards.js'];
 const sharedAssetPaths = new Set();
 const excludedAssets = new Set(['previews-sharp.webp', 'start-hoch-sharp.webp']);
 const paidMarkup = text => text.replace(/<(div|section|p)\b[^>]*class="lite-note"[^>]*>[\s\S]*?<\/\1>/g, '');
