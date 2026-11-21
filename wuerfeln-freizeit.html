@@ -155,7 +155,6 @@
   .dice-bird-perch { position:absolute; pointer-events:none; z-index:1; }
   .dice-bird-perch[hidden] { display:none; }
   .dice-bird-flight { position:absolute; inset:0; width:100%; height:100%; z-index:45; pointer-events:none; }
-  #board:not(.inputLocked) .magicHit[data-magic="bird"] { display:block; }
   #board .magicHit[data-magic="bird"] { transform:translate(-50%,-50%); min-width:28px; min-height:28px; }
   #board .magicHit[data-magic="bird"]:focus-visible { outline:2px solid #fff; outline-offset:2px; border-radius:50%; }
   #laughFx { left:8.0%; top:46.0%; width:19%; height:18%; transform:translate(-50%,-50%); }
@@ -595,7 +594,15 @@ body { display:block; background:#e6edcf; }
 #moveTestBtn{border:0;border-radius:14px;padding:10px;background:#dff4ff;font-weight:800;font-size:14px}
 </style><style>/* Gemeinsamer Picknickabschluss: große Speisen mit goldenem Schimmer. */
 #picnicFx .picnicItems{left:-60%;right:-60%;top:-5%;gap:6px;font-size:clamp(30px,4.5vw,62px);filter:drop-shadow(0 0 3px #ffdc65) drop-shadow(0 0 8px #ffd24a) drop-shadow(0 0 14px #fff0a0);}
-#picnicFx .picnicItems span{display:inline-block;}</style><style>#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}</style><style>#reset{display:none!important}</style><script src="./dice-rewards.js"></script><style>#winnerCard{max-height:85dvh;overflow:auto;box-sizing:border-box;max-width:94vw;padding:16px} .sport-trophy{width:min(220px,45vw);height: min(220px,35dvh);object-fit:contain;display:block;margin:auto}.trophy-dialog{border:0;border-radius:22px;background:#fffbea;max-width:650px;width:88vw;max-height:85dvh;overflow:auto;text-align:center;color:#304a30}.trophy-dialog::backdrop{background:#142b36ae}.trophy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:12px}.trophy-grid img{width:100%;height:130px;object-fit:contain}.trophy-grid figure{margin:0;padding:8px;background:white;border-radius:12px}.trophy-dialog button,#trophyOpen{font:inherit;border-radius:12px;padding:8px 12px;background:#fff4b3;color:#304a30;border:2px solid #c4a445}#trophyOpen{font-size:14px;margin:5px}</style><style>.rewards-row{display:flex;justify-content:center;width:100%;margin:0 0 14px}.rewards-row #trophyOpen{margin:0}</style><link rel="stylesheet" href="./dice-ui.css"><script src="./dice-ui.js" defer></script><link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script><script src="./image-paths.js"></script><script src="./dice-bird-flight.js"></script></head>
+#picnicFx .picnicItems span{display:inline-block;}</style><style>#weekdayTestBtn,#jokerTestBtn,#footballTestBtn,#moveTestBtn,#testHint{display:none!important}</style><style>#reset{display:none!important}</style><script src="./dice-rewards.js"></script><style>#winnerCard{max-height:85dvh;overflow:auto;box-sizing:border-box;max-width:94vw;padding:16px} .sport-trophy{width:min(220px,45vw);height: min(220px,35dvh);object-fit:contain;display:block;margin:auto}.trophy-dialog{border:0;border-radius:22px;background:#fffbea;max-width:650px;width:88vw;max-height:85dvh;overflow:auto;text-align:center;color:#304a30}.trophy-dialog::backdrop{background:#142b36ae}.trophy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:12px}.trophy-grid img{width:100%;height:130px;object-fit:contain}.trophy-grid figure{margin:0;padding:8px;background:white;border-radius:12px}.trophy-dialog button,#trophyOpen{font:inherit;border-radius:12px;padding:8px 12px;background:#fff4b3;color:#304a30;border:2px solid #c4a445}#trophyOpen{font-size:14px;margin:5px}</style><style>.rewards-row{display:flex;justify-content:center;width:100%;margin:0 0 14px}.rewards-row #trophyOpen{margin:0}</style><link rel="stylesheet" href="./dice-ui.css"><script src="./dice-ui.js" defer></script><link rel="stylesheet" href="./native-layout.css"><script src="./native-layout.js" defer></script><script src="./image-paths.js"></script><script src="./dice-bird-flight.js"></script><style>#board .magicHit:disabled { display:none !important; }</style>
+<style>
+  #owlRetouch, #owlFigure { position:absolute; z-index:3; pointer-events:none; visibility:hidden; }
+  #board.owlReady #owlRetouch, #board.owlReady #owlFigure { visibility:visible; }
+  #owlRetouch { left:82.18232%; top:9.48435%; width:6.90608%; height:10.58932%; }
+  #owlFigure { left:86.18785%; bottom:82.32044%; width:10.49724%; height:10.99711%; transform:translateX(-50%); }
+</style>
+<script src="./dice-owl-animation.js"></script>
+</head>
 <body>
 <div id="app">
   <div id="boardWrap">
@@ -655,7 +662,7 @@ body { display:block; background:#e6edcf; }
       <button class="magicHit" data-magic="ice" style="left:35.0%;top:40.0%;width:16%;height:24%;" aria-label="Eisstand"></button>
       <button class="magicHit" data-magic="bird" style="left:84%;top:42%;width:9%;height:12%;" aria-label="Blauer Vogel"></button>
       <button class="magicHit" data-magic="girl" style="left:49.0%;top:48.5%;width:10%;height:21%;border-radius:36%;" aria-label="Mädchen auf der Brücke"></button>
-      <button class="magicHit" data-magic="owl" style="left:86.2%;top:14.5%;width:8.5%;height:12%;border-radius:40%;" aria-label="Eule"></button>
+      <button class="magicHit" data-magic="owl" aria-label="Eule" style="left:86.18785%;top:13.30571%;width:max(6.56077%,44px);height:max(8.74770%,44px)"></button>
       <button class="magicHit" data-magic="frog" style="left:49.0%;top:70.0%;width:9%;height:10%;border-radius:40%;" aria-label="Frosch"></button>
       <button class="magicHit" data-magic="dog" style="left:18.2%;top:56.0%;width:11%;height:16%;border-radius:40%;" aria-label="Hund"></button>
       <button class="magicHit" data-magic="bottle" style="left:10.6%;top:49.3%;width:5%;height:11%;border-radius:35%;" aria-label="Blaue Flasche"></button>
@@ -804,6 +811,7 @@ document.getElementById('boardWrap').after(taskDock);
   const cloudFx=document.getElementById('cloudFx');
   const weatherDimFx=document.getElementById('weatherDimFx');
   const iceFx=document.getElementById('iceFx');
+  const owlAnimation = DiceOwlAnimation.mount(board, './assets/eule-ast-freizeit.webp', later);
   const birdFlight=window.DiceBirdFlight?.mount(board,0.84,0.42);
   const laughFx=document.getElementById('laughFx');
   const frogFx=document.getElementById('frogFx');
@@ -1296,7 +1304,7 @@ document.getElementById('boardWrap').after(taskDock);
     // damit das Miau auf iPad/Safari zuverlässig hörbar startet.
     if(target==='dog'){ later(()=>{ if(done) done(); },900); return; }
     if(target==='bottle'){ later(()=>{ if(done) done(); },900); return; }
-    if(target==='owl'){ later(()=>{ if(done) done(); },900); return; }
+    if(target==='owl'){ owlAnimation.play(done); return; }
     const nodeMap={lamp:lampGlowFx, sun:cloudFx, ice:iceFx, girl:laughFx, frog:frogFx};
     const node=nodeMap[target];
     if(!node){ if(done) done(); return; }
@@ -1751,6 +1759,7 @@ document.getElementById('boardWrap').after(taskDock);
     // Bei Sound-/Zauberkarten ist der Effekt selbst die Bestätigung.
     // Deshalb kein zusätzliches "Richtig!" auf der Karte.
     busy=true; waitingForJoker=false; jokerCard.classList.remove('correct');
+    updateControls();
     playMagicEffect(name, ()=>{
       if(jokerTestMode){ endJokerTest(); return; }
       closeJokerCard(()=>{ currentJoker=null; later(switchTurn,120); });
@@ -1788,10 +1797,6 @@ document.getElementById('boardWrap').after(taskDock);
   trackHits.forEach(b=>b.addEventListener('click',()=>selectJokerTarget('track',+b.dataset.index)));
   goalHit.addEventListener('click',()=>selectJokerTarget('goal'));
   magicHits.forEach(b=>b.addEventListener('click',()=>{
-    if(b.dataset.magic==='bird' && !waitingForJoker){
-      if(!busy && !waitingForCardTarget && !waitingForMoveCard && !waitingForFootballCard && !birdFlight?.flying) playMagicEffect('bird');
-      return;
-    }
     if(!waitingForJoker){ if(TEST_MODE && !busy && !waitingForCardTarget && !waitingForMoveCard && !waitingForFootballCard) playMagicEffect(b.dataset.magic); return; }
     selectMagicTarget(b.dataset.magic);
   }));
@@ -1815,6 +1820,7 @@ document.getElementById('boardWrap').after(taskDock);
   diceBtn.addEventListener('click',()=>{ primeGoalSound(); roll(); });
   function restartBase(){
     birdFlight?.reset();
+    owlAnimation.reset();
     rewardProgress={count:rewardProgress.count,credited:false};
     resetCardBags();
     players[0].pos=START_POS; players[1].pos=START_POS; players[0].finished=false; players[1].finished=false; active=0; busy=false; waitingForCardTarget=false; waitingForMoveCard=false; waitingForJoker=false; waitingForFootballCard=false; weekdayTestMode=false; jokerTestMode=false; jokerTestSnapshot=null; footballTestMode=false;
@@ -1838,6 +1844,11 @@ document.getElementById('boardWrap').after(taskDock);
     diceBtn.hidden=waiting||complete;diceBtn.disabled=locked||complete;
     drawAdventure.hidden=!waiting||locked;drawAdventure.disabled=locked||complete;
     turnLabel.textContent=complete?'Gemeinsam geschafft!':players[active].name+' ist dran';
+    const target = waitingForJoker && !busy && currentJoker?.type === 'magic' ? currentJoker.target : null;
+    const testTap = TEST_MODE && !locked;
+    magicHits.forEach(button => {
+      button.disabled = button.dataset.magic !== target && !testTap;
+    });
     if(board.classList.contains('inputLocked')!==locked)board.classList.toggle('inputLocked',locked);
   }
   const observer=new MutationObserver(updateControls);
@@ -1855,8 +1866,8 @@ document.getElementById('boardWrap').after(taskDock);
     b.style.left=p[0]+'%';b.style.top=p[1]+'%';
     b.style.width=(b.dataset.day==='Donnerstag'?14:19)+'%';b.style.height='15%';
   });
-  const objectPositions={lamp:[3.7,44,7,18],sun:[37.2,5,10,10],ice:[38,41,16,22],bird:[84,42,9,12],girl:[53,48.5,12,20],owl:[86.4,15,9,13],frog:[53,69,10,11],dog:[20.5,58.5,13,16],bottle:[11.2,47.5,5,10]};
-  magicHits.forEach(b=>{const [x,y,w,h]=objectPositions[b.dataset.magic];Object.assign(b.style,{left:x+'%',top:y+'%',width:w+'%',height:h+'%'});});
+  const objectPositions={lamp:[3.7,44,7,18],sun:[37.2,5,10,10],ice:[38,41,16,22],bird:[84,42,9,12],girl:[53,48.5,12,20],frog:[53,69,10,11],dog:[20.5,58.5,13,16],bottle:[11.2,47.5,5,10]};
+  magicHits.filter(b=>b.dataset.magic!=='owl').forEach(b=>{const [x,y,w,h]=objectPositions[b.dataset.magic];Object.assign(b.style,{left:x+'%',top:y+'%',width:w+'%',height:h+'%'});});
   const effects={lamp:lampGlowFx,sun:cloudFx,ice:iceFx,girl:laughFx,frog:frogFx};
   Object.entries(effects).forEach(([key,node])=>{node.style.left=objectPositions[key][0]+'%';node.style.top=objectPositions[key][1]+'%';});
   goalHit.style.left=goalCenter[0]+'%';goalHit.style.top=goalCenter[1]+'%';
@@ -1871,9 +1882,9 @@ document.getElementById('boardWrap').after(taskDock);
   },true);
   const originalMagic=playMagicEffect;
   playMagicEffect=function(target,done){
-    if(['owl','dog','bottle'].includes(target)){
+    if(['dog','bottle'].includes(target)){
       const [x,y]=objectPositions[target],n=document.createElement('div');n.className='objectFeedback';
-      n.textContent={owl:'Huhu!',dog:'Wau wau!',bottle:'○ ◌ ○'}[target];
+      n.textContent={dog:'Wau wau!',bottle:'○ ◌ ○'}[target];
       n.style.left=x+'%';n.style.top=(y-6)+'%';board.append(n);later(()=>n.remove(),1200);
     }
     originalMagic(target,done);
