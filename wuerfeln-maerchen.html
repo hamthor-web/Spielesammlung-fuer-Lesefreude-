@@ -674,6 +674,12 @@ body { display:block; background:#e6edcf; }
 </style>
 <style>#board .magicHit:disabled { display:none !important; }</style>
 <style>
+  .animalHit { position:absolute; z-index:41; left:var(--x); top:var(--y); width:max(var(--w),44px); height:max(var(--h),44px); transform:translate(-50%,-50%); border:0; border-radius:50%; padding:0; background:transparent; touch-action:manipulation; cursor:pointer; }
+  .animalHit[data-edge="top"] { top:max(var(--y),22px); }
+  .animalHit[data-edge="bottom"] { top:min(var(--y),calc(100% - 22px)); }
+  .animalHit:focus-visible { outline:3px dashed white; outline-offset:-4px; box-shadow:inset 0 0 0 6px #4a218c; }
+  .animalHit.found { background:#d4ff6740; box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 6px #317c20; pointer-events:none; }
+  .animalHit:disabled { pointer-events:none; }
   #owlRetouch, #owlFigure { position:absolute; z-index:3; pointer-events:none; visibility:hidden; }
   #board.owlReady #owlRetouch, #board.owlReady #owlFigure { visibility:visible; }
   #owlRetouch { left:13.95037%; top:0.00000%; width:8.11536%; height:11.94313%; }
@@ -1007,10 +1013,10 @@ document.getElementById('boardWrap').after(taskDock);
     {text:'Wer sitzt in der Kutsche?', type:'magic', target:'carriage', hint:'Schau genau hin und tippe die Kutsche an.'},
     {text:'Wer klappert über die Brücke?', type:'magic', target:'horses', hint:'Tippe die Pferde an.'},
     {text:'Wo ist das Schlosstor?', type:'magic', target:'gate', hint:'Finde das Schlosstor und tippe es an.'},
-    {text:'Wie viele Eulen findest du auf dem Bild?', type:'action', visual:true},
+    {text:'Finde alle Eulen im Bild und tippe sie an.', type:'search', animal:'owls'},
     {text:'Welche Farbe hat der Hut vom Eisverkäufer?', type:'action', visual:true},
     {text:'Wo ist das Eichhörnchen?', type:'magic', target:'squirrel', hint:'Finde das Eichhörnchen und tippe es an.'},
-    {text:'Wie viele Häschen findest du auf dem Bild?', type:'action', visual:true},
+    {text:'Finde alle Häschen im Bild und tippe sie an.', type:'search', animal:'rabbits'},
     {text:'Wo ist der Junge mit der Brille?', type:'magic', target:'boyglasses', hint:'Finde den Jungen mit der Brille und tippe ihn an.'},
     {text:'Was macht der Junge mit der Brille?', type:'magic', target:'arrow', hint:'Antworte zuerst. Tippe dann den Jungen an.'},
     {text:'Lass den Wasserfall rauschen.', type:'magic', target:'waterfall', hint:'Tippe irgendwo auf den Wasserfall.'}
@@ -1064,7 +1070,7 @@ document.getElementById('boardWrap').after(taskDock);
   function nextJoker(actionOnly=false){
     return drawFromBag(jokerBag,jokerCards,card=>{
       if(card.enabled===false) return false;
-      if(actionOnly && !['action','moveChoice','magic'].includes(card.type)) return false;
+      if(actionOnly && !['action','moveChoice','magic','search'].includes(card.type)) return false;
       if(card.type==='relative' && card.delta<0 && players[active].pos + card.delta < START_POS) return false;
       return true;
     });
@@ -1098,7 +1104,7 @@ document.getElementById('boardWrap').after(taskDock);
     const pending=waitingForCardTarget?{type:'weekday',index:weekdayQuestions.findIndex(q=>q.q===currentQuestion?.q)}
       :waitingForMoveCard?{type:'move',index:movementCards.indexOf(moveText.textContent)}
       :waitingForFootballCard?{type:'question',index:footballQuestions.indexOf(footballText.textContent)}
-      :waitingForJoker?{type:'joker',card:currentJoker}:null;
+      :waitingForJoker?{type:'joker',card:currentJoker,found:[...foundAnimals]}:null;
     const snapshot={v:1,rewards:rewardProgress,players:players.map(p=>({pos:p.pos,finished:p.finished})),active:nextActive,
       bags:cardBags.map(b=>b.map(row=>row.slice())),
       bagStarts:cardBags.map(b=>bagStarts.get(b)),
@@ -1138,7 +1144,13 @@ document.getElementById('boardWrap').after(taskDock);
       if(pending?.type==='weekday'&&weekdayQuestions[pending.index])openWeekdayQuestion(weekdayQuestions[pending.index]);
       else if(pending?.type==='move'&&movementCards[pending.index])openMoveCard(movementCards[pending.index]);
       else if(pending?.type==='question'&&footballQuestions[pending.index])openFootballCard(footballQuestions[pending.index]);
-      else if(pending?.type==='joker'&&pending.card&&typeof pending.card.text==='string'&&pending.card.text.length<200&&['day','relative','moveChoice','magic','action'].includes(pending.card.type))openJokerCard(pending.card);
+      else if(pending?.type==='joker'&&pending.card&&typeof pending.card.text==='string'&&pending.card.text.length<200){
+        const card=pending.card;
+        const searchCard=jokerCards.find(entry=>entry.type==='search' &&
+          (entry.text===card.text || animalSearches[entry.animal].previousText===card.text));
+        if(searchCard) openJokerCard(searchCard,false,pending.found);
+        else if(['day','relative','moveChoice','magic','action'].includes(card.type)) openJokerCard(card);
+      }
       if(players.every(p=>p.finished)){tokens.forEach(t=>t.classList.remove('activeGlow'));showTrophyResult();winner.classList.add('show')}
       if(typeof updateControls==='function')updateControls();
     }finally{restoringRound=false}
@@ -1372,7 +1384,67 @@ document.getElementById('boardWrap').after(taskDock);
     jokerChoices.innerHTML='';
   }
 
-  function openJokerCard(forcedJoker=null, testMode=false){
+  const animalSearches={
+    owls:{
+      previousText:'Wie viele Eulen findest du auf dem Bild?',
+      success:'Klasse, du hast alle Eulen gefunden!',
+      points:[
+        {name:'Eule oben im Baum', x:18.1, y:6.3, w:7.5, h:10.6, edge:'top'},
+        {name:'Eule beim Eisverkäufer', x:20.65, y:58, w:4.5, h:7.25}
+      ]
+    },
+    rabbits:{
+      previousText:'Wie viele Häschen findest du auf dem Bild?',
+      success:'Klasse, du hast alle Häschen gefunden!',
+      points:[
+        {name:'Häschen beim Reh', x:80.6, y:73.8, w:4.6, h:10},
+        {name:'Häschen unten am Schild', x:85.35, y:94.4, w:6.6, h:10.5, edge:'bottom'}
+      ]
+    }
+  };
+  const animalTargets=document.createElement('div');
+  board.append(animalTargets);
+  const foundAnimals=new Set();
+  function clearAnimalSearch(){
+    animalTargets.replaceChildren();
+    foundAnimals.clear();
+  }
+  function openAnimalSearch(search,savedFound){
+    search.points.forEach((point,index)=>{
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='animalHit';
+      button.dataset.edge=point.edge ?? '';
+      button.setAttribute('aria-label',point.name);
+      for(const property of ['x','y','w','h']) button.style.setProperty('--'+property,point[property]+'%');
+      function markFound(){
+        foundAnimals.add(index);
+        button.classList.add('found');
+        button.disabled=true;
+      }
+      if(Array.isArray(savedFound) && savedFound.includes(index)) markFound();
+      button.addEventListener('click',event=>{
+        if(!waitingForJoker || busy || currentJoker?.type!=='search' || foundAnimals.has(index)) return;
+        markFound();
+        if(foundAnimals.size<search.points.length){
+          if(!jokerTestMode) saveRound();
+          if(event.detail===0) animalTargets.querySelector('button:not(:disabled)')?.focus({preventScroll:true});
+          return;
+        }
+        busy=true;
+        waitingForJoker=false;
+        jokerText.textContent=search.success;
+        updateControls();
+        if(!jokerTestMode) saveRound(1-active);
+        later(()=>{
+          if(jokerTestMode){ endJokerTest(); return; }
+          closeJokerCard(()=>{ currentJoker=null; switchTurn(); });
+        },2400);
+      });
+      animalTargets.append(button);
+    });
+  }
+  function openJokerCard(forcedJoker=null, testMode=false, savedFound=[]){
     currentJoker=forcedJoker || nextJoker(players[active].finished);
     if(!currentJoker){ switchTurn(); return; }
     jokerTestMode=testMode;
@@ -1381,12 +1453,14 @@ document.getElementById('boardWrap').after(taskDock);
     jokerCard.style.setProperty('--fromY',source.y);
     jokerText.textContent=currentJoker.text;
     clearJokerChoices();
+    clearAnimalSearch();
+    const isSearch=currentJoker.type==='search';
     document.getElementById('jokerDone').hidden=currentJoker.type!=='action';
     const needsTarget=currentJoker.type==='day' || currentJoker.type==='relative';
     const isMoveChoice=currentJoker.type==='moveChoice';
     const isMagic=currentJoker.type==='magic';
     const isVisualQuestion=currentJoker.visual===true || isMagic;
-    jokerHint.textContent = needsTarget ? (currentJoker.type==='relative' ? 'Zähle die Felder und tippe dein Zielfeld an.' : 'Finde das richtige Feld und tippe es an.') : (isMoveChoice ? 'Wähle eine Aufgabe aus.' : (isMagic ? currentJoker.hint : (isVisualQuestion ? 'Schau ins Bild und erzähle. Tippe danach auf „Fertig“.' : 'Mache die Aufgabe selbst. Tippe danach auf „Fertig“.')));
+    jokerHint.textContent = isSearch ? '' : needsTarget ? (currentJoker.type==='relative' ? 'Zähle die Felder und tippe dein Zielfeld an.' : 'Finde das richtige Feld und tippe es an.') : (isMoveChoice ? 'Wähle eine Aufgabe aus.' : (isMagic ? currentJoker.hint : (isVisualQuestion ? 'Schau ins Bild und erzähle. Tippe danach auf „Fertig“.' : 'Mache die Aufgabe selbst. Tippe danach auf „Fertig“.')));
     jokerCard.classList.remove('shake','correct','targetMode','visualQuestion','frogQuestion');
     if(needsTarget) jokerCard.classList.add('targetMode');
     if(isVisualQuestion) jokerCard.classList.add('visualQuestion');
@@ -1415,6 +1489,7 @@ document.getElementById('boardWrap').after(taskDock);
     if(needsTarget) board.classList.add('jokerTargetMode');
       if(currentJoker && currentJoker.type==='day') board.classList.add('dayJokerMode');
     if(isMagic) board.classList.add('magicTargetMode');
+    if(isSearch) openAnimalSearch(animalSearches[currentJoker.animal],savedFound);
     void jokerCard.offsetWidth;
     jokerCard.classList.add('show');
     flyInCard(jokerCard);
@@ -1450,6 +1525,7 @@ document.getElementById('boardWrap').after(taskDock);
     }, durations[target] || 1100);
   }
   function closeJokerCard(afterClose){
+    clearAnimalSearch();
     board.classList.remove('jokerTargetMode','dayJokerMode','magicTargetMode');
     jokerCard.classList.remove('show');
     later(()=>{
@@ -1949,6 +2025,7 @@ document.getElementById('boardWrap').after(taskDock);
   diceBtn.addEventListener('touchstart',primeGoalSound,{passive:true});
   diceBtn.addEventListener('click',()=>{ primeGoalSound(); roll(); });
   function restartBase(){
+    clearAnimalSearch();
     rewardProgress={count:rewardProgress.count,credited:false};
     resetRoundCards();
     players[0].pos=START_POS; players[1].pos=START_POS; players[0].finished=false; players[1].finished=false; active=0; busy=false; waitingForCardTarget=false; waitingForMoveCard=false; waitingForJoker=false; waitingForFootballCard=false; weekdayTestMode=false; jokerTestMode=false; jokerTestSnapshot=null; footballTestMode=false;
