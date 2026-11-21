@@ -929,14 +929,15 @@ document.getElementById('boardWrap').after(taskDock);
   function renderTrophies(){
     trophyDialog.replaceChildren();const heading=document.createElement("h2");heading.textContent="Meine Pokale · Sport und Spiel";trophyDialog.append(heading);
     const status=document.createElement("p");status.textContent=DiceRewards.status(rewardProgress.count);trophyDialog.append(status);
-    const grid=document.createElement("div");grid.className="trophy-grid";
-    DiceRewards.levels.forEach((n,i)=>{const figure=document.createElement("figure"),caption=document.createElement("figcaption");if(rewardProgress.count>=n){const img=document.createElement("img");img.src=window.LeseImagePath(`./pokal-sport-${i+1}.png`);img.dataset.trophyStage=String(i+1);img.alt=`Pokal ${i+1}`;figure.append(img)}caption.textContent=rewardProgress.count>=n?`${n} Spiele · geschafft!`:`Noch gesperrt · ${n} Spiele`;figure.append(caption);grid.append(figure)});trophyDialog.append(grid);
+    const image=DiceRewards.image(rewardProgress.count,"sport");
+    if(image) trophyDialog.append(image);
     const close=document.createElement("button");close.textContent="Zurück zum Spiel";close.onclick=()=>trophyDialog.close();trophyDialog.append(close);
   }
   document.getElementById("trophyOpen").onclick=()=>{renderTrophies();trophyDialog.showModal()};
   function showTrophyResult(newlyUnlocked=false){
     document.getElementById("sportTrophyResult")?.remove();if(!newlyUnlocked)return;const box=document.createElement("div");box.id="sportTrophyResult";
-    const level=DiceRewards.level(rewardProgress.count);if(level>=0){const img=document.createElement("img");img.className="sport-trophy";img.src=window.LeseImagePath(`./pokal-sport-${level+1}.png`);img.dataset.trophyStage=String(level+1);img.alt=`Dein Pokal für ${DiceRewards.levels[level]} Spiele`;box.append(img)}
+    const image=DiceRewards.image(rewardProgress.count,"sport");
+    if(image) box.append(image);
     const text=document.createElement("p");text.textContent=DiceRewards.message(rewardProgress.count)+" "+DiceRewards.status(rewardProgress.count);box.append(text);winnerText.after(box);
   }
   function roundKey(){const profile=LeseProfile.active();return profile?LeseProfile.gameKey(profile,diceGameId):null}

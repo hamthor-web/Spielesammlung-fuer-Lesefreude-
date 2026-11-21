@@ -1,7 +1,7 @@
-const CACHE_NAME="lesespiele-web-maerchen-suchkarten-20261121";
-const PREVIOUS_CACHE="lesespiele-web-figurenstapel-20261121";
+const CACHE_NAME="lesespiele-web-belohnungsbilder-20261121";
+const PREVIOUS_CACHE="lesespiele-web-maerchen-suchkarten-20261121";
 const UPDATED_FILES=new Set([
- "./wuerfeln-maerchen.html","./wuerfeln-freizeit.html","./wuerfeln-sport.html",
+ "./dice-rewards.js","./wuerfeln-maerchen.html","./wuerfeln-freizeit.html","./wuerfeln-sport.html",
  "./dice-owl-animation.js","./assets/eule-bildfolge.webp",
  "./assets/eule-ast-freizeit.webp","./assets/eule-ast-maerchen.webp"
 ]);
