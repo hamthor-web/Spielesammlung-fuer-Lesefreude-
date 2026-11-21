@@ -1,4 +1,4 @@
-const CACHE_NAME="lesespiele-web-spielbuttons-20261121";
+const CACHE_NAME="lesespiele-web-finde-fehler-20261121";
 const PREVIOUS_CACHE="lesespiele-web-belohnungsanzeige-20261121";
 const UPDATED_FILES=new Set([
  "./native-layout.css","./native-layout.js","./assets/button-sport.png","./assets/button-abenteuer.png","./assets/button-maerchen.png",
