@@ -935,6 +935,11 @@ document.getElementById('boardWrap').after(taskDock);
   const cardPools=[weekdayQuestions,movementCards,footballQuestions,jokerCards];
   const roundCards=new Map(cardBags.map(bag=>[bag,players.map(()=>new Set())]));
 
+  const bagStarts=new Map(cardBags.map(bag=>[bag,players.map(()=>null)]));
+  function changeFirstCard(bag){
+    const other=1+Math.floor(Math.random()*(bag.length-1));
+    [bag[0],bag[other]]=[bag[other],bag[0]];
+  }
   function availableCards(bags,cards,eligible=()=>true){
     if(!bags[active].length){
       const bag=cards.map((_,index)=>index).filter(index=>cards[index].enabled!==false);
@@ -942,6 +947,11 @@ document.getElementById('boardWrap').after(taskDock);
         const j=Math.floor(Math.random()*(i+1));
         [bag[i],bag[j]]=[bag[j],bag[i]];
       }
+      const starts=bagStarts.get(bags);
+      const otherPlayer=1-active;
+      const otherStart=starts[otherPlayer] ?? bags[otherPlayer][0];
+      if(bag.length>1 && bag[0]===otherStart) changeFirstCard(bag);
+      starts[active]=bag[0] ?? null;
       bags[active]=bag;
     }
     const seen=roundCards.get(bags)[active];
@@ -999,6 +1009,7 @@ document.getElementById('boardWrap').after(taskDock);
       :waitingForJoker?{type:'joker',card:currentJoker}:null;
     const snapshot={v:1,rewards:rewardProgress,players:players.map(p=>({pos:p.pos,finished:p.finished})),active:nextActive,
       bags:cardBags.map(b=>b.map(row=>row.slice())),
+      bagStarts:cardBags.map(b=>bagStarts.get(b)),
       roundCards:cardBags.map(b=>roundCards.get(b).map(seen=>[...seen])),pending};
     try{localStorage.setItem(key,JSON.stringify(snapshot))}catch(e){console.warn('Der Würfelstand konnte nicht gespeichert werden.',e)}
   }
@@ -1013,6 +1024,17 @@ document.getElementById('boardWrap').after(taskDock);
     try{
       saved.players.forEach((p,i)=>{players[i].pos=p.pos;players[i].finished=p.finished;tokens[i].classList.toggle('inGoal',p.finished)});
       saved.bags.forEach((group,i)=>group.forEach((row,j)=>{cardBags[i][j]=[...new Set(row)].filter(index=>cardPools[i][index].enabled!==false)}));
+      cardBags.forEach((bag,i)=>{
+        const starts=bagStarts.get(bag);
+        for(let player=0;player<players.length;player++){
+          const index=saved.bagStarts?.[i]?.[player];
+          starts[player]=Number.isInteger(index)&&cardPools[i][index]!==undefined ? index : null;
+        }
+        const [blue,red]=bag;
+        if(red.length>1 && blue.length===red.length && red.every((index,j)=>index===blue[j])){
+          changeFirstCard(red);
+        }
+      });
       cardBags.forEach((bag,i)=>roundCards.get(bag).forEach((seen,j)=>{
         const row=saved.roundCards?.[i]?.[j];
         if(Array.isArray(row)) row.forEach(index=>{
